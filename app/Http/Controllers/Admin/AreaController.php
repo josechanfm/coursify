@@ -33,7 +33,7 @@ class AreaController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'abbr' => 'required|string|max:5',
+            'abbr' => 'required|unique:areas,abbr|string|max:5',
             'name_zh' => 'required|string',
         ]);
         Area::create($request->all());
@@ -62,7 +62,7 @@ class AreaController extends Controller
     public function update(Request $request, Area $area)
     {
         $validated = request()->validate([
-            'abbr' => 'required|string|max:5',
+            'abbr' => 'required|unique:areas,abbr|string|max:5',
             'name_zh' => 'required|string',
         ]);
         $area->update($request->all());

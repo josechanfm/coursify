@@ -36,6 +36,7 @@ Route::middleware([
 ])->prefix('admin')->group(function () {
     Route::get('/', [App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('admin.dashboard');
     Route::resource('areas', App\Http\Controllers\Admin\AreaController::class)->names('admin.areas');
+    Route::resource('courses', App\Http\Controllers\Admin\CourseController::class)->names('admin.courses');
 });
 
 Route::middleware([

@@ -11,6 +11,7 @@ class Course extends Model
 
     protected $fillable=[
         'area_id',
+        'code',
         'name_zh',
         'name_en',
         'type',

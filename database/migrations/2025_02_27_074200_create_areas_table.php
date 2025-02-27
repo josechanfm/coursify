@@ -13,10 +13,11 @@ return new class extends Migration
     {
         Schema::create('areas', function (Blueprint $table) {
             $table->id();
-            $table->string('abbr');
+            $table->string('abbr')->unique();
             $table->string('name_zh');
             $table->string('name_en')->nullable();
             $table->text('remark')->nullable();
+            $table->integer('last_num')->nullable();
             $table->timestamps();
         });
     }
