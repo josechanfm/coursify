@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('organizer_id')->nullable();
             $table->foreignId('course_id');
+            $table->string('code')->unique();
             $table->string('name_zh');
             $table->string('name_en')->nullable();
             $table->date('apply_start')->nullable();

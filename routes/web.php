@@ -24,6 +24,16 @@ Route::get('/', function () {
     ]);
 });
 
+Route::get('offers', [App\Http\Controllers\OfferController::class,'index']);
+Route::get('application/{offer}', [App\Http\Controllers\ApplicationController::class,'form'])->name('application.form');
+Route::post('application/checker', [App\Http\Controllers\ApplicationController::class,'checker'])->name('application.checker');
+Route::post('application', [App\Http\Controllers\ApplicationController::class,'submit'])->name('application.submit');
+
+Route::prefix('api')->group(function () {
+    Route::get('id_validator', [App\Http\Controllers\Api\IdValidatorController::class, 'verifyId']);
+});
+
+
 Route::prefix('admin')->group(function () {
     Route::get('login', [App\Http\Controllers\Admin\AuthController::class, 'showLoginForm'])->name('admin.login');
     Route::post('login', [App\Http\Controllers\Admin\AuthController::class, 'login']);

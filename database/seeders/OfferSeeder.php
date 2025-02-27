@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use App\Models\Area;
+use App\Models\Course;
 
 class OfferSeeder extends Seeder
 {
@@ -13,12 +13,11 @@ class OfferSeeder extends Seeder
      */
     public function run(): void
     {
-        $area=Area::where('abbr','ACC')->first();
-        $course=$area->courses()->first();
+        $course=Course::where('code','ACC001')->first();
         $data=[
-            ['name_zh'=>$course->name_zh.' (第一班)'],
-            ['name_zh'=>$course->name_zh.' (第二班)'],
-            ['name_zh'=>$course->name_zh.' (第三班)'],
+            ['code'=>'ACC01-001','name_zh'=>$course->name_zh.' (第一班)'],
+            ['code'=>'ACC01-002','name_zh'=>$course->name_zh.' (第二班)'],
+            ['code'=>'ACC01-003','name_zh'=>$course->name_zh.' (第三班)'],
         ];
         $course->offers()->createMany($data);
     }

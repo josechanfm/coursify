@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\Area;
 use App\Models\Course;
+use App\Models\Config;
 
 class CourseController extends Controller
 {
@@ -60,6 +61,7 @@ class CourseController extends Controller
     {
         return Inertia::render('Admin/CourseForm',[
             'areas'=>Area::all(),
+            'courseTypes'=>Config::get('course_types'),
             'course'=>$course
         ]);
     }

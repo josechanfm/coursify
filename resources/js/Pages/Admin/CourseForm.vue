@@ -25,7 +25,7 @@
           <a-input v-model:value="course.code" />
         </a-form-item>
         <a-form-item label="Type" name="type">
-          <a-input v-model:value="course.type" />
+          <a-select v-model:value="course.type" :options="courseTypes"/>
         </a-form-item>
         <a-form-item label="Name (zh)" name="name_zh">
           <a-input v-model:value="course.name_zh" />
@@ -53,7 +53,7 @@ export default {
   components: {
     AdminLayout,
   },
-  props: ["areas", "course"],
+  props: ["areas","courseTypes", "course"],
   data() {
     return {
       rules: {

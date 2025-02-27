@@ -11,6 +11,7 @@ class Offer extends Model
     protected $fillable=[
         'organizer_id',
         'course_id',
+        'code',
         'name_zh',
         'name_en',
         'apply_start',

@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('configs', function (Blueprint $table) {
             $table->id();
-            $table->string('key');
-            $table->text('value');
+            $table->string('key')->unique();
+            $table->text('value'); // Ensure JSON column uses utf8mb4
             $table->text('remark')->nullable();
             $table->timestamps();
         });
