@@ -26,7 +26,6 @@
           </div>
 
           <div >
-            {{  application }}
             <a-form ref="formRef" :model="application" name="ApplicationForm" :label-col="{ style: 'width:150px' }"
               autocomplete="off" :rules="rules" :validate-messages="validateMessages" @finish="onFinish">
               <div v-if="step == 1" class="w-[500px] pb-10">
@@ -40,31 +39,31 @@
                 <a-form-item label="Id Number" name="id_num">
                   <a-input v-model:value="application.id_num" />
                 </a-form-item>
-                <a-form-item label="Date of Birth" name="dob">
-                  <a-date-picker v-model:value="application.dob" :format="dateFormat" :valueFormat="dateFormat" />
+                <a-form-item label="Email" name="email">
+                  <a-input v-model:value="application.email" :disabled="application.is_student"/>
                 </a-form-item>
                 <div class="text-center">
                   <a-button @click="varifyApplicant()">Varify</a-button>
                 </div>
               </div>
               <div v-if="step == 2">
-                <a-form-item label="Email" name="email">
-                  <a-input v-model:value="application.email" :disabled="application.is_student"/>
-                </a-form-item>
                 <a-form-item label="Name (zh)" name="name_zh">
                   <a-input v-model:value="application.name_zh" :disabled="application.is_student"/>
                 </a-form-item>
                 <a-form-item label="Name (en)" name="name_en">
                   <a-input v-model:value="application.name_en" :disabled="application.is_student"/>
                 </a-form-item>
-                <a-form-item label="Name on Certificate" name="cert_name">
-                  <a-input v-model:value="application.cert_name"/>
-                </a-form-item>
                 <a-form-item label="Gender" name="gender">
-                  <a-radio-group v-model:value="application.gender" button-style="solid">
+                  <a-radio-group v-model:value="application.gender" button-style="solid" :disabled="application.is_student">
                     <a-radio-button value="M">Male</a-radio-button>
                     <a-radio-button value="F">Female</a-radio-button>
                   </a-radio-group>
+                </a-form-item>
+                <a-form-item label="Date of Birth" name="dob">
+                  <a-date-picker v-model:value="application.dob" :format="dateFormat" :valueFormat="dateFormat" :disabled="application.is_student"/>
+                </a-form-item>
+                <a-form-item label="Name on Certificate" name="cert_name">
+                  <a-input v-model:value="application.cert_name"/>
                 </a-form-item>
                 <a-form-item label="Phone" name="phone">
                   <a-input v-model:value="application.phone"/>
@@ -124,6 +123,8 @@ export default {
       dateFormat: "YYYY-MM-DD",
       rules: {
         code: { required: true },
+        id_type: { required: true },
+        id_num: { required: true },
         email: { required: true, type:'email' },
         name_zh: { required: true },
         

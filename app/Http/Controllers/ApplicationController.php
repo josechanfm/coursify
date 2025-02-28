@@ -34,9 +34,13 @@ class ApplicationController extends Controller
         if($idValidator->verifyId($request)){
             $isValid=1;
             $student=Student::where('id_type',$request->id_type)->where('id_num',$request->id_num)->get()->first();
+
             if($student){
-                $email=$student->email;
-                $isValid=2;
+                if($student->email==$request->email){
+                    $isValid=2;
+                }else{
+                    $isValid=-1;
+                }
             }
         }
        return response()->json(['is_valid'=>$isValid,'student'=>$student]);

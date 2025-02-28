@@ -22,7 +22,6 @@ return new class extends Migration
             $table->char('gender',1)->nullable();
             $table->date('dob')->nullable();
             $table->string('phone')->nullable();
-            $table->string('name_en')->nullable();
             $table->text('remark')->nullable();
             $table->timestamps();
         });
