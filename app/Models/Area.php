@@ -10,6 +10,14 @@ class Area extends Model
     use HasFactory;
     protected $fillable=['abbr','name_zh','name_en','remark'];
 
+    public function info(){
+        return (object)[
+            'abbr'=>$this->abbr,
+            'name_zh'=>$this->name_zh,
+            'name_en'=>$this->name_en,
+            'course_count'=>$this->courses->count()
+        ];
+    }
     public function courses(){
         return $this->hasMany(Course::class);
     }

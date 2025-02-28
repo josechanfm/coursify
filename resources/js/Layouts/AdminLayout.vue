@@ -3,32 +3,19 @@
     <a-layout-sider v-model:collapsed="collapsed" :trigger="null" collapsible>
       <div class="logo"/>
       <a-menu v-model:selectedKeys="selectedKeys" theme="dark" mode="inline">
-        <a-menu-item key="1">
-          <user-outlined />
-          <span>nav 1</span>
-        </a-menu-item>
-        <a-menu-item key="2">
-          <video-camera-outlined />
-          <span>nav 2</span>
-        </a-menu-item>
-        <a-menu-item key="3">
+        <template v-for="(item, i) in menuItems" :key="i">
+          <a-menu-item >
+            <user-outlined />
+            <span><inertia-link :href="route(item.route)">{{ item.title }}</inertia-link></span>
+          </a-menu-item>
+        </template>
+        <a-menu-item key="logout">
           <upload-outlined />
-          <span>nav 3</span>
+          <span @click="logout">Log Out</span>
         </a-menu-item>
-        <a-menu-item key="4">
-          <upload-outlined />
-          <span>
-            <form @submit.prevent="logout">
-                <DropdownLink as="button">
-                    Log Out
-                </DropdownLink>
-            </form>
-
-          </span>
-        </a-menu-item>
-
       </a-menu>
     </a-layout-sider>
+
     <a-layout>
       <a-layout-header style="background: #fff; padding: 0">
         <div class="text-lg p-2">
@@ -44,6 +31,40 @@
         />
         </div>
       </a-layout-header>
+
+      <nav class="text-sm flex justify-between" v-if="breadcrumb">
+        <div class="pl-5 pt-2 text-2xl">{{ title }}</div>
+          <ol class="list-none pr-10">
+              <li class="breadcrumb-item hidden md:inline" v-for="(item, idx) in breadcrumb">
+                  <inertia-link v-if="item.url" :href="item.url">{{ item.label }}</inertia-link>
+                  <span v-else>{{ item.label }}</span>
+                  <span class="pl-2 pr-2" v-if="idx < breadcrumb.length - 1">&gt;</span>
+              </li>
+              <li class="breadcrumb-item block md:hidden">
+                  <span v-if="breadcrumb.length > 1">
+                      <inertia-link :href="breadcrumb[breadcrumb.length - 2].url">
+                          {{ breadcrumb[breadcrumb.length - 2].label }}
+                      </inertia-link>
+                  </span>
+                  <span v-else>
+                      <inertia-link :href="route('admin.dashboard')">
+                          Home
+                      </inertia-link>
+                  </span>
+              </li>
+              <li class="breadcrumb-item block md:inline">
+                  <span class="pl-2 pr-2">|</span>
+                  <a href="javascript:history.back();" class="inline">Back</a>
+              </li>
+              <li class="breadcrumb-item block md:inline">
+                  <a :href="route('manual',{route:route().current()})" target="_blank" class="pl-2">
+                    <QuestionCircleOutlined />
+                  </a>
+              </li>
+
+          </ol>
+      </nav>
+
       <a-layout-content :style="{minHeight: '280px' }">
             <div class="mx-0">
                 <main>
@@ -58,11 +79,21 @@
 <script setup>
 import { Head, Link, router } from '@inertiajs/vue3';
 
-import { MenuFoldOutlined, MenuUnfoldOutlined, UserOutlined, VideoCameraOutlined, UploadOutlined } from '@ant-design/icons-vue';
+import { MenuFoldOutlined, MenuUnfoldOutlined, UserOutlined, VideoCameraOutlined, UploadOutlined, QuestionCircleOutlined } from '@ant-design/icons-vue';
 
 import { ref } from 'vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
 
+defineProps({
+    title: String,
+    breadcrumb: Object,
+});
+
+const menuItems = [
+  {title:'Area','route':'admin.areas.index'},
+  {title:'Courses','route':'admin.courses.index'},
+  {title:'Offers','route':'admin.offers.index'}
+];
 const selectedKeys = ref(['1']);
 const collapsed = ref(false);
 const logout = () => {

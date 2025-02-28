@@ -5,25 +5,25 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
-use App\Models\Area;
 use App\Models\Course;
+use App\Models\Offer;
 use App\Models\Config;
 
-class CourseController extends Controller
+class OfferController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(Area $area=null)
+    public function index(Course $course=null)
     {
-        if($area){
-            $courses=Course::whereBelongsTo($area)->paginate(5);
+        if($course){
+            $offers=Offer::whereBelongsTo($course)->paginate(5);
         }else{
-            $courses=Course::paginate(5);
+            $offers=Offer::paginate(5);
         }
-        return Inertia::render('Admin/Courses',[
-            'area'=>$area?$area->info():null,
-            'courses'=>$courses
+        return Inertia::render('Admin/Offers',[
+            'course'=>$course?$course->info():null,
+            'offers'=>$offers
         ]);
     }
 
@@ -33,7 +33,7 @@ class CourseController extends Controller
     public function create()
     {
         return Inertia::render('Admin/CourseForm',[
-            'areas'=>Area::all(),
+            'areas'=>Course::all(),
             'course'=>(Object)[]
         ]);
 
@@ -45,11 +45,11 @@ class CourseController extends Controller
     public function store(Request $request)
     {
         request()->validate([
-            'code' => 'required|unique:courses,code|string|max:20',
+            'code' => 'required|unique:offers,code|string|max:20',
             'name_zh' => 'required|string',
         ]);
-        Course::create($request->all());
-        return to_route('admin.courses.index');
+        Offer::create($request->all());
+        return to_route('admin.offers.index');
     }
 
     /**
@@ -63,35 +63,33 @@ class CourseController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Course $course)
+    public function edit(Offer $offer)
     {
-        return Inertia::render('Admin/CourseForm',[
-            'areas'=>Area::all(),
-            'courseTypes'=>Config::get('course_types'),
-            'course'=>$course
+        return Inertia::render('Admin/OfferForm',[
+            'offer'=>$offer
         ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Course $course)
+    public function update(Request $request, Offer $offer)
     {
         request()->validate([
             'code' => 'required|string|max:20',
             'name_zh' => 'required|string',
         ]);
-        $course->update($request->all());
-        return to_route('admin.courses.index');
+        $offer->update($request->all());
+        return to_route('admin.offers.index');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Course $course)
+    public function destroy(Offer $offer)
     {
 
-        $course->delete();
+        $offer->delete();
         return redirect()->back();
     }
 

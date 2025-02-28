@@ -3,7 +3,7 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
-
+use Illuminate\Http\Request;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -28,6 +28,7 @@ Route::get('offers', [App\Http\Controllers\OfferController::class,'index']);
 Route::get('application/{offer}', [App\Http\Controllers\ApplicationController::class,'form'])->name('application.form');
 Route::post('application/checker', [App\Http\Controllers\ApplicationController::class,'checker'])->name('application.checker');
 Route::post('application', [App\Http\Controllers\ApplicationController::class,'submit'])->name('application.submit');
+Route::get('id/checker', [App\Http\Controllers\ApplicationController::class,'checker'])->name('application.checker');
 
 Route::prefix('api')->group(function () {
     Route::get('id_validator', [App\Http\Controllers\Api\IdValidatorController::class, 'verifyId']);
@@ -46,7 +47,10 @@ Route::middleware([
 ])->prefix('admin')->group(function () {
     Route::get('/', [App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('admin.dashboard');
     Route::resource('areas', App\Http\Controllers\Admin\AreaController::class)->names('admin.areas');
+    Route::get('/{area}/courses', [App\Http\Controllers\Admin\CourseController::class,'index'])->name('admin.area.courses');
     Route::resource('courses', App\Http\Controllers\Admin\CourseController::class)->names('admin.courses');
+    Route::get('/{course}/offers', [App\Http\Controllers\Admin\OfferController::class,'index'])->name('admin.course.offers');
+    Route::resource('offers', App\Http\Controllers\Admin\OfferController::class)->names('admin.offers');
 });
 
 Route::middleware([
@@ -57,3 +61,16 @@ Route::middleware([
     Route::get('/', [App\Http\Controllers\Member\DashboardController::class,'index'])->name('member.dashboard');    
 
 });
+
+
+Route::get('/manual', function (Request $request) {
+    $manual=App\Models\Manual::where('route',$request->route)->first();
+    if(empty($manual)){
+        $manual=App\Models\Manual::where('route','default')->first();
+    }else if($manual->reroute){
+        $manual=App\Models\Manual::where('route',$manual->reroute)->first();
+    }
+    return Inertia::render('Manual', [
+        'manual' => $manual,
+    ]);
+})->name('manual');

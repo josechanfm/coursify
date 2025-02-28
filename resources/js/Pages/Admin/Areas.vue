@@ -1,9 +1,9 @@
 <template>
-  <AdminLayout title="Dashboard">
+  <AdminLayout title="Dashboard" :breadcrumb="breadcrumb">
     <template #header>
       <h2 class="font-semibold text-xl text-gray-800 leading-tight">Config</h2>
     </template>
-    <div class="container mx-auto pt-5">
+    <div class="container mx-auto">
       <div class="flex justify-end p-5">
         <a-button @click="createRecord()" type="primary"> Create </a-button>
       </div>
@@ -12,6 +12,7 @@
         <a-table :dataSource="areas" :columns="columns">
           <template #bodyCell="{ column, text, record, index }">
             <template v-if="column.dataIndex == 'operation'">
+              <a-button :href="route('admin.area.courses',record.id)">Courses</a-button>
               <a-button @click="editRecord(record)">Edit</a-button>
             </template>
             <template v-else>
@@ -26,7 +27,7 @@
       <a-form
         ref="modalRef"
         :model="modal.data"
-        name="Teacher"
+        name="AreaForm"
         :label-col="{ span: 8 }"
         :wrapper-col="{ span: 16 }"
         autocomplete="off"
@@ -67,6 +68,9 @@ export default {
   props: ["areas"],
   data() {
     return {
+      breadcrumb:[
+          {label:"Area" ,url:null},
+      ],
       modal: {
         isOpen: false,
         data: {},

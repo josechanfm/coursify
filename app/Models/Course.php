@@ -32,6 +32,15 @@ class Course extends Model
         'remark',
     ];
 
+    public function info(){
+        return (object)[
+            'code'=>$this->code,
+            'name_zh'=>$this->name_zh,
+            'name_en'=>$this->name_en,
+            'offer_count'=>$this->offers->count()
+        ];
+    }
+
     public function area(){
         return $this->belongsTo(Area::class);
     }

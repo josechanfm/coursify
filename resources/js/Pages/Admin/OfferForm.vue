@@ -6,39 +6,29 @@
     <div>
       <a-form
         ref="modalRef"
-        :model="course"
-        name="CourseForm"
+        :model="offer"
+        name="OfferForm"
         :label-col="{ style: 'width:200px' }"
         autocomplete="off"
         :rules="rules"
         :validate-messages="validateMessages"
         @finish="onFinish"
       >
-        <a-form-item label="Area" name="area_id">
-          <a-select
-            v-model:value="course.area_id"
-            :options="areas"
-            :fieldNames="{ value: 'id', label: 'name_zh' }"
-          />
-        </a-form-item>
         <a-form-item label="Code" name="code">
-          <a-input v-model:value="course.code" />
-        </a-form-item>
-        <a-form-item label="Type" name="type">
-          <a-select v-model:value="course.type" :options="courseTypes"/>
+          <a-input v-model:value="offer.code" />
         </a-form-item>
         <a-form-item label="Name (zh)" name="name_zh">
-          <a-input v-model:value="course.name_zh" />
+          <a-input v-model:value="offer.name_zh" />
         </a-form-item>
         <a-form-item label="Name (en)" name="name_en">
-          <a-input v-model:value="course.name_en" />
+          <a-input v-model:value="offer.name_en" />
         </a-form-item>
         <a-form-item label="Remark" name="remark">
-          <a-textarea v-model:value="course.remark" />
+          <a-textarea v-model:value="offer.remark" />
         </a-form-item>
         <a-form-item :wrapper-col="{ span: 14, offset: 4 }">
           <a-button type="primary" html-type="submit">Submit</a-button>
-          <a-button :href="route('admin.courses.index')" style="margin-left: 10px">Cancel</a-button>
+          <a-button :href="route('admin.offers.index')" style="margin-left: 10px">Cancel</a-button>
         </a-form-item>
       </a-form>
     </div>
@@ -53,7 +43,7 @@ export default {
   components: {
     AdminLayout,
   },
-  props: ["areas","courseTypes", "course"],
+  props: ["offer"],
   data() {
     return {
       rules: {
@@ -79,35 +69,29 @@ export default {
   },
   created() {},
   computed: {
-    areaOptions() {
-      return this.areas.map((a) => {
-        return { value: a.id, label: a.abbr + "-" + a.name_zh };
-      });
-    },
   },
   methods: {
     onFinish() {
-      if (this.course.id) {
+      if (this.offer.id) {
         this.updateRecord();
       } else {
         this.storeRecord();
       }
     },
     storeRecord() {
-      this.$inertia.post(route("admin.courses.store"), this.course, {
+      this.$inertia.post(route("admin.offers.store"), this.offer, {
         onSuccess: (page) => {
           console.log(page);
         },
         onError: (err) => {
-          console.log("duplicate code", this.course);
           console.log(err);
         },
       });
     },
     updateRecord() {
       this.$inertia.patch(
-        route("admin.courses.update", this.course.id),
-        this.course,
+        route("admin.offers.update", this.offer.id),
+        this.offer,
         {
           onSuccess: (page) => {
             console.log(page);

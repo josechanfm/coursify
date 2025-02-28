@@ -12,8 +12,8 @@ class IdValidatorController extends Controller
         //dd($request->all());
         // Define validation rules
         $rules = [
-            'id' => 'required|string|max:255',
-            'type' => 'required|in:MO,CN,MPU',
+            'id_num' => 'required|string|max:255',
+            'id_type' => 'required|in:MO,CN,MPU',
         ];
 
         // Create a validator instance
@@ -27,19 +27,19 @@ class IdValidatorController extends Controller
         }
 
         // Access validated data
-        $id = $request->input('id');
-        $type = $request->input('type');
+        $idNum = $request->input('id_num');
+        $idType = $request->input('id_type');
 
         // Perform your ID validation logic here
-		switch ($type) {
+		switch ($idType) {
 			case 'MO':	// Macau ID
-				$isValid = $this->_birm_version_1_0($id);
+				$isValid = $this->_birm_version_1_0($idNum);
 				break;
 			case 'CN':	// China ID
-				$isValid = $this->_china_id_version_1_0($id);
+				$isValid = $this->_china_id_version_1_0($idNum);
 				break;
 			case 'MPU':	// MPU ID
-				$isValid = $this->_ipm_student_id_version_1_0($id);
+				$isValid = $this->_ipm_student_id_version_1_0($idNum);
 				break;
 			default:	// Invalid type
 				$isValid = false;	// Set to false

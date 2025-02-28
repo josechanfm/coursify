@@ -8,23 +8,23 @@
         <div class="container mx-auto">
             <div class="flex justify-between p-5">
                 <div class="text-xl">
-                    <span v-if="area">{{ area.abbr }} - {{ area.name_zh }}</span>
-                    <span v-else>All Courses</span>
+                    <span v-if="course">{{ course.code }} - {{ course.name_zh }}</span>
+                    <span v-else>All Offers</span>
                 </div>
-                <a-button :href="route('admin.courses.create')" type="primary">
+                <a-button :href="route('admin.offers.create')" type="primary">
                     Create
                 </a-button>
             </div>
             <div class="bg-white relative shadow rounded-lg overflow-x-auto">
                 <!-- Header Info Boxes -->
                 <div class="flex justify-between p-5 gap-5">
-                    <div v-if="area" class="flex-1">
+                    <div v-if="course" class="flex-1">
                         <!-- Small box with softer green color -->
                         <div
                             class="small-box bg-green-300 rounded-lg shadow-lg p-4 transition-transform transform hover:scale-105">
                             <div class="inner">
-                                <h3 class="text-3xl font-bold text-gray-800">{{ area.abbr }} {{ area.name_zh }}</h3>
-                                <p class="text-gray-700">{{ area.course_count}} Courses</p>
+                                <h3 class="text-3xl font-bold text-gray-800">{{ course.abbr }} {{ course.name_zh }}</h3>
+                                <p class="text-gray-700">{{ course.offer_count}} Offers</p>
                             </div>
                             <div class="icon flex items-center justify-center">
                                 <i class="fas fa-chart-line text-4xl text-gray-800"></i>
@@ -34,12 +34,12 @@
                             </a>
                         </div>
                     </div>
-                    <div v-if="area" class="flex-1">
+                    <div v-if="course" class="flex-1">
                         <!-- Small box with softer blue color -->
                         <div
                             class="small-box bg-blue-300 rounded-lg shadow-lg p-4 transition-transform transform hover:scale-105">
                             <div class="inner">
-                                <h3 class="text-3xl font-bold text-gray-800">{{ area.course_count }}<sup
+                                <h3 class="text-3xl font-bold text-gray-800">{{ course.course_count }}<sup
                                         class="text-base">%</sup></h3>
                                 <p class="text-gray-700">Active Users</p>
                             </div>
@@ -51,12 +51,12 @@
                             </a>
                         </div>
                     </div>
-                    <div v-if="area" class="flex-1">
+                    <div v-if="course" class="flex-1">
                         <!-- Small box with softer red color -->
                         <div
                             class="small-box bg-red-300 rounded-lg shadow-lg p-4 transition-transform transform hover:scale-105">
                             <div class="inner">
-                                <h3 class="text-3xl font-bold text-gray-800">{{ area.course_count }}<sup
+                                <h3 class="text-3xl font-bold text-gray-800">{{ course.course_count }}<sup
                                         class="text-base">%</sup></h3>
                                 <p class="text-gray-700">Completion Rate</p>
                             </div>
@@ -69,16 +69,17 @@
                         </div>
                     </div>
                 </div>
-                <!-- End Header info Boxes-->
+                <!-- End Header Info Boxes -->
 
-                <a-table :dataSource="courses.data" :columns="columns" :pagination="pagination"
+                <a-table :dataSource="offers.data" :columns="columns" :pagination="pagination"
                     @change="onPaginationChange">
                     <template #bodyCell="{ column, text, record, index }">
                         <template v-if="column.dataIndex == 'operation'">
-                            <a-button :href="route('admin.course.offers',record.id)">Offers</a-button>
-                            <a-button :href="route('admin.courses.edit',record.id)">Edit</a-button>
+                            <a-button>Applications</a-button>
+                            <a-button>Class Management</a-button>
+                            <a-button :href="route('admin.offers.edit',record.id)">Edit</a-button>
                             <a-popconfirm title="Are you sure delete this record?" ok-text="Yes" cancel-text="No"
-                                @confirm="this.$inertia.delete(route('admin.courses.destroy', record.id))">
+                                @confirm="this.$inertia.delete(route('admin.offers.destroy', record.id))">
                                 <a-button>Delete</a-button>
                             </a-popconfirm>
                         </template>
@@ -100,17 +101,18 @@ export default {
     components: {
         AdminLayout,
     },
-    props: ["area","courses"],
+    props: ["course","offers"],
     data() {
         return {
             breadcrumb:[
                 {label:"Area" ,url:route('admin.areas.index')},
-                {label:"Course" ,url:null},
+                {label:"Course" ,url:route('admin.courses.index')},
+                {label:"Offer" ,url:null},
             ],
             pagination: {
-                total: this.courses.total,
-                current: this.courses.current_page,
-                pageSize: this.courses.per_page,
+                total: this.offers.total,
+                current: this.offers.current_page,
+                pageSize: this.offers.per_page,
             },
             columns: [
                 {
@@ -135,7 +137,7 @@ export default {
     methods: {
         onPaginationChange(page, filters, sorter) {
             this.$inertia.get(
-                this.area?route("admin.area.courses",this.area.id):route("admin.courses.index"),
+                this.course?route("admin.course.offers",this.course.id):route("admin.offers.index"),
                 {
                     page: page.current,
                     per_page: page.pageSize,
