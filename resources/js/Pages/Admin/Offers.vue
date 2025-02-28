@@ -6,19 +6,20 @@
             </h2>
         </template>
         <div class="container mx-auto">
-            <div class="flex justify-between p-5">
+            <div class="flex justify-between px-5">
                 <div class="text-xl">
                     <span v-if="course">{{ course.code }} - {{ course.name_zh }}</span>
+                    <span v-else-if="onlyCurrent">Current Offers</span>
                     <span v-else>All Offers</span>
                 </div>
                 <a-button :href="route('admin.offers.create')" type="primary">
                     Create
                 </a-button>
             </div>
-            <div class="bg-white relative shadow rounded-lg overflow-x-auto">
+            <div class="bg-white m-5 p-2 relative shadow rounded-lg overflow-x-auto">
                 <!-- Header Info Boxes -->
-                <div class="flex justify-between p-5 gap-5">
-                    <div v-if="course" class="flex-1">
+                <div class="flex justify-between gap-5">
+                    <div v-if="course" class="flex-1 pb-5">
                         <!-- Small box with softer green color -->
                         <div
                             class="small-box bg-green-300 rounded-lg shadow-lg p-4 transition-transform transform hover:scale-105">
@@ -70,9 +71,12 @@
                     </div>
                 </div>
                 <!-- End Header Info Boxes -->
-
-                <a-table :dataSource="offers.data" :columns="columns" :pagination="pagination"
-                    @change="onPaginationChange">
+                <a-table 
+                    :dataSource="offers.data" 
+                    :columns="columns" 
+                    :pagination="pagination"
+                    @change="onPaginationChange"
+                >
                     <template #bodyCell="{ column, text, record, index }">
                         <template v-if="column.dataIndex == 'operation'">
                             <a-button>Applications</a-button>
@@ -101,7 +105,7 @@ export default {
     components: {
         AdminLayout,
     },
-    props: ["course","offers"],
+    props: ["onlyCurrent","course","offers"],
     data() {
         return {
             breadcrumb:[

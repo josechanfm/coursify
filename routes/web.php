@@ -50,6 +50,7 @@ Route::middleware([
     Route::get('/{area}/courses', [App\Http\Controllers\Admin\CourseController::class,'index'])->name('admin.area.courses');
     Route::resource('courses', App\Http\Controllers\Admin\CourseController::class)->names('admin.courses');
     Route::get('/{course}/offers', [App\Http\Controllers\Admin\OfferController::class,'index'])->name('admin.course.offers');
+    Route::get('offers/current', [App\Http\Controllers\Admin\OfferController::class,'current'])->name('admin.offers.current');
     Route::resource('offers', App\Http\Controllers\Admin\OfferController::class)->names('admin.offers');
 });
 

@@ -4,11 +4,11 @@
       <h2 class="font-semibold text-xl text-gray-800 leading-tight">Config</h2>
     </template>
     <div class="container mx-auto">
-      <div class="flex justify-end p-5">
+      <div class="flex justify-end pr-5">
         <a-button @click="createRecord()" type="primary"> Create </a-button>
       </div>
 
-      <div class="bg-white relative shadow rounded-lg overflow-x-auto">
+      <div class="bg-white m-5 relative shadow rounded-lg overflow-x-auto">
         <a-table :dataSource="areas" :columns="columns">
           <template #bodyCell="{ column, text, record, index }">
             <template v-if="column.dataIndex == 'operation'">

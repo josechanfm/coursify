@@ -34,6 +34,15 @@ class Offer extends Model
         'trainer_rate',
         'transportation_fee',
         'offer_other_fee',
+        'form_options',
+        'form_extra',
+    ];
+    protected $casts=[
+        'application'=>'boolean',
+        'front_end'=>'boolean',
+        'dsej'=>'boolean',
+        'form_options'=>'array',
+        'form_extra'=>'json',
     ];
     
     public function course(){

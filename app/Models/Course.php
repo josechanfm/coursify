@@ -31,7 +31,11 @@ class Course extends Model
         'active',
         'remark',
     ];
-
+    protected $casts=[
+        'assessment'=>'boolean',
+        'active'=>'boolean',
+    ];
+    
     public function info(){
         return (object)[
             'code'=>$this->code,

@@ -7,6 +7,7 @@
       <div v-if="responseMessage">
         <a-alert :message="responseMessage.message" :type="responseMessage.type?'success':'error'" show-icon />
       </div>
+      {{ offer }}
       <div class="p-5">
         <div class="bg-white rounded-lg shadow-lg" style="border-top-style: solid; border-color: blue;">
           <div class="p-4">
@@ -62,9 +63,6 @@
                 <a-form-item label="Date of Birth" name="dob">
                   <a-date-picker v-model:value="application.dob" :format="dateFormat" :valueFormat="dateFormat" :disabled="application.is_student"/>
                 </a-form-item>
-                <a-form-item label="Name on Certificate" name="cert_name">
-                  <a-input v-model:value="application.cert_name"/>
-                </a-form-item>
                 <a-form-item label="Phone" name="phone">
                   <a-input v-model:value="application.phone"/>
                 </a-form-item>
@@ -91,9 +89,37 @@
                 <a-form-item label="Work Position" name="work_position">
                   <a-input v-model:value="application.work_position"/>
                 </a-form-item>
-                <a-form-item label="Remark" name="remark">
-                  <a-textarea v-model:value="application.remark" />
+                <a-form-item label="Name on Certificate" name="cert_name" v-if="offer.form_options.includes('CERT_NAME')">
+                  <a-input v-model:value="application.cert_name"/>
                 </a-form-item>
+                <a-form-item label="Education Levels" name="education" v-if="offer.form_options.includes('EDUCATION_LEVEL')">
+                  <a-input v-model:value="application.education"/>
+                </a-form-item>
+                <a-form-item label="Promotion" name="promotion" v-if="offer.form_options.includes('PROMOTION_CODE')">
+                  <a-input v-model:value="application.promotion"/>
+                </a-form-item>
+
+                <a-form-item label="教職員工或學生" name="">
+                  你是否澳門城市大學教職員工或學生?<br/>
+                  <a-radio-group v-model:value="offer.is_cityu">
+                    <a-radio value="NON">都不是</a-radio>
+                    <a-radio value="STAFF">我是教/職員工</a-radio>
+                    <a-radio value="STUDENT">我是學生</a-radio>
+                  </a-radio-group>
+                </a-form-item>
+
+                <a-form-item 
+                  name="school_number" 
+                  :label="offer.is_cityu=='STAFF'?'教職員工編號':'學生號碼'" 
+                  v-if="offer.is_cityu=='STAFF' || offer.is_cityu=='STUDENT'">
+                  <a-input v-model:value="application.school_number"/>
+                </a-form-item>
+
+
+
+                {{ offer.form_extra }}
+
+                
                 <a-form-item :wrapper-col="{ span: 14, offset: 4 }">
                   <a-button type="primary" html-type="submit">Submit</a-button>
                   <a-button :href="route('admin.courses.index')" style="margin-left: 10px">Cancel</a-button>

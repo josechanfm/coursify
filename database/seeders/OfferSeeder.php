@@ -25,13 +25,46 @@ class OfferSeeder extends Seeder
         $courses=Course::all();
         foreach($courses as $i=>$course){
             for($j=1; $j<=3; $j++){
+                $applyStartDate = now()->addDays(rand(-30, 30));
                 Offer::create([
                     'course_id'=>$course->id,
                     'code'=>$course->code.'-00'.$j,
-                    'name_zh'=> $course->name_zh .'('.$j.')'
+                    'name_zh'=> $course->name_zh .'('.$j.')',
+                    'apply_start'=>$applyStartDate,
+                    'apply_end'=>$applyStartDate->copy()->addDays(rand(1, 30)),
                 ]);
     
             }
         }
+
+        Offer::find(1)->update([
+            'form_options'=>["CERT_NAME","EDUCATION_LEVEL","PROMOTION_CODE"],
+            'form_extra'=>[
+                [
+                    "name" => "language",
+                    "type" => "input",
+                    "label" => "教材語言"
+                ],
+                [
+                    "name" => "question",
+                    "type" => "select",
+                    "options" => [
+                        [
+                            "value" => "FB",
+                            "label" => "Facebook"
+                        ],
+                        [
+                            "value" => "IG",
+                            "label" => "Instagram"
+                        ],
+                        [
+                            "value" => "OT",
+                            "label" => "其它"
+                        ]
+                    ],
+                    "label" => "如何識識我們?"
+                ]
+            ],
+        ]);
     }
 }

@@ -6,7 +6,7 @@
             </h2>
         </template>
         <div class="container mx-auto">
-            <div class="flex justify-between p-5">
+            <div class="flex justify-between px-5">
                 <div class="text-xl">
                     <span v-if="area">{{ area.abbr }} - {{ area.name_zh }}</span>
                     <span v-else>All Courses</span>
@@ -15,10 +15,10 @@
                     Create
                 </a-button>
             </div>
-            <div class="bg-white relative shadow rounded-lg overflow-x-auto">
+            <div class="bg-white m-5 p-2 relative shadow rounded-lg overflow-x-auto">
                 <!-- Header Info Boxes -->
-                <div class="flex justify-between p-5 gap-5">
-                    <div v-if="area" class="flex-1">
+                <div class="flex justify-between gap-5">
+                    <div v-if="area" class="flex-1 pb-5">
                         <!-- Small box with softer green color -->
                         <div
                             class="small-box bg-green-300 rounded-lg shadow-lg p-4 transition-transform transform hover:scale-105">

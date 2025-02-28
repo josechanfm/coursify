@@ -66,6 +66,7 @@ class OfferController extends Controller
     public function edit(Offer $offer)
     {
         return Inertia::render('Admin/OfferForm',[
+            'formOptions'=>Config::get('form_options'),
             'offer'=>$offer
         ]);
     }
@@ -88,9 +89,16 @@ class OfferController extends Controller
      */
     public function destroy(Offer $offer)
     {
-
         $offer->delete();
         return redirect()->back();
     }
 
+    public function current()
+    {
+        $offers=Offer::where('apply_start','<=',now())->where('apply_end','>=',now())->paginate(5);
+        return Inertia::render('Admin/Offers',[
+            'onlyCurrent'=>true,
+            'offers'=>$offers
+        ]);
+    }
 }

@@ -92,7 +92,7 @@ defineProps({
 const menuItems = [
   {title:'Area','route':'admin.areas.index'},
   {title:'Courses','route':'admin.courses.index'},
-  {title:'Offers','route':'admin.offers.index'}
+  {title:'Offers','route':'admin.offers.current'}
 ];
 const selectedKeys = ref(['1']);
 const collapsed = ref(false);

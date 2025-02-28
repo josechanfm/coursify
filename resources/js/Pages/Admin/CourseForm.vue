@@ -3,12 +3,12 @@
     <template #header>
       <h2 class="font-semibold text-xl text-gray-800 leading-tight">Config</h2>
     </template>
-    <div>
+    <div class="bg-white m-5 p-5 rounded-md shadow">
       <a-form
         ref="modalRef"
         :model="course"
         name="CourseForm"
-        :label-col="{ style: 'width:200px' }"
+        :label-col="{ style: 'width:150px' }"
         autocomplete="off"
         :rules="rules"
         :validate-messages="validateMessages"
@@ -33,6 +33,60 @@
         <a-form-item label="Name (en)" name="name_en">
           <a-input v-model:value="course.name_en" />
         </a-form-item>
+        <a-form-item label="Description" name="description">
+          <a-textarea v-model:value="course.description" />
+        </a-form-item>
+        <a-form-item label="Method" name="method">
+          <a-textarea v-model:value="course.method" />
+        </a-form-item>
+        <a-form-item label="Target" name="target">
+          <a-textarea v-model:value="course.target" />
+        </a-form-item>
+        <a-form-item label="Prerequisite" name="prerequisite">
+          <a-input v-model:value="course.prerequisite" />
+        </a-form-item>
+
+        <div class="flex flex-wrap justify-between">
+          <div class="w-full md:w-1/3">
+            <a-form-item label="Conduct Language" name="conduct_lang">
+              <a-select v-model:value="course.conduct_lang" :options="languageTypes"/>
+            </a-form-item>
+            <a-form-item label="Handhout Language" name="handhout_lang">
+              <a-select v-model:value="course.handhout_lang" :options="languageTypes"/>
+            </a-form-item>
+            <a-form-item label="Certificate" name="certificate">
+              <a-select v-model:value="course.certificate" :options="certificateTypes"/>
+            </a-form-item>
+          </div>
+          <div class="w-full md:w-1/3">
+            <a-form-item label="Hours" name="hours">
+              <a-input-number v-model:value="course.hours" />
+            </a-form-item>
+            <a-form-item label="Tution Fee" name="tution_fee">
+              <a-input-number v-model:value="course.tution_fee" />
+            </a-form-item>
+            <a-form-item label="Other Fee" name="other_fee">
+              <a-input-number v-model:value="course.other_fee" />
+            </a-form-item>
+          </div>
+          <div class="w-full md:w-1/3">
+            <a-form-item label="Payment" name="payment">
+              <a-input v-model:value="course.payment" />
+            </a-form-item>
+            <a-form-item label="Quota" name="quota">
+              <a-input-number v-model:value="course.quota" />
+            </a-form-item>
+            <a-form-item label="Active" name="active">
+              <a-switch v-model:value="course.active" />
+            </a-form-item>
+            <a-form-item label="Assessement" name="assessment">
+              <a-switch v-model:value="course.assessment" />
+            </a-form-item>
+          </div>
+        </div>
+
+
+
         <a-form-item label="Remark" name="remark">
           <a-textarea v-model:value="course.remark" />
         </a-form-item>
@@ -53,7 +107,7 @@ export default {
   components: {
     AdminLayout,
   },
-  props: ["areas","courseTypes", "course"],
+  props: ["areas","courseTypes","languageTypes","certificateTypes", "course"],
   data() {
     return {
       rules: {

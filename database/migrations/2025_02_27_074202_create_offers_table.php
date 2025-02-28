@@ -38,6 +38,8 @@ return new class extends Migration
             $table->integer('trainer_rate')->nullable();
             $table->integer('transportation_fee')->nullable();
             $table->integer('offer_other_fee')->nullable();
+            $table->text('form_options')->nullable();
+            $table->text('form_extra')->nullable();
             $table->timestamps();
         });
     }

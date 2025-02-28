@@ -68,6 +68,8 @@ class CourseController extends Controller
         return Inertia::render('Admin/CourseForm',[
             'areas'=>Area::all(),
             'courseTypes'=>Config::get('course_types'),
+            'languageTypes'=>Config::get('language_types'),
+            'certificateTypes'=>Config::get('certificate_types'),
             'course'=>$course
         ]);
     }
