@@ -22,7 +22,8 @@ class ApplicationController extends Controller
             'offer' => $offer,
             'application' => (Object)[
                 'offer_id'=>$offer->id,
-                'id_type'=>'MO'
+                'id_type'=>'MO',
+                'extra'=>(Object)[]
             ],
         ]);
     }
@@ -47,7 +48,7 @@ class ApplicationController extends Controller
     } 
     public function submit(Request $request)
     {
-        dd($request->all());
+        Application::create($request->all());
     }
 
 }

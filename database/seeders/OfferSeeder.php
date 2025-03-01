@@ -47,7 +47,7 @@ class OfferSeeder extends Seeder
                 ],
                 [
                     "name" => "question",
-                    "type" => "select",
+                    "type" => "radio",
                     "options" => [
                         [
                             "value" => "FB",

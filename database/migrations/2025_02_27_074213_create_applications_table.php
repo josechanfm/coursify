@@ -16,11 +16,13 @@ return new class extends Migration
             $table->foreignId('offer_id');
             $table->string('code')->nullable();
             $table->string('name_zh')->nullable();
-            $table->string('name_zh')->nullable();
+            $table->string('name_en')->nullable();
             $table->date('dob')->nullable();
             $table->char('gender',1)->nullable();
             $table->string('email')->nullable();
             $table->string('phone')->nullable();
+            $table->string('id_type')->nullable();
+            $table->string('id_num')->nullable();
             $table->string('industry')->nullable();
             $table->string('company')->nullable();
             $table->string('position')->nullable();
@@ -37,6 +39,7 @@ return new class extends Migration
             $table->dateTime('candidate_timestamp')->nullable();
             $table->boolean('candidate_user_id')->nullable();
             $table->foreignId('student_id')->nullable();
+            $table->foreignId('school_number')->nullable();
             $table->timestamps();
         });
     }

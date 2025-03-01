@@ -7,7 +7,6 @@
       <div v-if="responseMessage">
         <a-alert :message="responseMessage.message" :type="responseMessage.type?'success':'error'" show-icon />
       </div>
-      {{ offer }}
       <div class="p-5">
         <div class="bg-white rounded-lg shadow-lg" style="border-top-style: solid; border-color: blue;">
           <div class="p-4">
@@ -48,6 +47,20 @@
                 </div>
               </div>
               <div v-if="step == 2">
+                <a-form-item label="Id Number" name="id_num">
+                  <a-radio-group v-model:value="application.id_type" button-style="solid" :disabled="true">
+                    <a-radio-button value="MO">Macao</a-radio-button>
+                    <a-radio-button value="HK">Hong Kong</a-radio-button>
+                    <a-radio-button value="OT">Other</a-radio-button>
+                  </a-radio-group>
+                </a-form-item>
+                <a-form-item label="Id Number" name="id_num">
+                  <a-input v-model:value="application.id_num" :disabled="true"/>
+                </a-form-item>
+                <a-form-item label="Email" name="email">
+                  <a-input v-model:value="application.email" :disabled="true"/>
+                </a-form-item>
+
                 <a-form-item label="Name (zh)" name="name_zh">
                   <a-input v-model:value="application.name_zh" :disabled="application.is_student"/>
                 </a-form-item>
@@ -89,35 +102,50 @@
                 <a-form-item label="Work Position" name="work_position">
                   <a-input v-model:value="application.work_position"/>
                 </a-form-item>
-                <a-form-item label="Name on Certificate" name="cert_name" v-if="offer.form_options.includes('CERT_NAME')">
+                <a-form-item label="Name on Certificate" name="cert_name" v-if="offer.form_options && offer.form_options.includes('CERT_NAME')">
                   <a-input v-model:value="application.cert_name"/>
                 </a-form-item>
-                <a-form-item label="Education Levels" name="education" v-if="offer.form_options.includes('EDUCATION_LEVEL')">
+                <a-form-item label="Education Levels" name="education" v-if="offer.form_options && offer.form_options.includes('EDUCATION_LEVEL')">
                   <a-input v-model:value="application.education"/>
                 </a-form-item>
-                <a-form-item label="Promotion" name="promotion" v-if="offer.form_options.includes('PROMOTION_CODE')">
+                <a-form-item label="Promotion" name="promotion" v-if="offer.form_options && offer.form_options.includes('PROMOTION_CODE')">
                   <a-input v-model:value="application.promotion"/>
                 </a-form-item>
 
                 <a-form-item label="教職員工或學生" name="">
                   你是否澳門城市大學教職員工或學生?<br/>
-                  <a-radio-group v-model:value="offer.is_cityu">
+                  <a-radio-group v-model:value="application.is_cityu">
                     <a-radio value="NON">都不是</a-radio>
                     <a-radio value="STAFF">我是教/職員工</a-radio>
                     <a-radio value="STUDENT">我是學生</a-radio>
                   </a-radio-group>
                 </a-form-item>
-
                 <a-form-item 
                   name="school_number" 
-                  :label="offer.is_cityu=='STAFF'?'教職員工編號':'學生號碼'" 
-                  v-if="offer.is_cityu=='STAFF' || offer.is_cityu=='STUDENT'">
+                  :label="application.is_cityu=='STAFF'?'教職員工編號':'學生號碼'" 
+                  v-if="application.is_cityu=='STAFF' || application.is_cityu=='STUDENT'">
                   <a-input v-model:value="application.school_number"/>
                 </a-form-item>
 
 
 
-                {{ offer.form_extra }}
+                <template v-for="extra in offer.form_extra">
+                  <template v-if="extra.type=='input'">
+                    <a-form-item :label="extra.label">
+                      <a-input v-model:value="application.extra[extra.name]"/>
+                    </a-form-item>
+                  </template>
+                  <template v-else-if="extra.type=='select'">
+                    <a-form-item :label="extra.label">
+                      <a-select v-model:value="application.extra[extra.name]" :options="extra.options"/>
+                    </a-form-item>
+                  </template>
+                  <template v-else-if="extra.type=='radio'">
+                    <a-form-item :label="extra.label">
+                      <a-radio-group v-model:value="application.extra[extra.name]" :options="extra.options"/>
+                    </a-form-item>
+                  </template>
+                </template>
 
                 
                 <a-form-item :wrapper-col="{ span: 14, offset: 4 }">
@@ -126,6 +154,7 @@
                 </a-form-item>
               </div>
             </a-form>
+
           </div>
         </div>
       </div>

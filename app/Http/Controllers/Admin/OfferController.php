@@ -93,7 +93,7 @@ class OfferController extends Controller
         return redirect()->back();
     }
 
-    public function current()
+    public function current2()
     {
         $offers=Offer::where('apply_start','<=',now())->where('apply_end','>=',now())->paginate(5);
         return Inertia::render('Admin/Offers',[

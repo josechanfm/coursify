@@ -44,6 +44,16 @@ class Offer extends Model
         'form_options'=>'array',
         'form_extra'=>'json',
     ];
+
+    public function info(){
+        return (object)[
+            'code'=>$this->code,
+            'name_zh'=>$this->name_zh,
+            'name_en'=>$this->name_en,
+            'application_count'=>$this->applications->count()
+        ];
+    }
+
     
     public function course(){
         return $this->belongsTo(Course::class);
@@ -59,6 +69,10 @@ class Offer extends Model
 
     public function students(){
         return $this->belongsToMany(Student::class);
+    }
+
+    public function applications(){
+        return $this->hasMany(Application::class);
     }
 
 }
