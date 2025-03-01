@@ -5,7 +5,7 @@
                 Config
             </h2>
         </template>
-        <div class="container mx-auto">
+        <div class="container">
             <div class="flex justify-between px-5">
                 <div class="text-xl">
                     <span v-if="offer">{{ offer.code }} - {{ offer.name_zh }}</span>
@@ -71,6 +71,14 @@
                     </div>
                 </div>
                 <!-- End Header Info Boxes -->
+                <div class="flex gap-2">
+                    <a-button type="success">出席情況</a-button>
+                    <a-button type="accept">課堂點名</a-button>
+                    <a-button type="primary">課程詳細</a-button>
+                    <a-button type="danger">在線評估表</a-button>
+                    <a-button type="warning">刷新繳費</a-button>
+                    <a-button type="info">刷新</a-button>
+                </div>
                 <a-table 
                     :dataSource="applications.data" 
                     :columns="columns" 
@@ -92,14 +100,15 @@
                             {{ record.id_num }}
                         </template>
                         <template v-else-if="column.dataIndex == 'status'">
-                            <a-button>報名中</a-button>
-                            <a-button>已錄取</a-button>
-                            <a-button>繳費過期</a-button>
-                            <a-button>取消報名</a-button>
-                            {{ record.status }}
+                            <div class="flex gap-1">
+                                <a-button @click="changeStatus(record, null)" type="default">報名中</a-button>
+                                <a-button @click="changeStatus(record, 'Accept')" :type="record.status=='Accept'?'accept':'default'">已錄取</a-button>
+                                <a-button @click="changeStatus(record, 'Expire')" :type="record.status=='Expire'?'reject':'default'">繳費過期</a-button>
+                                <a-button @click="changeStatus(record, 'Cancel')" :type="record.status=='Cancel'?'warning':'default'">取消報名</a-button>
+                            </div>
                         </template>
                         <template v-else-if="column.dataIndex == 'payment'">
-                            <a-button>已編費</a-button>
+                            <a-button @click="" type="info">已編費</a-button>
                             {{ record.payment}}
                         </template>
                         <template v-else>
@@ -181,6 +190,17 @@ export default {
                 }
             );
         },
+        changeStatus(record, status){
+            console.log(record, status)
+            this.$inertia.post(route('admin.application.changeStatus',record.id),{status:status},{
+                onSuccess: (page) => {
+                    console.log(page);
+                },
+                onError: (err) => {
+                    console.log(err);
+                },
+            })
+        }
     },
 };
 </script>

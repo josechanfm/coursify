@@ -7,6 +7,37 @@ use Illuminate\Support\Facades\Validator;
 
 class IdValidatorController extends Controller
 {
+	public function getCheckDigit(Request $request){
+		$no=$request->id_num;
+		$tmpno= $this->_fulltohalf($no);
+		//if(!preg_match("/([1|5|7][0-9]{6}[(][0-9][)])|([1|5|7][\/][0-9]{6}[\/][0-9])/",$tmpno))
+		if(!preg_match("/([1|5|7][0-9]{6}[(][0-9][)])|([1|5|7][0-9]{6}[0-9])/",$tmpno))
+			return FALSE;
+
+		$onlynum=preg_replace("/[^0-9]/","",$tmpno);
+
+		$strsplit=str_split($onlynum);
+
+		$num1=$strsplit[0].$strsplit[2].$strsplit[4].$strsplit[6];
+		$num2=$strsplit[1].$strsplit[3].$strsplit[5];
+
+		$num1m2=$num1*2;
+
+		$num1split=str_split($num1m2);
+		$num2split=str_split($num2);
+
+		$dsum1=0;
+		$dsum2=0;
+		foreach ($num1split as $key => $value)
+			$dsum1 +=$value; 
+		foreach ($num2split as $key => $value) 
+			$dsum2 +=$value;
+		
+		$dsum = $dsum1+$dsum2;
+		$cd = (10 - ($dsum%10))%10;
+		return substr($no, 0, 7).$cd;
+
+	}
     public function verifyId(Request $request)
     {
         //dd($request->all());

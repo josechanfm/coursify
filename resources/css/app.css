@@ -5,3 +5,29 @@
 [x-cloak] {
     display: none;
 }
+
+ 
+.ant-btn-accept {
+    background-color: #28a745; /* Green */
+    color: white;
+}
+.ant-btn-reject {
+    background-color: coral; /* Yellow background */
+    color: white;
+}
+.ant-btn-success {
+    background-color: cornflowerblue; /* Yellow background */
+    color: white; /* White text */
+}
+.ant-btn-info {
+    background-color: gold; /* Yellow background */
+    color: black; /* Black text */
+}
+.ant-btn-warning {
+    background-color: indianred; /* Red background */
+    color: white; /* White text */
+}
+.ant-btn-danger {
+    background-color: red; /* Red background */
+    color: white; /* White text */
+}

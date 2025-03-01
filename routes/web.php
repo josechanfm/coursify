@@ -32,6 +32,7 @@ Route::get('id/checker', [App\Http\Controllers\ApplicationController::class,'che
 
 Route::prefix('api')->group(function () {
     Route::get('id_validator', [App\Http\Controllers\Api\IdValidatorController::class, 'verifyId']);
+    Route::get('get_check_digit', [App\Http\Controllers\Api\IdValidatorController::class, 'getCheckDigit']);
 });
 
 
@@ -54,6 +55,7 @@ Route::middleware([
     Route::resource('offers', App\Http\Controllers\Admin\OfferController::class)->names('admin.offers');
     Route::resource('applications', App\Http\Controllers\Admin\ApplicationController::class)->names('admin.applications');
     Route::get('{offer}/applications', [App\Http\Controllers\Admin\ApplicationController::class,'index'])->name('admin.offer.applications');
+    Route::post('application/{application}/change_status', [App\Http\Controllers\Admin\ApplicationController::class,'changeStatus'])->name('admin.application.changeStatus');
 });
 
 Route::middleware([

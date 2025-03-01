@@ -8,6 +8,7 @@ use Inertia\Inertia;
 use App\Models\Offer;
 use App\Models\Application;
 use App\Models\Config;
+use LDAP\Result;
 
 class ApplicationController extends Controller
 {
@@ -102,5 +103,11 @@ class ApplicationController extends Controller
             'onlyCurrent'=>true,
             'applications'=>$applications
         ]);
+    }
+    public function changeStatus(Application $application, Request $request){
+        // request()->validate([
+        //     'status' => 'required',
+        // ]);
+        $application->update(['status'=>$request->status]);
     }
 }
