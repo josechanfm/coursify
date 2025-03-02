@@ -26,6 +26,7 @@ class DatabaseSeeder extends Seeder
             AreaSeeder::class,
             CourseSeeder::class,
             OfferSeeder::class,
+            ApplicationSeeder::class,
         ]);
 
     }

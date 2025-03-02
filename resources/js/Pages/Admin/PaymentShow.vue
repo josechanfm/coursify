@@ -1,0 +1,155 @@
+<template>
+  <AdminLayout title="Application Form" :breadcrumb="breadcrumb">
+    <template #header>
+      <h2 class="font-semibold text-xl text-gray-800 leading-tight">Config</h2>
+    </template>
+    <div class="bg-white m-5 p-5 rounded-md shadow">
+      <a-form
+        ref="modalRef"
+        :model="payment"
+        name="CourseForm"
+        :label-col="{ style: 'width:150px' }"
+        autocomplete="off"
+        :rules="rules"
+        :validate-messages="validateMessages"
+        @finish="onFinish"
+      >
+        <a-form-item label="課程學費" name="amount">
+          {{ payment.amount}}
+        </a-form-item>
+        <a-form-item label="貨幣" name="currency">
+          <a-radio-group v-model="payment.currency" button-style="solid">
+            <a-radio-button value="MOP">MOP</a-radio-button>
+            <a-radio-button value="HKD">HKD</a-radio-button>
+            <a-radio-button value="RMB">RMB</a-radio-button>
+          </a-radio-group>
+        </a-form-item>
+        <a-form-item label="DSEJ" name="dsej">
+          <a-input v-model="payment.dsej"></a-input>
+        </a-form-item>
+        <a-form-item label="現金" name="payment_cash">
+          <a-input v-model="payment.payment_cash"/>
+        </a-form-item>
+        <a-form-item label="銀行轉帳" name="bank_transfer">
+          <a-input v-model="payment.bank_transfer"/>
+        </a-form-item>
+        <a-form-item label="現金轉帳" name="cash">
+          <a-input v-model="payment.cash"/>
+        </a-form-item>
+        <a-form-item label="信用卡" name="credit_card">
+          <a-date-picker v-model="payment.credit_card"/>
+        </a-form-item>
+        <a-form-item label="支票" name="cheque">
+          <a-date-picker v-model="payment.cheque"/>
+        </a-form-item>
+        <a-form-item label="材料費" name="material_fee">
+          <a-date-picker v-model="payment.material_fee"/>
+        </a-form-item>
+        <a-form-item label="貨幣" name="refunded_currency">
+          <a-input v-model="payment.refunded_currency"></a-input>
+        </a-form-item>
+        <a-form-item label="現金" name="payment_cash">
+          <a-input v-model="payment.payment_cash"/>
+        </a-form-item>
+        <a-form-item label="銀行轉帳" name="bank_transfer">
+          <a-input v-model="payment.bank_transfer"/>
+        </a-form-item>
+        <a-form-item label="現金轉帳" name="cash">
+          <a-input v-model="payment.cash"/>
+        </a-form-item>
+        <a-form-item label="信用卡" name="credit_card">
+          <a-date-picker v-model="payment.credit_card"/>
+        </a-form-item>
+        <a-form-item label="支票" name="cheque">
+          <a-date-picker v-model="payment.cheque"/>
+        </a-form-item>
+        <a-form-item label="備註" name="remarl">
+          <a-textarea v-model="payment.remark"/>
+        </a-form-item>
+        <a-form-item label="Payment Reference" name="payment_reference">
+          {{ payment.payment_reference }}
+        </a-form-item>
+      </a-form>
+
+    </div>
+  </AdminLayout>
+</template>
+
+<script>
+import AdminLayout from "@/Layouts/AdminLayout.vue";
+import { defineComponent, reactive } from "vue";
+
+export default {
+  components: {
+    AdminLayout,
+  },
+  props: ["payment"],
+  data() {
+    return {
+      breadcrumb:[
+          {label:"Area" ,url:route('admin.areas.index')},
+          {label:"Course" ,url:route('admin.courses.index')},
+          {label:"Offer" ,url:route('admin.offers.index')},
+          {label:"Application" ,url:route('admin.applications.index')},
+          {label:"Edit" ,url:null},
+      ],
+      rules: {
+        code: { required: true },
+        name_zh: { required: true },
+      },
+      validateMessages: {
+        required: "${label} is required!",
+        types: {
+          email: "${label} is not a valid email!",
+          number: "${label} is not a valid number!",
+        },
+        number: {
+          range: "${label} must be between ${min} and ${max}",
+        },
+      },
+      labelCol: {
+        style: {
+          width: "150px",
+        },
+      },
+    };
+  },
+  created() {},
+  computed: {
+  },
+  methods: {
+    onFinish() {
+      if (this.application.id) {
+        this.updateRecord();
+      } else {
+        this.storeRecord();
+      }
+    },
+    storeRecord() {
+      this.$inertia.post(route("admin.courses.store"), this.course, {
+        onSuccess: (page) => {
+          console.log(page);
+        },
+        onError: (err) => {
+          console.log("duplicate code", this.course);
+          console.log(err);
+        },
+      });
+    },
+    updateRecord() {
+      this.$inertia.patch(
+        route("admin.courses.update", this.application.id),
+        this.course,
+        {
+          onSuccess: (page) => {
+            console.log(page);
+          },
+          onError: (error) => {
+            console.log(error);
+          },
+        }
+      );
+    },
+  },
+};
+</script>

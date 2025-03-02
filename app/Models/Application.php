@@ -43,4 +43,7 @@ class Application extends Model
     public function offer(){
         return $this->belongsTo(Offer::class);
     }
+    public function payment(){
+        return $this->hasOne(Payment::class);
+    }
 }

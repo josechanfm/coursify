@@ -33,7 +33,7 @@ return new class extends Migration
             $table->string('textbook_lang')->nullable();
             $table->string('how_to_know')->nullable();
             $table->text('extra')->nullable();
-            $table->integer('status')->nullable();
+            $table->string('status')->nullable();
             $table->integer('status_ignore')->nullable();
             $table->boolean('candidate')->nullable();
             $table->dateTime('candidate_timestamp')->nullable();
