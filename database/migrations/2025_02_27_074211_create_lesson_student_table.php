@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('lesson_id');
             $table->foreignId('student_id');
-            $table->char('attend',1)->nullable();
+            $table->char('attend',3)->nullable();
             $table->timestamps();
             $table->unique(['lesson_id','student_id']);
         });

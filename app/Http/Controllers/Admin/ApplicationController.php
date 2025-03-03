@@ -18,9 +18,9 @@ class ApplicationController extends Controller
     public function index(Offer $offer=null)
     {
         if($offer){
-            $applications=Application::whereBelongsTo($offer)->paginate(5);
+            $applications=Application::whereBelongsTo($offer)->with('payment')->paginate(5);
         }else{
-            $applications=Application::with('offerInfo')->paginate();
+            $applications=Application::with('payment')->with('offerInfo')->paginate();
         }
         return Inertia::render('Admin/Applications',[
             'offer'=>$offer?$offer->info():null,
@@ -103,7 +103,7 @@ class ApplicationController extends Controller
         $application->update(['status'=>$request->status]);
     }
     public function current(){
-        $applications=Application::with('offerInfo')->where('status',null)->paginate();
+        $applications=Application::with('offerInfo')->with('payment')->where('status',null)->paginate();
         return Inertia::render('Admin/Applications',[
             'onlyCurrent'=>true,
             'applications'=>$applications

@@ -16,6 +16,7 @@
             <span v-else>
               <a-button @click="attend(student,'ATT')">Attend</a-button>
             </span>
+            {{ student.name_zh}}
           </li>
         </ol>
       </div>

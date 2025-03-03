@@ -123,8 +123,7 @@
                                 </div>
                             </template>
                             <template v-else-if="column.dataIndex == 'payment'">
-                                <a-button @click="" type="info">已編費</a-button>
-                                {{ record.payment}}
+                                <a-button :href="route('admin.payments.show',record.payment.id)" type="info">已編費</a-button>
                             </template>
                             <template v-else>
                                 {{ record[column.dataIndex] }}

@@ -91,11 +91,11 @@ defineProps({
 
 const menuItems = [
   {title:'Area','route':'admin.areas.index'},
-  {title:'Courses','route':'admin.courses.index'},
-  {title:'Current Offers','route':'admin.offers.current'},
-  {title:'All Offers','route':'admin.offers.index'},
-  {title:'Current Applications','route':'admin.applications.current'},
-  {title:'All Applications','route':'admin.applications.index'}
+  {title:'課程規劃','route':'admin.courses.index'},
+  {title:'現行課程','route':'admin.offers.current'},
+  {title:'所有課程','route':'admin.offers.index'},
+  {title:'未確認報名表','route':'admin.applications.current'},
+  {title:'所有報名表','route':'admin.applications.index'}
 ];
 const selectedKeys = ref(['1']);
 const collapsed = ref(false);
