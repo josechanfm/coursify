@@ -20,7 +20,7 @@ class ApplicationController extends Controller
         if($offer){
             $applications=Application::whereBelongsTo($offer)->paginate(5);
         }else{
-            $applications=Application::paginate();
+            $applications=Application::with('offerInfo')->paginate();
         }
         return Inertia::render('Admin/Applications',[
             'offer'=>$offer?$offer->info():null,
@@ -96,18 +96,17 @@ class ApplicationController extends Controller
         return redirect()->back();
     }
 
-    public function current()
-    {
-        $applications=Application::where('apply_start','<=',now())->where('apply_end','>=',now())->paginate(5);
-        return Inertia::render('Admin/Applications',[
-            'onlyCurrent'=>true,
-            'applications'=>$applications
-        ]);
-    }
     public function changeStatus(Application $application, Request $request){
         // request()->validate([
         //     'status' => 'required',
         // ]);
         $application->update(['status'=>$request->status]);
+    }
+    public function current(){
+        $applications=Application::with('offerInfo')->where('status',null)->paginate();
+        return Inertia::render('Admin/Applications',[
+            'onlyCurrent'=>true,
+            'applications'=>$applications
+        ]);
     }
 }

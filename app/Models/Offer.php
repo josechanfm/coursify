@@ -60,10 +60,10 @@ class Offer extends Model
     }
 
     public function teachers(){
-        return $this->belongsToMany(Staff::class);
+        return $this->belongsToMany(Staff::class,'offer_staff','offer_id','staff_id');
     }
 
-    public function lessongs(){
+    public function lessons(){
         return $this->hasMany(Lesson::class);
     }
 

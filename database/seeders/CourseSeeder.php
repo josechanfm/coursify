@@ -15,7 +15,7 @@ class CourseSeeder extends Seeder
     {
         //$area=Area::where('abbr','ACC')->first();
         $data=array(
-            array('id' => '1','area_id' => '3','code' => 'LSR001','name_zh' => '葡萄酒知識及品酒技巧入門','name_en' => 'Basic Wine Knowledge and Wine Tasting','type' => 'LCT','description' => '<p>
+            array('id' => '1','area_id' => '2','code' => 'LSR001','name_zh' => '葡萄酒知識及品酒技巧入門','name_en' => 'Basic Wine Knowledge and Wine Tasting','type' => 'LCT','description' => '<p>
               學員可以建立對葡萄酒知識的基本了解，包括介紹葡萄酒的類型、常見的葡萄品種、葡萄酒品嘗的基本技巧、葡萄酒服務的常識及餐酒搭配等。更會介紹葡萄酒產地的分佈、風格和閱讀不同產區的酒標。每堂均進行品酒實務訓練，使學員可從視覺、嗅覺和味覺中感受不同葡萄酒之特性與差異。</p>
           ','assessment' => '0','method' => '<p>
               出席率必須達到80%或以上，方可獲頒發出席證明。</p>

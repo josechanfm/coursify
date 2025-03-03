@@ -22,6 +22,7 @@ class ApplicationSeeder extends Seeder
             'phone' => '12345678',
             'id_type' => 'HK',
             'id_num' => 'A1234567',
+            'status'=>'Accept'
         ]);
         $offer->applications()->create([
             'name_zh' => '陳小文',
@@ -32,6 +33,19 @@ class ApplicationSeeder extends Seeder
             'phone' => '87654321',
             'id_type' => 'HK',
             'id_num' => 'A7654321',
+            'status'=>null
+        ]);
+        $offer=Offer::find(2);
+        $offer->applications()->create([
+            'name_zh' => '陳...',
+            'name_en' => 'Simon',
+            'dob' => '1980-01-01',
+            'gender' => 'F',
+            'email' => 'user3@example.com',
+            'phone' => '87654311',
+            'id_type' => 'HK',
+            'id_num' => 'A1111111',
+            'status'=>null
         ]);
     }
 }

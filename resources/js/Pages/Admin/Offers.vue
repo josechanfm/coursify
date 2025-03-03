@@ -1,5 +1,5 @@
 <template>
-    <AdminLayout title="Dashboard" :breadcrumb="breadcrumb">
+    <AdminLayout title="Offer" :breadcrumb="breadcrumb">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 Config
@@ -12,9 +12,14 @@
                     <span v-else-if="onlyCurrent">Current Offers</span>
                     <span v-else>All Offers</span>
                 </div>
-                <a-button :href="route('admin.offers.create')" type="primary">
-                    Create
-                </a-button>
+                <div class="flex gap-2">
+                    <a-button :href="route('admin.offers.create')" type="primary">
+                        Create
+                    </a-button>
+                    <a href="javascript:history.back();" class="inline">
+                        <a-button>Back</a-button>
+                    </a>
+                </div>
             </div>
             <div class="bg-white m-5 p-2 relative shadow rounded-lg overflow-x-auto">
                 <!-- Header Info Boxes -->
@@ -80,7 +85,7 @@
                     <template #bodyCell="{ column, text, record, index }">
                         <template v-if="column.dataIndex == 'operation'">
                             <a-button :href="route('admin.offer.applications', record.id)">Applications</a-button>
-                            <a-button>Class Management</a-button>
+                            <a-button :href="route('admin.klass.dashboard',record.id)">Class Management</a-button>
                             <a-button :href="route('admin.offers.edit',record.id)">Edit</a-button>
                             <a-popconfirm title="Are you sure delete this record?" ok-text="Yes" cancel-text="No"
                                 @confirm="this.$inertia.delete(route('admin.offers.destroy', record.id))">

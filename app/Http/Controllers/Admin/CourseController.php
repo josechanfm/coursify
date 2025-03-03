@@ -19,7 +19,7 @@ class CourseController extends Controller
         if($area){
             $courses=Course::whereBelongsTo($area)->paginate(5);
         }else{
-            $courses=Course::paginate(5);
+            $courses=Course::with('areaInfo')->paginate(5);
         }
         return Inertia::render('Admin/Courses',[
             'area'=>$area?$area->info():null,

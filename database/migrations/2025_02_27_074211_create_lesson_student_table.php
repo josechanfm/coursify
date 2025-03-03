@@ -11,14 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('lessons', function (Blueprint $table) {
+        Schema::create('lesson_student', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('offer_id');
-            $table->foreignId('staff_id')->nullable();
-            $table->string('classroom')->nullable();
-            $table->date('date')->nullable();
-            $table->time('start')->nullable();
-            $table->time('end')->nullable();
+            $table->foreignId('lesson_id');
+            $table->foreignId('student_id');
+            $table->char('attend',1)->nullable();
             $table->timestamps();
         });
     }
@@ -28,7 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('lessons');
+        Schema::dropIfExists('lesson_student');
     }
 };
-

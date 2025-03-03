@@ -43,6 +43,9 @@ class Application extends Model
     public function offer(){
         return $this->belongsTo(Offer::class);
     }
+    public function offerInfo(){
+        return $this->belongsTo(Offer::class,'offer_id')->select('id', 'code', 'name_zh', 'name_en');
+    }
     public function payment(){
         return $this->hasOne(Payment::class);
     }

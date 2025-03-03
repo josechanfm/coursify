@@ -5,13 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Staff extends Model
+class LessonStudent extends Model
 {
     use HasFactory;
-    protected $table="staffs";
-
-    public function offers(){
-        return $this->belongsToMany(Course::class);
-    }
-
+    protected $table="lesson_student";
 }

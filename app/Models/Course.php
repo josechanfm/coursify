@@ -48,6 +48,10 @@ class Course extends Model
     public function area(){
         return $this->belongsTo(Area::class);
     }
+    public function areaInfo(){
+        return $this->belongsTo(Area::class,'area_id')->select('id','abbr','name_zh','name_en');
+    }
+
     public function offers(){
         return $this->hasMany(Offer::class);
     }

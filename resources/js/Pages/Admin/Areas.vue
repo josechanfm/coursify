@@ -1,18 +1,28 @@
 <template>
-  <AdminLayout title="Dashboard" :breadcrumb="breadcrumb">
+  <AdminLayout title="Area" :breadcrumb="breadcrumb">
     <template #header>
       <h2 class="font-semibold text-xl text-gray-800 leading-tight">Config</h2>
     </template>
     <div class="container mx-auto">
-      <div class="flex justify-end pr-5">
-        <a-button @click="createRecord()" type="primary"> Create </a-button>
+
+      <div class="flex justify-between px-5">
+        <div class="text-xl">
+          <span>All Areas</span>
+        </div>
+        <div class="flex gap-2">
+          <a-button @click="createRecord()" type="primary"> Create </a-button>
+          <a href="javascript:history.back();" class="inline">
+            <a-button>Back</a-button>
+          </a>
+
+        </div>
       </div>
 
       <div class="bg-white m-5 relative shadow rounded-lg overflow-x-auto">
         <a-table :dataSource="areas" :columns="columns">
           <template #bodyCell="{ column, text, record, index }">
             <template v-if="column.dataIndex == 'operation'">
-              <a-button :href="route('admin.area.courses',record.id)">Courses</a-button>
+              <a-button :href="route('admin.area.courses', record.id)">Courses</a-button>
               <a-button @click="editRecord(record)">Edit</a-button>
             </template>
             <template v-else>
@@ -24,16 +34,8 @@
     </div>
     <!-- Modal Start-->
     <a-modal v-model:open="modal.isOpen" :title="modal.title" width="60%">
-      <a-form
-        ref="modalRef"
-        :model="modal.data"
-        name="AreaForm"
-        :label-col="{ span: 8 }"
-        :wrapper-col="{ span: 16 }"
-        autocomplete="off"
-        :rules="rules"
-        :validate-messages="validateMessages"
-      >
+      <a-form ref="modalRef" :model="modal.data" name="AreaForm" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }"
+        autocomplete="off" :rules="rules" :validate-messages="validateMessages">
         <a-form-item label="Abbr" name="abbr">
           <a-input v-model:value="modal.data.abbr" />
         </a-form-item>
@@ -50,7 +52,7 @@
       <template #footer>
         <a-button type="primary" @click="submitForm()">{{
           modal.mode == "EDIT" ? "Edit" : "Add"
-        }}</a-button>
+          }}</a-button>
       </template>
     </a-modal>
     <!-- Modal End-->
@@ -68,8 +70,8 @@ export default {
   props: ["areas"],
   data() {
     return {
-      breadcrumb:[
-          {label:"Area" ,url:null},
+      breadcrumb: [
+        { label: "Area", url: null },
       ],
       modal: {
         isOpen: false,
@@ -117,7 +119,7 @@ export default {
       },
     };
   },
-  created() {},
+  created() { },
   methods: {
     createRecord() {
       this.modal.data = {};

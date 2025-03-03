@@ -55,9 +55,12 @@ class OfferController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Offer $offer)
     {
-        //
+        return Inertia::render('Admin/OfferShow',[
+            'formOptions'=>Config::get('form_options'),
+            'offer'=>$offer
+        ]);
     }
 
     /**
@@ -93,7 +96,7 @@ class OfferController extends Controller
         return redirect()->back();
     }
 
-    public function current2()
+    public function current()
     {
         $offers=Offer::where('apply_start','<=',now())->where('apply_end','>=',now())->paginate(5);
         return Inertia::render('Admin/Offers',[

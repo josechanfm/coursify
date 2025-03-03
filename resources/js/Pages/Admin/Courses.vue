@@ -1,20 +1,27 @@
 <template>
-    <AdminLayout title="Dashboard" :breadcrumb="breadcrumb">
+    <AdminLayout title="Course" :breadcrumb="breadcrumb">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 Config
             </h2>
         </template>
         <div class="container mx-auto">
+
             <div class="flex justify-between px-5">
                 <div class="text-xl">
                     <span v-if="area">{{ area.abbr }} - {{ area.name_zh }}</span>
                     <span v-else>All Courses</span>
                 </div>
-                <a-button :href="route('admin.courses.create')" type="primary">
-                    Create
-                </a-button>
+                <div class="flex gap-2">
+                    <a-button :href="route('admin.courses.create')" type="primary">
+                        Create
+                    </a-button>
+                    <a href="javascript:history.back();" class="inline">
+                        <a-button>Back</a-button>
+                    </a>
+                </div>
             </div>
+            
             <div class="bg-white m-5 p-2 relative shadow rounded-lg overflow-x-auto">
                 <!-- Header Info Boxes -->
                 <div class="flex justify-between gap-5">
@@ -130,7 +137,6 @@ export default {
         };
     },
     created() {
-
     },
     methods: {
         onPaginationChange(page, filters, sorter) {
