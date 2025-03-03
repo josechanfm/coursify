@@ -59,7 +59,8 @@ Route::middleware([
     Route::post('application/{application}/change_status', [App\Http\Controllers\Admin\ApplicationController::class,'changeStatus'])->name('admin.application.changeStatus');
     Route::resource('payments', App\Http\Controllers\Admin\PaymentController::class)->names('admin.payments');
     Route::get('{offer}/klass', [App\Http\Controllers\Admin\KlassController::class,'dashboard'])->name('admin.klass.dashboard');
-    Route::get('{offer}/klass/{lesson}/attendance', [App\Http\Controllers\Admin\KlassController::class,'attendance'])->name('admin.klass.attendance');
+    Route::get('{offer}/klass/{lesson}/attendances', [App\Http\Controllers\Admin\KlassController::class,'attendance'])->name('admin.klass.attendances');
+    Route::post('klass/attendance/attend', [App\Http\Controllers\Admin\KlassController::class,'attend'])->name('admin.klass.attendance.attend');
 });
 
 Route::middleware([

@@ -19,6 +19,6 @@ class Lesson extends Model
     }
 
     public function students(){
-        return $this->belongsToMany(Student::class,'lesson_student','lesson_id','student_id');
+        return $this->belongsToMany(Student::class,'lesson_student','lesson_id','student_id')->withPivot(['id as lesson_student_id','attend']);
     }
 }

@@ -24,9 +24,14 @@
         <ol>
           <li v-for="lesson in offer.lessons">
             {{ lesson.teacher.name_zh}} ({{ lesson.teacher.code}} ) {{ lesson.date }} at {{ lesson.start }} to {{ lesson.end }}
-            <a-button :href="route('admin.klass.attendance',{offer:offer.id, lesson:lesson.id})">Attendance</a-button>
+            <a-button :href="route('admin.klass.attendances',{offer:offer.id, lesson:lesson.id})">Attendance</a-button>
           </li>
         </ol>
+      </div>
+      <div class="flex justify-center gap-2">
+        <a href="javascript:history.back();" class="inline">
+          <a-button>Back</a-button>
+        </a>
       </div>
 
     </div>

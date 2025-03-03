@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\Offer;
 use App\Models\Lesson;
+use App\Models\LessonStudent;
 
 class KlassController extends Controller
 {
@@ -25,6 +26,16 @@ class KlassController extends Controller
             'offer'=>$offer,
             'lesson'=>$lesson->load('students'),
         ]);
+    }
+    public function attend(Request $request){
+        $request->validate([
+            'lesson_id' => 'required|integer|exists:lessons,id',
+            'student_id' => 'required|integer|exists:students,id',
+            'attend' => 'required|string|uppercase|size:3', // Adjust validation rules as necessary
+        ]);
+
+        LessonStudent::where('lesson_id',$request->lesson_id)->where('student_id',$request->student_id)->update(['attend'=>$request->attend]);
+        return redirect()->back();
     }
 
 

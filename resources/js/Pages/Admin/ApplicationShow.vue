@@ -65,7 +65,7 @@
         </a-form-item>
 
 
-        <template v-for="extra in offer.form_extra">
+        <template v-for="extra in offer.form_extra" v-if="application.extra">
           <template v-if="extra.type=='input'">
             <a-form-item :label="extra.label">
               {{ application.extra[extra.name] }}
@@ -85,15 +85,11 @@
         <a-form-item label="Remark" name="remark">
           <a-textarea v-model:value="application.remark" />
         </a-form-item>
-        <a-form-item :wrapper-col="{ span: 14, offset: 4 }">
-          <a-button type="primary" html-type="submit">Submit</a-button>
+        <div class="flex justify-center gap-2">
           <a href="javascript:history.back();" class="inline">
-            <a-button style="margin-left: 10px">
-            Back
-          </a-button>
+            <a-button>Back</a-button>
           </a>
-
-        </a-form-item>
+        </div>
       </a-form>
     </div>
   </AdminLayout>

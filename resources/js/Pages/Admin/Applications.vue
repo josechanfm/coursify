@@ -6,15 +6,21 @@
             </h2>
         </template>
         <div class="container">
+
             <div class="flex justify-between px-5">
                 <div class="text-xl">
                     <span v-if="offer">{{ offer.code }} - {{ offer.name_zh }}</span>
                     <span v-else-if="onlyCurrent">Only unconfirm Applications</span>
                     <span v-else>All Applications</span>
                 </div>
-                <a-button :href="route('admin.applications.create')" type="primary">
-                    Create
-                </a-button>
+                <div class="flex gap-2">
+                    <a-button :href="route('admin.applications.create')" type="primary">
+                        Create
+                    </a-button>
+                    <a href="javascript:history.back();" class="inline">
+                        <a-button>Back</a-button>
+                    </a>
+                </div>
             </div>
             
                 <div class="bg-white m-5 p-2 relative shadow rounded-lg overflow-x-auto">

@@ -18,12 +18,37 @@
           {{ payment.amount}}
         </a-form-item>
         <a-form-item label="貨幣" name="currency">
-          <a-radio-group v-model="payment.currency" button-style="solid">
+          <a-radio-group v-model:value="payment.currency" button-style="solid">
             <a-radio-button value="MOP">MOP</a-radio-button>
             <a-radio-button value="HKD">HKD</a-radio-button>
             <a-radio-button value="RMB">RMB</a-radio-button>
           </a-radio-group>
         </a-form-item>
+        <a-form-item label="Payment Type" name="">
+          <a-select v-model:value="payment.method" :options="paymentMethods"/>
+        </a-form-item>
+        <template v-if="payment.method=='COMB'">
+          <a-button @click="payment.breakdowns.push({method:'CASH',amount:0})">Add</a-button>
+          <a-row v-for="breakdown in payment.breakdowns">
+            <a-col>
+              <a-form-item label="Type">
+                <a-select v-model:value="breakdown.method" :options="paymentMethods" style="width: 200px;"/>
+              </a-form-item>
+            </a-col>
+            <a-col>
+              <a-form-item label="Amount">
+                <a-input v-model="breakdown.amount"></a-input>
+              </a-form-item>
+            </a-col>
+          </a-row>
+        </template>
+        <template v-else>
+          <a-form-item label="Amount">
+            <a-input v-model="payment.amount"></a-input>
+          </a-form-item>
+        </template>
+
+<!-- 
         <a-form-item label="DSEJ" name="dsej">
           <a-input v-model="payment.dsej"></a-input>
         </a-form-item>
@@ -41,7 +66,7 @@
         </a-form-item>
         <a-form-item label="支票" name="cheque">
           <a-date-picker v-model="payment.cheque"/>
-        </a-form-item>
+        </a-form-item> -->
         <a-form-item label="材料費" name="material_fee">
           <a-date-picker v-model="payment.material_fee"/>
         </a-form-item>
@@ -93,6 +118,19 @@ export default {
           {label:"Application" ,url:route('admin.applications.index')},
           {label:"Edit" ,url:null},
       ],
+      currency:[
+        {value:"MOP",label:"MOP"},
+        {value:"HKD",label:"HKD"},
+        {value:"RMB",label:"RMB"},
+      ],
+      paymentMethods:[
+        {value:"DSEJ",label:"現金"},
+        {value:"TRAN",label:"銀行轉帳"},
+        {value:"CASH",label:"現金轉帳"},
+        {value:"CRDIT",label:"信用卡"},
+        {value:"CHEQUE",label:"支票"},
+        {value:"COMB",label:"組合式"}
+      ],
       rules: {
         code: { required: true },
         name_zh: { required: true },
@@ -114,7 +152,9 @@ export default {
       },
     };
   },
-  created() {},
+  created() {
+    this.payment.breakdowns=[{method:'CASH',amount:0}];
+  },
   computed: {
   },
   methods: {

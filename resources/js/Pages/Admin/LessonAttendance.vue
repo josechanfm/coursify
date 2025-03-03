@@ -9,8 +9,20 @@
       <div>
         <div>Students</div>
         <ol>
-          <li v-for="student in lesson.students">{{ student.code }} - {{ student.name_zh }}</li>
+          <li v-for="student in lesson.students">
+            <span v-if="student.pivot.attend=='ATT'">
+              <a-button @click="attend(student,'ABS')">Unattend</a-button>
+            </span>
+            <span v-else>
+              <a-button @click="attend(student,'ATT')">Attend</a-button>
+            </span>
+          </li>
         </ol>
+      </div>
+      <div class="flex justify-center gap-2">
+        <a href="javascript:history.back();" class="inline">
+          <a-button>Back</a-button>
+        </a>
       </div>
     </div>
   </AdminLayout>
@@ -59,6 +71,22 @@ export default {
   computed: {
   },
   methods: {
+    attend(student,attendance){
+      const formData = new FormData();
+      formData.append('lesson_id',this.lesson.id);
+      formData.append('student_id',student.id);
+      formData.append('attend',attendance)
+
+      this.$inertia.post(route("admin.klass.attendance.attend"), formData, {
+        onSuccess: (page) => {
+          console.log(page)
+        },
+        onError: (err) => {
+          console.log(err);
+        },
+      });
+
+    },
     onFinish() {
       if (this.offer.id) {
         this.updateRecord();

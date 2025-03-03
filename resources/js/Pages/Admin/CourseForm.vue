@@ -90,10 +90,12 @@
         <a-form-item label="Remark" name="remark">
           <a-textarea v-model:value="course.remark" />
         </a-form-item>
-        <a-form-item :wrapper-col="{ span: 14, offset: 4 }">
+        <div class="flex justify-center gap-2">
           <a-button type="primary" html-type="submit">Submit</a-button>
-          <a-button :href="route('admin.courses.index')" style="margin-left: 10px">Cancel</a-button>
-        </a-form-item>
+          <a href="javascript:history.back();" class="inline">
+            <a-button>Back</a-button>
+          </a>
+        </div>
       </a-form>
     </div>
   </AdminLayout>
