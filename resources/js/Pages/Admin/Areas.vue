@@ -1,30 +1,23 @@
 <template>
-  <AdminLayout title="Area" :breadcrumb="breadcrumb">
+  <AdminLayout title="課程類別" :breadcrumb="breadcrumb">
     <template #header>
       <h2 class="font-semibold text-xl text-gray-800 leading-tight">Config</h2>
     </template>
     <div class="container mx-auto">
-
       <div class="flex justify-between px-5">
-        <div class="text-xl">
-          <span>All Areas</span>
-        </div>
         <div class="flex gap-2">
-          <a-button @click="createRecord()" type="primary"> Create </a-button>
-          <a href="javascript:history.back();" class="inline">
-            <a-button>Back</a-button>
-          </a>
-
+          <a-button @click="createRecord()" type="primary">新增 +</a-button>
         </div>
       </div>
-
       <div class="bg-white m-5 relative shadow rounded-lg overflow-x-auto">
         <a-table :dataSource="areas" :columns="columns">
           <template #bodyCell="{ column, text, record, index }">
             <template v-if="column.dataIndex == 'operation'">
-              <a-button :href="route('admin.area.courses', record.id)">Courses</a-button>
-              <a-button @click="editRecord(record)">Edit</a-button>
-            </template>
+              <div class="flex ">
+                <a-button :href="route('admin.area.courses', record.id)">所屬規劃</a-button>
+                <a-button class="" @click="editRecord(record)"><EditOutlined class=""/>編輯</a-button>
+              </div>
+              </template>
             <template v-else>
               {{ record[column.dataIndex] }}
             </template>
@@ -34,24 +27,24 @@
     </div>
     <!-- Modal Start-->
     <a-modal v-model:open="modal.isOpen" :title="modal.title" width="60%">
-      <a-form ref="modalRef" :model="modal.data" name="AreaForm" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }"
+      <a-form ref="modalRef" :model="modal.data" name="AreaForm" :label-col="{ span: 6 }"
         autocomplete="off" :rules="rules" :validate-messages="validateMessages">
-        <a-form-item label="Abbr" name="abbr">
-          <a-input v-model:value="modal.data.abbr" />
+        <a-form-item label="字首" name="abbr">
+          <a-input type="input"  v-model:value="modal.data.abbr" />
         </a-form-item>
-        <a-form-item label="Name (zh)" name="name_zh">
-          <a-input v-model:value="modal.data.name_zh" />
+        <a-form-item label="中文姓名" name="name_zh">
+          <a-input type="input"  v-model:value="modal.data.name_zh" />
         </a-form-item>
-        <a-form-item label="Name (en)" name="name_en">
-          <a-input v-model:value="modal.data.name_en" />
+        <a-form-item label="英文姓名" name="name_en">
+          <a-input type="input"  v-model:value="modal.data.name_en" />
         </a-form-item>
-        <a-form-item label="Remark" name="remark">
+        <a-form-item label="備註" name="remark">
           <a-textarea v-model:value="modal.data.remark" />
         </a-form-item>
       </a-form>
       <template #footer>
         <a-button type="primary" @click="submitForm()">{{
-          modal.mode == "EDIT" ? "Edit" : "Add"
+          modal.mode == "EDIT" ? "編輯" : "新增"
           }}</a-button>
       </template>
     </a-modal>
@@ -62,10 +55,12 @@
 <script>
 import AdminLayout from "@/Layouts/AdminLayout.vue";
 import { defineComponent, reactive } from "vue";
+import * as AntdIcons from '@ant-design/icons-vue';
 
 export default {
   components: {
     AdminLayout,
+    ...AntdIcons,
   },
   props: ["areas"],
   data() {
@@ -82,19 +77,19 @@ export default {
       teacherStateLabels: {},
       columns: [
         {
-          title: "Abbr",
+          title: "字首",
           dataIndex: "abbr",
         },
         {
-          title: "Name (zh)",
+          title: "中文姓名",
           dataIndex: "name_zh",
         },
         {
-          title: "Name (en)",
+          title: "英文姓名",
           dataIndex: "name_en",
         },
         {
-          title: "Operation",
+          title: "操作",
           dataIndex: "operation",
         },
       ],
@@ -119,18 +114,19 @@ export default {
       },
     };
   },
-  created() { },
+  created() {
+   },
   methods: {
     createRecord() {
       this.modal.data = {};
       this.modal.mode = "CREATE";
-      this.modal.title = "Create";
+      this.modal.title = "新增";
       this.modal.isOpen = true;
     },
     editRecord(record) {
       this.modal.data = { ...record };
       this.modal.mode = "EDIT";
-      this.modal.title = "Edit";
+      this.modal.title = "編輯";
       this.modal.isOpen = true;
     },
     submitForm() {

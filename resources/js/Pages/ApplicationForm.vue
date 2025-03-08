@@ -37,10 +37,10 @@
                   </a-radio-group>
                 </a-form-item>
                 <a-form-item label="Id Number" name="id_num">
-                  <a-input v-model:value="application.id_num" />
+                  <a-input type="input"  v-model:value="application.id_num" />
                 </a-form-item>
                 <a-form-item label="Email" name="email">
-                  <a-input v-model:value="application.email" :disabled="application.is_student"/>
+                  <a-input type="input"  v-model:value="application.email" :disabled="application.is_student"/>
                 </a-form-item>
                 <div class="text-center">
                   <a-button @click="varifyApplicant()">Varify</a-button>
@@ -55,17 +55,17 @@
                   </a-radio-group>
                 </a-form-item>
                 <a-form-item label="Id Number" name="id_num">
-                  <a-input v-model:value="application.id_num" :disabled="true"/>
+                  <a-input type="input"  v-model:value="application.id_num" :disabled="true"/>
                 </a-form-item>
                 <a-form-item label="Email" name="email">
-                  <a-input v-model:value="application.email" :disabled="true"/>
+                  <a-input type="input"  v-model:value="application.email" :disabled="true"/>
                 </a-form-item>
 
                 <a-form-item label="Name (zh)" name="name_zh">
-                  <a-input v-model:value="application.name_zh" :disabled="application.is_student"/>
+                  <a-input type="input"  v-model:value="application.name_zh" :disabled="application.is_student"/>
                 </a-form-item>
                 <a-form-item label="Name (en)" name="name_en">
-                  <a-input v-model:value="application.name_en" :disabled="application.is_student"/>
+                  <a-input type="input"  v-model:value="application.name_en" :disabled="application.is_student"/>
                 </a-form-item>
                 <a-form-item label="Gender" name="gender">
                   <a-radio-group v-model:value="application.gender" button-style="solid" :disabled="application.is_student">
@@ -77,10 +77,10 @@
                   <a-date-picker v-model:value="application.dob" :format="dateFormat" :valueFormat="dateFormat" :disabled="application.is_student"/>
                 </a-form-item>
                 <a-form-item label="Phone" name="phone">
-                  <a-input v-model:value="application.phone"/>
+                  <a-input type="input"  v-model:value="application.phone"/>
                 </a-form-item>
                 <a-form-item label="Another Contact" name="other_contact">
-                  <a-input v-model:value="application.other_contact"/>
+                  <a-input type="input"  v-model:value="application.other_contact"/>
                 </a-form-item>
                 <a-form-item label="Language" name="lang">
                   <a-radio-group v-model:value="application.lang">
@@ -97,19 +97,19 @@
                 </a-form-item>
 
                 <a-form-item label="Work Company" name="work_company">
-                  <a-input v-model:value="application.work_company"/>
+                  <a-input type="input"  v-model:value="application.work_company"/>
                 </a-form-item>
                 <a-form-item label="Work Position" name="work_position">
-                  <a-input v-model:value="application.work_position"/>
+                  <a-input type="input"  v-model:value="application.work_position"/>
                 </a-form-item>
                 <a-form-item label="Name on Certificate" name="cert_name" v-if="offer.form_options && offer.form_options.includes('CERT_NAME')">
-                  <a-input v-model:value="application.cert_name"/>
+                  <a-input type="input"  v-model:value="application.cert_name"/>
                 </a-form-item>
                 <a-form-item label="Education Levels" name="education" v-if="offer.form_options && offer.form_options.includes('EDUCATION_LEVEL')">
-                  <a-input v-model:value="application.education"/>
+                  <a-input type="input"  v-model:value="application.education"/>
                 </a-form-item>
                 <a-form-item label="Promotion" name="promotion" v-if="offer.form_options && offer.form_options.includes('PROMOTION_CODE')">
-                  <a-input v-model:value="application.promotion"/>
+                  <a-input type="input"  v-model:value="application.promotion"/>
                 </a-form-item>
 
                 <a-form-item label="教職員工或學生" name="">
@@ -124,7 +124,7 @@
                   name="school_number" 
                   :label="application.is_cityu=='STAFF'?'教職員工編號':'學生號碼'" 
                   v-if="application.is_cityu=='STAFF' || application.is_cityu=='STUDENT'">
-                  <a-input v-model:value="application.school_number"/>
+                  <a-input type="input"  v-model:value="application.school_number"/>
                 </a-form-item>
 
 
@@ -132,7 +132,7 @@
                 <template v-for="extra in offer.form_extra">
                   <template v-if="extra.type=='input'">
                     <a-form-item :label="extra.label">
-                      <a-input v-model:value="application.extra[extra.name]"/>
+                      <a-input type="input"  v-model:value="application.extra[extra.name]"/>
                     </a-form-item>
                   </template>
                   <template v-else-if="extra.type=='select'">

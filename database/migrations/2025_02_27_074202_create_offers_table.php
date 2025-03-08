@@ -20,6 +20,8 @@ return new class extends Migration
             $table->string('name_en')->nullable();
             $table->date('apply_start')->nullable();
             $table->date('apply_end')->nullable();
+            $table->date('offer_start')->nullable();
+            $table->date('offer_end')->nullable();
             $table->boolean('application')->default(false);
             $table->boolean('front_end')->default(false);
             $table->date('application_update')->nullable();

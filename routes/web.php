@@ -4,6 +4,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -24,11 +25,14 @@ Route::get('/', function () {
     ]);
 });
 
+Route::get('/download', function ( Request $request) {   
+    return Storage::get( $request->query('path'));
+})->name('download');
 Route::get('offers', [App\Http\Controllers\OfferController::class,'index']);
 Route::get('application/{offer}', [App\Http\Controllers\ApplicationController::class,'form'])->name('application.form');
 Route::post('application/checker', [App\Http\Controllers\ApplicationController::class,'checker'])->name('application.checker');
 Route::post('application', [App\Http\Controllers\ApplicationController::class,'submit'])->name('application.submit');
-Route::get('id/checker', [App\Http\Controllers\ApplicationController::class,'checker'])->name('application.checker');
+Route::get('id/checker', [App\Http\Controllers\ApplicationController::class,'checker'])->name('application.check');
 
 Route::prefix('api')->group(function () {
     Route::get('id_validator', [App\Http\Controllers\Api\IdValidatorController::class, 'verifyId']);
@@ -37,6 +41,9 @@ Route::prefix('api')->group(function () {
 
 
 Route::prefix('admin')->group(function () {
+    Route::get('/', function(){
+        return redirect()->route('admin.login');
+    });
     Route::get('login', [App\Http\Controllers\Admin\AuthController::class, 'showLoginForm'])->name('admin.login');
     Route::post('login', [App\Http\Controllers\Admin\AuthController::class, 'login']);
     Route::post('logout', [App\Http\Controllers\Admin\AuthController::class, 'logout'])->name('admin.logout');
@@ -46,7 +53,7 @@ Route::middleware([
     'auth:admin',
     'verified',
 ])->prefix('admin')->group(function () {
-    Route::get('/', [App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('admin.dashboard');
+    Route::get('/dashboard', [App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('admin.dashboard');
     Route::resource('areas', App\Http\Controllers\Admin\AreaController::class)->names('admin.areas');
     Route::get('/{area}/courses', [App\Http\Controllers\Admin\CourseController::class,'index'])->name('admin.area.courses');
     Route::resource('courses', App\Http\Controllers\Admin\CourseController::class)->names('admin.courses');

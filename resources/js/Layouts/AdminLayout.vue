@@ -1,130 +1,158 @@
 <template>
-  <a-layout>
-    <a-layout-sider v-model:collapsed="collapsed" :trigger="null" collapsible>
-      <div class="logo"/>
-      <a-menu v-model:selectedKeys="selectedKeys" theme="dark" mode="inline">
-        <template v-for="(item, i) in menuItems" :key="i">
-          <a-menu-item >
-            <user-outlined />
-            <span><inertia-link :href="route(item.route)">{{ item.title }}</inertia-link></span>
-          </a-menu-item>
-        </template>
-        <a-menu-item key="logout">
-          <upload-outlined />
-          <span @click="logout">Log Out</span>
-        </a-menu-item>
-      </a-menu>
+<a-layout style="min-height: 100vh" >
+
+    <a-layout-sider v-model:collapsed="collapsed" collapsible theme="dark" width="250px"
+    :style="{ overflow: 'auto', height: '100vh', position: 'fixed', left: 0, top: 0, bottom: 0 }"
+    :trigger="null" class="shadow-md dark:text-white text-black">
+    
+        <div class="my-4 text-center text-lg">
+            <a :href="route('admin.dashboard')" class="text-lg font-bold dark:text-slate-200">
+                CityU
+            </a>
+        </div>
+        <div class="border-slate-600 border-b-2 mx-4 my-4" ></div>
+
+        <!-- Menu -->
+        <AdminMenu />
+
     </a-layout-sider>
 
-    <a-layout>
-      <a-layout-header style="background: #fff; padding: 0">
-        <div class="text-lg p-2">
-        <menu-unfold-outlined
-          v-if="collapsed"
-          class="trigger"
-          @click="() => (collapsed = !collapsed)"
-        />
-        <menu-fold-outlined 
-          v-else 
-          class="trigger" 
-          @click="() => (collapsed = !collapsed)" 
-        />
+    <a-layout :style="{ marginLeft: collapsed?'80px': '250px' }">
+        <a-layout-header :class="userBorderColor()" class="shadow-sm border-b-2 flex" style="background: #fff; padding: 0">
+            <div>
+                <menu-unfold-outlined v-if="collapsed" class="trigger" @click="() => (collapsed = !collapsed)" />
+                <menu-fold-outlined v-else class="trigger" @click="() => (collapsed = !collapsed)" />
+            </div>
+        </a-layout-header>
+
+        <div class="mt-4 mb-6 flex justify-between items-center">
+            
+            <div class="text-2xl" :style="{ marginLeft: collapsed?'120px': '40px' }">{{ title }}</div>
+
+            <nav class="text-sm " v-if="breadcrumb">
+                <!-- Title -->
+                <ol class="list-none pr-10">
+                    <li class="breadcrumb-item hidden md:inline" v-for="(item, idx) in breadcrumb">
+                        <inertia-link v-if="item.url" :href="item.url">{{ item.label }}</inertia-link>
+                        <span v-else>{{ item.label }}</span>
+                        <span class="pl-2 pr-2" v-if="idx < breadcrumb.length - 1">&gt;</span>
+                    </li>
+                    <li class="breadcrumb-item block md:hidden">
+                        <span v-if="breadcrumb.length > 1">
+                            <inertia-link :href="breadcrumb[breadcrumb.length - 2].url">
+                                {{ breadcrumb[breadcrumb.length - 2].label }}
+                            </inertia-link>
+                        </span>
+                        <span v-else>
+                            <inertia-link :href="route('admin.dashboard')">
+                                Home
+                            </inertia-link>
+                        </span>
+                    </li>
+                    <li class="breadcrumb-item block md:inline">
+                        <span class="pl-2 pr-2">|</span>
+                        <a href="javascript:history.back();" class="inline">Back</a>
+                    </li>
+                    <li class="breadcrumb-item block md:inline">
+                        <a :href="route('manual',{route:route().current()})" target="_blank" class="pl-2">
+                            <QuestionCircleOutlined />
+                        </a>
+                    </li>
+
+                </ol>
+            </nav>
         </div>
-      </a-layout-header>
 
-      <nav class="text-sm flex justify-between" v-if="breadcrumb">
-        <div class="pl-5 pt-2 text-2xl">{{ title }}</div>
-          <ol class="list-none pr-10">
-              <li class="breadcrumb-item hidden md:inline" v-for="(item, idx) in breadcrumb">
-                  <inertia-link v-if="item.url" :href="item.url">{{ item.label }}</inertia-link>
-                  <span v-else>{{ item.label }}</span>
-                  <span class="pl-2 pr-2" v-if="idx < breadcrumb.length - 1">&gt;</span>
-              </li>
-              <li class="breadcrumb-item block md:hidden">
-                  <span v-if="breadcrumb.length > 1">
-                      <inertia-link :href="breadcrumb[breadcrumb.length - 2].url">
-                          {{ breadcrumb[breadcrumb.length - 2].label }}
-                      </inertia-link>
-                  </span>
-                  <span v-else>
-                      <inertia-link :href="route('admin.dashboard')">
-                          Home
-                      </inertia-link>
-                  </span>
-              </li>
-              <li class="breadcrumb-item block md:inline">
-                  <span class="pl-2 pr-2">|</span>
-                  <a href="javascript:history.back();" class="inline">Back</a>
-              </li>
-              <li class="breadcrumb-item block md:inline">
-                  <a :href="route('manual',{route:route().current()})" target="_blank" class="pl-2">
-                    <QuestionCircleOutlined />
-                  </a>
-              </li>
-
-          </ol>
-      </nav>
-
-      <a-layout-content :style="{minHeight: '280px' }">
+        <a-layout-content :style="{minHeight: '280px' }">
             <div class="mx-0">
                 <main>
                     <slot />
                 </main>
             </div>
 
-      </a-layout-content>
+        </a-layout-content>
     </a-layout>
-  </a-layout>
+</a-layout>
 </template>
-<script setup>
+
+<script>
 import { Head, Link, router } from '@inertiajs/vue3';
-
-import { MenuFoldOutlined, MenuUnfoldOutlined, UserOutlined, VideoCameraOutlined, UploadOutlined, QuestionCircleOutlined } from '@ant-design/icons-vue';
-
-import { ref } from 'vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
+import * as AntdIcons from '@ant-design/icons-vue';
+import { ref } from 'vue';
+import AdminMenu from '@/Components/AdminMenu.vue';
 
-defineProps({
-    title: String,
-    breadcrumb: Object,
-});
-
-const menuItems = [
-  {title:'Area','route':'admin.areas.index'},
-  {title:'課程規劃','route':'admin.courses.index'},
-  {title:'現行課程','route':'admin.offers.current'},
-  {title:'所有課程','route':'admin.offers.index'},
-  {title:'未確認報名表','route':'admin.applications.current'},
-  {title:'所有報名表','route':'admin.applications.index'}
-];
-const selectedKeys = ref(['1']);
-const collapsed = ref(false);
-const logout = () => {
-    router.post(route('admin.logout'));
+export default {
+    components: {
+        Head,
+        Link,
+        AdminMenu,
+        DropdownLink,
+        ...AntdIcons
+    },
+    props: {
+        title: String,
+        breadcrumb: Object,
+    },
+    data() {
+        return {
+            collapsed: false,
+        };
+    },
+    methods: {
+        userBorderColor() {
+            if( this.$page.props.roles.includes("counter") ) return 'border-blue-500'
+            if( this.$page.props.roles.includes("admin") ) return 'border-rose-500'
+            if( this.$page.props.roles.includes("webmaster") ) return 'border-orange-500'
+        },
+    },
 };
-
 </script>
+
 <style>
 .trigger {
-  font-size: 18px;
-  line-height: 64px;
-  padding: 0 24px;
-  cursor: pointer;
-  transition: color 0.3s;
+    font-size: 18px;
+    line-height: 64px;
+    padding: 0 24px;
+    cursor: pointer;
+    transition: color 0.3s;
 }
 
 .trigger:hover {
-  color: #1890ff;
+    color: #1890ff;
 }
 
 .logo {
-  height: 32px;
-  background: rgba(255, 255, 255, 0.3);
-  margin: 16px;
+    height: 32px;
+    background: rgba(255, 255, 255, 0.3);
+    margin: 16px;
 }
 
 .site-layout .site-layout-background {
-  background: #fff;
+    background: #fff;
 }
 
+/* scroll bar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-thumb:active {
+    background: #777;
+}
+.show ::-webkit-scrollbar-thumb,
+:hover ::-webkit-scrollbar-thumb{
+    background: #777;
+
+}
+
+::-webkit-scrollbar-thumb {
+    background: transparent;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px transparent;
+    border-radius: 10px;
+}
 </style>

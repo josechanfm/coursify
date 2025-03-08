@@ -1,4 +1,4 @@
-/* @tailwind base; */
+@tailwind base;
 @tailwind components;
 @tailwind utilities;
 
@@ -6,6 +6,18 @@
     display: none;
 }
 
+@layer base {
+    a {
+        color: #1677ff;
+    }
+}
+
+.anticon{
+    margin-inline-start: 4px !important;
+}
+.anticon svg {
+    display: block !important;
+}
  
 .ant-btn-accept {
     background-color: #28a745; /* Green */

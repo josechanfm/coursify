@@ -16,6 +16,8 @@ class Offer extends Model
         'name_en',
         'apply_start',
         'apply_end',
+        'offer_start',
+        'offer_end',
         'application',
         'front_end',
         'application_update',
@@ -45,15 +47,20 @@ class Offer extends Model
         'form_extra'=>'json',
     ];
 
+    protected $appends = ['application_count'];
+
     public function info(){
         return (object)[
             'code'=>$this->code,
             'name_zh'=>$this->name_zh,
             'name_en'=>$this->name_en,
-            'application_count'=>$this->applications->count()
         ];
     }
 
+    public function getApplicationCountAttribute()
+    {
+        return $this->applications->count();
+    }
     
     public function course(){
         return $this->belongsTo(Course::class);
@@ -65,6 +72,10 @@ class Offer extends Model
 
     public function lessons(){
         return $this->hasMany(Lesson::class);
+    }
+
+    public function status(){
+        return $this->hasMany(OfferStatus::class);
     }
 
     public function students(){

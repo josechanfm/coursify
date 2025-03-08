@@ -22,16 +22,16 @@
           />
         </a-form-item>
         <a-form-item label="Code" name="code">
-          <a-input v-model:value="course.code" />
+          <a-input type="input"  v-model:value="course.code" />
         </a-form-item>
         <a-form-item label="Type" name="type">
           <a-select v-model:value="course.type" :options="courseTypes"/>
         </a-form-item>
         <a-form-item label="Name (zh)" name="name_zh">
-          <a-input v-model:value="course.name_zh" />
+          <a-input type="input"  v-model:value="course.name_zh" />
         </a-form-item>
         <a-form-item label="Name (en)" name="name_en">
-          <a-input v-model:value="course.name_en" />
+          <a-input type="input"  v-model:value="course.name_en" />
         </a-form-item>
         <a-form-item label="Description" name="description">
           <a-textarea v-model:value="course.description" />
@@ -43,7 +43,7 @@
           <a-textarea v-model:value="course.target" />
         </a-form-item>
         <a-form-item label="Prerequisite" name="prerequisite">
-          <a-input v-model:value="course.prerequisite" />
+          <a-input type="input"  v-model:value="course.prerequisite" />
         </a-form-item>
 
         <div class="flex flex-wrap justify-between">
@@ -60,21 +60,21 @@
           </div>
           <div class="w-full md:w-1/3">
             <a-form-item label="Hours" name="hours">
-              <a-input-number v-model:value="course.hours" />
+              <a-input type="input" -number v-model:value="course.hours" />
             </a-form-item>
             <a-form-item label="Tution Fee" name="tution_fee">
-              <a-input-number v-model:value="course.tution_fee" />
+              <a-input type="input" -number v-model:value="course.tution_fee" />
             </a-form-item>
             <a-form-item label="Other Fee" name="other_fee">
-              <a-input-number v-model:value="course.other_fee" />
+              <a-input type="input" -number v-model:value="course.other_fee" />
             </a-form-item>
           </div>
           <div class="w-full md:w-1/3">
             <a-form-item label="Payment" name="payment">
-              <a-input v-model:value="course.payment" />
+              <a-input type="input"  v-model:value="course.payment" />
             </a-form-item>
             <a-form-item label="Quota" name="quota">
-              <a-input-number v-model:value="course.quota" />
+              <a-input type="input" -number v-model:value="course.quota" />
             </a-form-item>
             <a-form-item label="Active" name="active">
               <a-switch v-model:value="course.active" />

@@ -2,46 +2,62 @@
     <inertia-head>
         <title>Login</title>
     </inertia-head>
-    <div class="h-screen w-screen bg-slate-100 flex">
-        <div class="hidden md:block md:w-1/2 lg:w-2/3 h-full">
-            <div class="h-full w-full bg-blue-500"></div>
+    <div class="h-screen w-screen bg-slate-100 flex overflow-hidden">
+        
+        <div class="xl:basis-2/3 lg:basis-3/5 md:basis-2/5 
+            md:block h-full w-0 md:w-2/3 bg-no-repeat bg-cover bg-blue-500 drop-shadow-xl">
+
+            <div dir="rtl" class="">
+                <div class="relative h-48 w-48 ">
+                    <div
+                        class="z-10 rounded-l-lg shadow-lg absolute h-20 w-52 top-2/3 start-0 bg-slate-50 flex justify-center items-center flex-col">
+                        <div class="text-lg">課程管理系統 </div>
+                        <div>行政登入平台 </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="max-w-lg w-full p-4 md:p-8 md:py-32 mx-auto flex flex-col justify-center md:justify-start">
-            <h1 class="text-2xl font-medium mb-0 leading-loose">智滙信息服務有限公司</h1>
-            <p class="text-base mb-20 text-slate-600">課程管理系統</p>
-            <p class="font-medium text-xl mb-20">系統登入</p>
-            <a-form>
-                <a-form-item name="email">
-                    <a-input
-                        placeholder="Email"
-                        v-model:value="form.email"
-                        size="large"
-                    >
-                        <template #prefix>
-                            <UserOutlined/>
-                        </template>
-                    </a-input>
-                </a-form-item>
 
-                <a-form-item name="password">
-                    <a-input-password placeholder="Password" size="large" v-model:value="form.password"
-                                      @keydown.enter="login">
+        <div class="xl:basis-1/3 lg:basis-2/5 md:basis-3/5 flex flex-col justify-between">
+            <div class="w-full mx-auto xl:px-12 lg:px-10 md:px-6 pt-24 md:pt-32 justify-center md:justify-start relative ">
+                
+                <img class="max-w-md" :src=" route('download', { 'path': 'long_logo.png' }) "/>
+                <div class="my-10">
+                    <p class="text-xl mb-20">系統登入</p>
+                </div>
+                <a-form>
+                    <a-form-item name="email">
+                        <a-input
+                            placeholder="Username"
+                            v-model:value="form.email"
+                            size="large"
                         >
-                        <template #prefix>
-                            <LockOutlined/>
-                        </template>
-                    </a-input-password>
-                </a-form-item>
+                            <template #prefix>
+                                <UserOutlined/>
+                            </template>
+                        </a-input>
+                    </a-form-item>
 
-                <a-form-item>
-                    <a-checkbox name="remember" v-model:checked="form.remember">Remember Me</a-checkbox>
-                    <!--                    <inertia-link :href="route('password.request')" class="float-right">Forget Password?</inertia-link>-->
-                </a-form-item>
+                    <a-form-item name="password">
+                        <a-input-password placeholder="Password" size="large" v-model:value="form.password"
+                                        @keydown.enter="login">
+                            >
+                            <template #prefix>
+                                <LockOutlined/>
+                            </template>
+                        </a-input-password>
+                    </a-form-item>
 
-                <a-form-item class="!mt-16">
-                    <a-button @click="login" block type="primary" size="large">Login</a-button>
-                </a-form-item>
-            </a-form>
+                    <a-form-item>
+                        <a-checkbox name="remember" v-model:checked="form.remember">Remember Me</a-checkbox>
+                        <!--                    <inertia-link :href="route('password.request')" class="float-right">Forget Password?</inertia-link>-->
+                    </a-form-item>
+
+                    <a-form-item class="!mt-16">
+                        <a-button @click="login" block type="primary" size="large">登入</a-button>
+                    </a-form-item>
+                </a-form>
+            </div>
         </div>
     </div>
 </template>

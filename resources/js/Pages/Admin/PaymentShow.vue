@@ -37,29 +37,29 @@
             </a-col>
             <a-col>
               <a-form-item label="Amount">
-                <a-input v-model="breakdown.amount"></a-input>
+                <a-input type="input"  v-model="breakdown.amount"></a-input>
               </a-form-item>
             </a-col>
           </a-row>
         </template>
         <template v-else>
           <a-form-item label="Amount">
-            <a-input v-model="payment.amount"></a-input>
+            <a-input type="input"  v-model="payment.amount"></a-input>
           </a-form-item>
         </template>
 
 <!-- 
         <a-form-item label="DSEJ" name="dsej">
-          <a-input v-model="payment.dsej"></a-input>
+          <a-input type="input"  v-model="payment.dsej"></a-input>
         </a-form-item>
         <a-form-item label="現金" name="payment_cash">
-          <a-input v-model="payment.payment_cash"/>
+          <a-input type="input"  v-model="payment.payment_cash"/>
         </a-form-item>
         <a-form-item label="銀行轉帳" name="bank_transfer">
-          <a-input v-model="payment.bank_transfer"/>
+          <a-input type="input"  v-model="payment.bank_transfer"/>
         </a-form-item>
         <a-form-item label="現金轉帳" name="cash">
-          <a-input v-model="payment.cash"/>
+          <a-input type="input"  v-model="payment.cash"/>
         </a-form-item>
         <a-form-item label="信用卡" name="credit_card">
           <a-date-picker v-model="payment.credit_card"/>
@@ -71,16 +71,16 @@
           <a-date-picker v-model="payment.material_fee"/>
         </a-form-item>
         <a-form-item label="貨幣" name="refunded_currency">
-          <a-input v-model="payment.refunded_currency"></a-input>
+          <a-input type="input"  v-model="payment.refunded_currency"></a-input>
         </a-form-item>
         <a-form-item label="現金" name="payment_cash">
-          <a-input v-model="payment.payment_cash"/>
+          <a-input type="input"  v-model="payment.payment_cash"/>
         </a-form-item>
         <a-form-item label="銀行轉帳" name="bank_transfer">
-          <a-input v-model="payment.bank_transfer"/>
+          <a-input type="input"  v-model="payment.bank_transfer"/>
         </a-form-item>
         <a-form-item label="現金轉帳" name="cash">
-          <a-input v-model="payment.cash"/>
+          <a-input type="input"  v-model="payment.cash"/>
         </a-form-item>
         <a-form-item label="信用卡" name="credit_card">
           <a-date-picker v-model="payment.credit_card"/>

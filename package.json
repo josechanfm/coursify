@@ -19,6 +19,7 @@
         "vue": "^3.2.31"
     },
     "dependencies": {
-        "ant-design-vue": "^4.2.6"
+        "ant-design-vue": "^4.2.6",
+        "gsap": "^3.12.7"
     }
 }
