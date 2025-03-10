@@ -47,7 +47,7 @@ class Offer extends Model
         'form_extra'=>'json',
     ];
 
-    protected $appends = ['application_count'];
+    protected $appends = ['application_count', 'student_count', 'accept_count'];
 
     public function info(){
         return (object)[
@@ -60,6 +60,15 @@ class Offer extends Model
     public function getApplicationCountAttribute()
     {
         return $this->applications->count();
+    }
+    public function getStudentCountAttribute()
+    {
+        return $this->students->count();
+    }
+    
+    public function getAcceptCountAttribute()
+    {
+        return $this->applications->where('status', 'Accept')->count();
     }
     
     public function course(){

@@ -22,8 +22,9 @@ class ApplicationController extends Controller
         }else{
             $applications=Application::with('payment')->with('offerInfo')->paginate();
         }
+        $offer->course;
         return Inertia::render('Admin/Applications',[
-            'offer'=>$offer?$offer->info():null,
+            'offer'=>$offer?$offer:null,
             'applications'=>$applications
         ]);
     }
@@ -59,6 +60,7 @@ class ApplicationController extends Controller
     public function show(Application $application)
     {
         //$application->offer;
+        
         $offer=Offer::find($application->offer_id);
         $offer->course;
         return Inertia::render('Admin/ApplicationShow',[
