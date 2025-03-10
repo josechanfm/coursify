@@ -26,7 +26,7 @@
                             <!-- Small box with softer green color -->
                             <div
                                 class="small-box bg-green-300 rounded-lg shadow-lg p-4 transition-transform transform hover:scale-105">
-                                <div class="inner flex justify-between px-4">
+                                <div class="inner flex justify-between px-4 text-base">
                                     <!-- <h3 class="text-3xl font-bold text-gray-800">{{ offer.abbr }} {{ offer.name_zh }}</h3> -->
                                     <p class="text-gray-700 text-center">{{ offer.course.quota }} <br> 名額</p>
                                     <p class="text-gray-700 text-center">{{ offer.application_count}} <br> 報名人數</p>
@@ -45,7 +45,7 @@
                             <div
                                 class="small-box bg-blue-300 rounded-lg shadow-lg p-4 transition-transform transform hover:scale-105">
                                 <div class="inner text-base">
-                                    <p class="text-gray-700">報名時間: {{ offer.apply_start }} ~ {{ offer.apply_end }}</p>
+                                    <p class="text-gray-700 mb-2">報名時間: {{ offer.apply_start }} ~ {{ offer.apply_end }}</p>
                                     <p class="text-gray-700">課程時間: {{ offer.apply_start }} ~ {{ offer.offer_end }}</p>
                                 </div>
                             </div>
@@ -53,28 +53,21 @@
                         <div class="flex-1">
                             <!-- Small box with softer red color -->
                             <div
-                                class="small-box bg-red-300 rounded-lg shadow-lg p-4 transition-transform transform hover:scale-105">
-                                <div class="inner">
-                                    <h3 class="text-3xl font-bold text-gray-800">{{ offer.course_count }}<sup
-                                            class="text-base">%</sup></h3>
-                                    <p class="text-gray-700">Completion Rate</p>
+                                class="small-box bg-rose-300 rounded-lg shadow-lg p-4  ">
+                                <div class="inner text-base">
+                                    <p class="text-gray-700">備忘錄</p>
+                                    <a-textarea v-model:value="notice" :placeholder="offer.code + '備忘錄'"  @focus="isTextareaFocused = true" @blur="isTextareaFocused = false" :style="textareaStyle" />
                                 </div>
-                                <div class="icon flex items-center justify-center">
-                                    <i class="fas fa-check-circle text-4xl text-gray-800"></i>
-                                </div>
-                                <a href="#" class="small-box-footer text-gray-800 hover:underline">
-                                    More info <i class="fas fa-arrow-circle-right"></i>
-                                </a>
                             </div>
                         </div>
                     </div>
-                    <div class="flex gap-2">
+                    <div class="flex gap-2 my-2">
                         <a-button type="success">出席情況</a-button>
                         <a-button type="accept">課堂點名</a-button>
                         <a-button type="primary">課程詳細</a-button>
                         <a-button type="danger">在線評估表</a-button>
                         <a-button type="warning">刷新繳費</a-button>
-                        <a-button type="info">刷新</a-button>
+                        <a-button type="info"><sync-outlined/>刷新</a-button>
                     </div>
                 </template>
                 <!-- End Header Info Boxes -->
@@ -105,21 +98,24 @@
                             {{ record.id_num }}
                         </template>
                         <template v-else-if="column.dataIndex == 'status'">
-                            <div class="flex gap-1">
-                                <a-button @click="changeStatus(record, null)" type="default">報名中</a-button>
-                                <a-button @click="changeStatus(record, 'Accept')" :type="record.status=='Accept'?'accept':'default'">已錄取</a-button>
-                                <a-button @click="changeStatus(record, 'Expire')" :type="record.status=='Expire'?'reject':'default'">繳費過期</a-button>
-                                <a-button @click="changeStatus(record, 'Cancel')" :type="record.status=='Cancel'?'warning':'default'">取消報名</a-button>
+                            <div class="flex ">
+                                <a-button class="!rounded-none !rounded-l-lg" @click="changeStatus(record, null)" type="default">報名中</a-button>
+                                <a-button class="!rounded-none" @click="changeStatus(record, 'Accept')" :type="record.status=='Accept'?'accept':'default'">已錄取</a-button>
+                                <a-button class="!rounded-none" @click="changeStatus(record, 'Expire')" :type="record.status=='Expire'?'reject':'default'">繳費過期</a-button>
+                                <a-button class="!rounded-none !rounded-r-lg" @click="changeStatus(record, 'Cancel')" :type="record.status=='Cancel'?'warning':'default'">取消報名</a-button>
                             </div>
                         </template>
                         <template v-else-if="column.dataIndex == 'payment'">
-                            <a-button :href="route('admin.payments.show',record.payment.id)" type="info">已編費</a-button>
+                            <a-button v-if="record.payment" :href="route('admin.payments.show', record.payment.id)" type="info">已編費</a-button>
+                            <a v-else @click="startPayment(record)"><StepForwardOutlined />繳費</a>
                         </template>
                         <template v-else>
                             {{ record[column.dataIndex] }}
                         </template>
                     </template>
                 </a-table>
+                
+                <PaymentCreateModal :payment="paymentModal"/>
             </div>
         </div>
     </AdminLayout>
@@ -128,10 +124,14 @@
 <script>
 import AdminLayout from "@/Layouts/AdminLayout.vue";
 import { defineComponent, reactive } from "vue";
+import * as AntdIcons from '@ant-design/icons-vue';
+import PaymentCreateModal from "./Payment/PaymentCreateModal.vue";
 
 export default {
     components: {
         AdminLayout,
+        PaymentCreateModal,
+        ...AntdIcons,
     },
     props: ["onlyCurrent","offer","applications"],
     data() {
@@ -171,10 +171,25 @@ export default {
                     dataIndex: "payment",
                 },
             ],
+            
+            notice: "",
+            isTextareaFocused: false,
+
+            paymentModal:{
+                isOpen:false,
+                application:""
+            },
+
         };
     },
-    computed:{
-        
+    computed: {
+        textareaStyle() {
+            return {
+                transition: 'all 0.3s', // 平滑過渡
+                height: this.isTextareaFocused ? 'auto' : 'auto', // 自動高度調整
+                minHeight: this.isTextareaFocused ? '150px' : '50px', // 根據狀態設置最小高度
+            };
+        },
     },
     created() {
         if(!this.offer){
@@ -182,6 +197,17 @@ export default {
         };
     },
     methods: {
+    
+        createRecord() {
+            this.modal.data = {};
+            this.modal.mode = "CREATE";
+            this.modal.title = "新增";
+            this.modal.isOpen = true;
+        },
+        startPayment(application){
+            this.paymentModal.isOpen = true
+            this.paymentModal.application = application
+        },
         onPaginationChange(page, filters, sorter) {
             this.$inertia.get(
                 this.offer?route("admin.offer.applications",this.offer.id):route("admin.applications.index"),

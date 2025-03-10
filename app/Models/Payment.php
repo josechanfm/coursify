@@ -27,6 +27,12 @@ class Payment extends Model
         'refunded_user_id',
         'refunded_confirm_date',    
     ];
+
+    protected $casts = [
+        'tution_payment' => 'array',
+        'other_payment' => 'array'
+    ];
+
     public function application(){
         return $this->belongsTo(Application::class);
     }

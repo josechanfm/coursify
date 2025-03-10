@@ -12,7 +12,7 @@
     }
 }
 
-.anticon{
+.ant-btn >.anticon+span{
     margin-inline-start: 4px !important;
 }
 .anticon svg {
