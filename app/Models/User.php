@@ -11,6 +11,7 @@ use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Jetstream\HasTeams;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
+use App\Models\Student;
 
 class User extends Authenticatable
 {
@@ -59,4 +60,7 @@ class User extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
+    function student(){
+        return $this->hasOne(Student::class);
+    }
 }

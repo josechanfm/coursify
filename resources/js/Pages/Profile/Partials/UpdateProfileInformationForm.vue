@@ -78,11 +78,11 @@ const clearPhotoFileInput = () => {
 <template>
     <FormSection @submitted="updateProfileInformation">
         <template #title>
-            Profile Information
+            個人資料
         </template>
 
         <template #description>
-            Update your account's profile information and email address.
+            更新你的資料和電郵
         </template>
 
         <template #form>
@@ -131,7 +131,8 @@ const clearPhotoFileInput = () => {
             <!-- Name -->
             <div class="col-span-6 sm:col-span-4">
                 <InputLabel for="name" value="Name" />
-                <TextInput
+                {{form.name  }}
+                <!-- <TextInput
                     id="name"
                     v-model="form.name"
                     type="text"
@@ -139,7 +140,7 @@ const clearPhotoFileInput = () => {
                     required
                     autocomplete="name"
                 />
-                <InputError :message="form.errors.name" class="mt-2" />
+                <InputError :message="form.errors.name" class="mt-2" /> -->
             </div>
 
             <!-- Email -->

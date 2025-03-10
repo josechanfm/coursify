@@ -40,11 +40,11 @@ const updatePassword = () => {
 <template>
     <FormSection @submitted="updatePassword">
         <template #title>
-            Update Password
+            修改密碼
         </template>
 
         <template #description>
-            Ensure your account is using a long, random password to stay secure.
+            確保你修改的密碼是高強度密碼
         </template>
 
         <template #form>
@@ -91,10 +91,10 @@ const updatePassword = () => {
             <ActionMessage :on="form.recentlySuccessful" class="me-3">
                 Saved.
             </ActionMessage>
-
-            <PrimaryButton :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
+             <PrimaryButton :class="{ 'opacity-25': form.processing }" :disabled="form.processing" >
                 Save
             </PrimaryButton>
         </template>
+        
     </FormSection>
 </template>

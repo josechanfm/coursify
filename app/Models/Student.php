@@ -10,7 +10,11 @@ class Student extends Model
     use HasFactory;
     protected $fillable=['code','name_zh','name_en','gender','dob','id_type','id_num','phone','email'];
     public function offers(){
-        return $this->belongsToMany(Course::class);
+        return $this->belongsToMany(Offer::class);
     }
-    
+    public function applications(){
+        return $this->hasMany(Application::class);
+
+    }
+
 }
