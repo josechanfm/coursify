@@ -14,7 +14,7 @@ defineProps({
 });
 
 const form = useForm({
-    name: '',
+    email: '',
     password: '',
     remember: false,
 });
@@ -40,20 +40,20 @@ const submit = () => {
         <div v-if="status" class="mb-4 font-medium text-sm text-green-600">
             {{ status }}
         </div>
-        
+
         <form @submit.prevent="submit">
             <div>
-                <InputLabel for="name" value="用戶名稱" />
+                <InputLabel for="email" value="電郵" />
                 <TextInput
-                    id="name"
-                    v-model="form.name"
-                   
+                    id="email"
+                    v-model="form.email"
+                    type="email"
                     class="mt-1 block w-full"
                     required
                     autofocus
-                    autocomplete="name"
+                    autocomplete="username"
                 />
-                <InputError class="mt-2" :message="form.errors.name" />
+                <InputError class="mt-2" :message="form.errors.email" />
             </div>
 
             <div class="mt-4">

@@ -26,10 +26,10 @@
                     <p class="text-xl mb-20">系統登入</p>
                 </div>
                 <a-form>
-                    <a-form-item name="username">
+                    <a-form-item name="email">
                         <a-input
                             placeholder="Username"
-                            v-model:value="form.username"
+                            v-model:value="form.email"
                             size="large"
                         >
                             <template #prefix>
@@ -86,7 +86,7 @@ export default {
     data () {
         return {
             form: this.$inertia.form({
-                username: '',
+                email: '',
                 password: '',
                 remember: false
             })
