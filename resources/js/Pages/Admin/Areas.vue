@@ -81,11 +81,11 @@ export default {
           dataIndex: "abbr",
         },
         {
-          title: "中文姓名",
+          title: "名稱 (中文)",
           dataIndex: "name_zh",
         },
         {
-          title: "英文姓名",
+          title: "名稱 (英文)",
           dataIndex: "name_en",
         },
         {

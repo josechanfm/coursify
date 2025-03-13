@@ -1,5 +1,6 @@
 <template>
 <a-layout style="min-height: 100vh" >
+    <Head :title="title" />
 
     <a-layout-sider v-model:collapsed="collapsed" collapsible theme="dark" width="250px"
     :style="{ overflow: 'auto', height: '100vh', position: 'fixed', left: 0, top: 0, bottom: 0 }"
@@ -27,7 +28,9 @@
 
         <div class="mt-4 mb-6 flex justify-between items-center">
             
-            <div class="text-2xl" :style="{ marginLeft: collapsed?'120px': '40px' }">{{ title }}</div>
+            <div class="text-2xl" :style="{ marginLeft: collapsed?'120px': '40px' }">
+                <a-page-header class="p-1" :title="title" :sub-title="subTitle" />
+            </div>
 
             <nav class="text-sm " v-if="breadcrumb">
                 <!-- Title -->
@@ -92,6 +95,7 @@ export default {
     },
     props: {
         title: String,
+        subTitle: String,
         breadcrumb: Object,
     },
     data() {

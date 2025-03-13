@@ -14,6 +14,9 @@
                 </a-menu-item>
             </a-sub-menu>
             <a-menu-item v-else :key="menu.key">
+                <template #icon>
+                    <component :is="menu.icon" />
+                </template>
                 <a :href="route(menu.route)">{{ menu.label }}</a>
             </a-menu-item>
          </template>
@@ -50,8 +53,8 @@ export default defineComponent({
                     children: [
                         { key: 'area', label: '課程類別', route: 'admin.areas.index' },
                         { key: 'course', label: '課程規劃', route: 'admin.courses.index' },
-                        { key: 'offer', label: '現行課程', route: 'admin.offers.current' },
-                        { key: 'offerCurrent', label: '所有課程', route: 'admin.offers.index' },
+                        // { key: 'offer', label: '現行課程', route: 'admin.offers.current' },
+                        { key: 'offer', label: '所有課程', route: 'admin.offers.index' },
                     ],
                 }, {
                     key: 'applications',
@@ -61,7 +64,8 @@ export default defineComponent({
                         { key: 'applications', label: '所有報名表', route: 'admin.applications.index' },
                         { key: 'applicationCurrent', label: '未確認報名表', route: 'admin.applications.current' },
                     ],
-                },
+                }, 
+                { key: 'klass', icon: 'InsertRowBelowOutlined', label: '課堂狀況', route: 'admin.klass.index' },
                 { key: 'applications', icon: 'SettingOutlined', label: '所有報名表', route: 'admin.applications.index' },
             ]
         }

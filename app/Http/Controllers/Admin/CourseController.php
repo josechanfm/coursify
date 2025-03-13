@@ -30,9 +30,12 @@ class CourseController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
+        $area = Area::find( $request->area_id );
+
         return Inertia::render('Admin/CourseForm',[
+            'area'=>$area,
             'areas'=>Area::all(),
             'course'=>(Object)[]
         ]);

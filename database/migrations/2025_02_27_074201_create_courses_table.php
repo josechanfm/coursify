@@ -27,9 +27,9 @@ return new class extends Migration
             $table->string('handout_lang')->nullable();
             $table->char('certificate',3)->nullable();
             $table->integer('hours')->nullable();
-            $table->integer('tution_fee')->nullable();
-            $table->integer('other_fee')->nullable();
-            $table->char('payment',3)->nullable();
+            // $table->integer('tution_fee')->nullable();
+            // $table->integer('other_fee')->nullable();
+            // $table->char('payment',3)->nullable();
             $table->integer('quota')->nullable();
             $table->boolean('active')->default(false);
             $table->text('remark')->nullable();

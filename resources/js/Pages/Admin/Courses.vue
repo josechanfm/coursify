@@ -1,34 +1,26 @@
 <template>
-    <AdminLayout title="Course" :breadcrumb="breadcrumb">
-        <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Config
-            </h2>
-        </template>
+    <AdminLayout title="規劃" :breadcrumb="breadcrumb">
         <div class="container mx-auto">
 
             <div class="flex justify-between px-5">
-                <div class="text-xl">
-                    <span v-if="area">{{ area.abbr }} - {{ area.name_zh }}</span>
-                    <span v-else>All Courses</span>
-                </div>
                 <div class="flex gap-2">
-                    <a-button :href="route('admin.courses.create')" type="primary">
-                        Create
+                    
+                    <a-button :href="route('admin.courses.create', {'area_id': area?.id} )" type="primary">
+                        新增 +
                     </a-button>
-                    <a href="javascript:history.back();" class="inline">
-                        <a-button>Back</a-button>
+                    <a v-if="area" href="javascript:history.back();" class="inline">
+                        <a-button><rollback-outlined />返回</a-button>
                     </a>
                 </div>
             </div>
             
-            <div class="bg-white m-5 p-2 relative shadow rounded-lg overflow-x-auto">
+            <div class=" m-5 p-2 relative overflow-hidden">
                 <!-- Header Info Boxes -->
-                <div class="flex justify-between gap-5">
-                    <div v-if="area" class="flex-1 pb-5">
+                <div class="flex justify-between gap-5 ">
+                    <div v-if="area" class="flex-1 shadow-md bg-white rounded-lg relative overflow-hidden">
                         <!-- Small box with softer green color -->
                         <div
-                            class="small-box bg-green-300 rounded-lg shadow-lg p-4 transition-transform transform hover:scale-105">
+                            class="small-box rounded-lg shadow-lg p-4 transition-transform transform hover:scale-105">
                             <div class="inner">
                                 <h3 class="text-3xl font-bold text-gray-800">{{ area.abbr }} {{ area.name_zh }}</h3>
                                 <p class="text-gray-700">{{ area.course_count}} Courses</p>
@@ -39,6 +31,19 @@
                             <a href="#" class="small-box-footer text-gray-800 hover:underline">
                                 More info <i class="fas fa-arrow-circle-right"></i>
                             </a>
+                        </div>
+                        
+                        <div class="absolute end-16 -top-12">
+                            <div class="w-20 h-20 bg-green-500 opacity-10 transform -rotate-12"></div>
+                        </div>
+                        <div class="absolute end-0 top-4">
+                            <div class="w-20 h-20 bg-green-500 opacity-10 clip-path-triangle transform -rotate-90"></div>
+                        </div>
+                        <div class="absolute end-12 top-16">
+                            <div class="bg-green-400 opacity-10 w-36 h-36 rounded-full shadow-lg shadow-indigo-500/10"></div>
+                        </div>
+                        <div class="absolute end-36 top-8">
+                            <div class="bg-green-400 opacity-10 w-36 h-36 rounded-full shadow-lg shadow-indigo-500/10"></div>
                         </div>
                     </div>
                     <div v-if="area" class="flex-1">
@@ -78,15 +83,15 @@
                 </div>
                 <!-- End Header info Boxes-->
 
-                <a-table :dataSource="courses.data" :columns="columns" :pagination="pagination"
+                <a-table class="shadow-md rounded-lg mt-6" :dataSource="courses.data" :columns="columns" :pagination="pagination"
                     @change="onPaginationChange">
                     <template #bodyCell="{ column, text, record, index }">
                         <template v-if="column.dataIndex == 'operation'">
-                            <a-button :href="route('admin.course.offers',record.id)">Offers</a-button>
-                            <a-button :href="route('admin.courses.edit',record.id)">Edit</a-button>
+                            <a-button :href="route('admin.course.offers', {course:record.id})">所屬開設</a-button>
+                            <a-button :href="route('admin.courses.edit',record.id)"><EditOutlined class=""/>編輯</a-button>
                             <a-popconfirm title="Are you sure delete this record?" ok-text="Yes" cancel-text="No"
                                 @confirm="this.$inertia.delete(route('admin.courses.destroy', record.id))">
-                                <a-button>Delete</a-button>
+                                <a-button><DeleteOutlined class=""/>刪除</a-button>
                             </a-popconfirm>
                         </template>
                         <template v-else>
@@ -99,13 +104,21 @@
     </AdminLayout>
 </template>
 
+<style>
+.clip-path-triangle {
+    clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+}
+</style>
+
 <script>
 import AdminLayout from "@/Layouts/AdminLayout.vue";
 import { defineComponent, reactive } from "vue";
+import * as AntdIcons from '@ant-design/icons-vue';
 
 export default {
     components: {
         AdminLayout,
+        ...AntdIcons,
     },
     props: ["area","courses"],
     data() {
@@ -121,16 +134,16 @@ export default {
             },
             columns: [
                 {
-                    title: "Code",
+                    title: "編號",
                     dataIndex: "code",
                 }, {
-                    title: "Name (zh)",
+                    title: "名稱 (中文)",
                     dataIndex: "name_zh",
                 }, {
-                    title: "Name (en)",
+                    title: "名稱 (英文)",
                     dataIndex: "name_en",
                 }, {
-                    title: "Operation",
+                    title: "操作",
                     dataIndex: "operation",
                 },
             ],

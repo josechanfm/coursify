@@ -21,11 +21,11 @@
             <div class="bg-white m-5 p-2 relative shadow rounded-lg overflow-x-auto">
                 <!-- Header Info Boxes -->
                 <template v-if="offer" >
-                    <div class="flex justify-between gap-5">
-                        <div class="flex-1 pb-5">
+                    <div class="flex justify-between gap-5 pb-5">
+                        <div class="flex-1 ">
                             <!-- Small box with softer green color -->
                             <div
-                                class="small-box bg-green-300 rounded-lg shadow-lg p-4 transition-transform transform hover:scale-105">
+                                class="small-box bg-green-300 rounded-lg shadow-md p-4 transition-transform transform hover:scale-105">
                                 <div class="inner flex justify-between px-4 text-base">
                                     <!-- <h3 class="text-3xl font-bold text-gray-800">{{ offer.abbr }} {{ offer.name_zh }}</h3> -->
                                     <p class="text-gray-700 text-center">{{ offer.course.quota }} <br> 名額</p>
@@ -43,7 +43,7 @@
                         <div class="flex-1">
                             <!-- Small box with softer blue color -->
                             <div
-                                class="small-box bg-blue-300 rounded-lg shadow-lg p-4 transition-transform transform hover:scale-105">
+                                class="small-box bg-blue-300 rounded-lg shadow-md p-4 transition-transform transform hover:scale-105">
                                 <div class="inner text-base">
                                     <p class="text-gray-700 mb-2">報名時間: {{ offer.apply_start }} ~ {{ offer.apply_end }}</p>
                                     <p class="text-gray-700">課程時間: {{ offer.apply_start }} ~ {{ offer.offer_end }}</p>
@@ -61,7 +61,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="flex gap-2 my-2">
+                    <div class="flex gap-2 mt-2 mb-4">
                         <a-button type="success">出席情況</a-button>
                         <a-button type="accept">課堂點名</a-button>
                         <a-button type="primary">課程詳細</a-button>
@@ -97,6 +97,9 @@
                             {{ record.id_type }}<br>
                             {{ record.id_num }}
                         </template>
+                        <template v-else-if="column.dataIndex == 'created_at'">
+                            {{ displayDate(record.created_at) }}
+                        </template>
                         <template v-else-if="column.dataIndex == 'status'">
                             <div class="flex ">
                                 <a-button class="!rounded-none !rounded-l-lg" @click="changeStatus(record, null)" type="default">報名中</a-button>
@@ -126,6 +129,7 @@ import AdminLayout from "@/Layouts/AdminLayout.vue";
 import { defineComponent, reactive } from "vue";
 import * as AntdIcons from '@ant-design/icons-vue';
 import PaymentCreateModal from "./Payment/PaymentCreateModal.vue";
+import dayjs, { Dayjs } from 'dayjs';
 
 export default {
     components: {
@@ -235,7 +239,14 @@ export default {
                     console.log(err);
                 },
             })
-        }
+        },
+        
+        displayDate(date) {
+            return dayjs(date).format('YYYY-MM-DD')
+        },
+        displayDateTime(date) {
+            return dayjs(date).format('YYYY-MM-DD HH:mm:ss')
+        },
     },
 };
 </script>

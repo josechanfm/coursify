@@ -6,23 +6,27 @@
     <div class="">
         <DashboardSearchTool />
     </div>
-    <div class="container mx-auto pt-8">
+    <div class="container mx-auto pt-8 ">
         <a-card :bordered="false" :headStyle='{ background: "#0284c7", color:"white", borderBottom: "1px solid #94a3b8" }' class="">
             <template #title>
                 <div class="flex justify-between">
                     <div>課程列表</div>
                     <div class="flex gap-1 items-center">
-                        <a class="px-4 py-1 text-black text-sm leading-1 bg-white rounded border hover:text-slate-600" >刷新</a>
-                        <a class="px-4 py-1 text-black preparing text-sm leading-1 rounded border hover:text-slate-600" >準備中課程</a>
-                        <a class="px-4 py-1 text-black applying text-sm leading-1 rounded border hover:text-slate-600" >報名中課程</a>
-                        <a class="px-4 py-1 text-black applied text-sm leading-1 rounded border hover:text-slate-600" >已截止課程</a>
-                        <a class="px-4 py-1 text-black offering text-sm leading-1 rounded border hover:text-slate-600" >開課中課程</a>
-                        <a class="px-4 py-1 text-black finished text-sm leading-1 rounded border hover:text-slate-600" >已完全課程</a>
+                        <a class="px-4 py-1 text-black text-sm leading-1 bg-white rounded border hover:text-slate-600" @click="refresh()">刷新</a>
+                        <a class="px-4 py-1 text-black preparing text-sm leading-1 rounded border hover:text-slate-600" @click="filterOffers('preparing')">準備中課程</a>
+                        <a class="px-4 py-1 text-black applying text-sm leading-1 rounded border hover:text-slate-600" @click="filterOffers('applying')">報名中課程</a>
+                        <a class="px-4 py-1 text-black applied text-sm leading-1 rounded border hover:text-slate-600" @click="filterOffers('applied')">已截止課程</a>
+                        <a class="px-4 py-1 text-black offering text-sm leading-1 rounded border hover:text-slate-600" @click="filterOffers('offering')">開課中課程</a>
+                        <a class="px-4 py-1 text-black finished text-sm leading-1 rounded border hover:text-slate-600" @click="filterOffers('finished')">已完成課程</a>
                     </div>
                 </div>    
             </template>
-            <div v-for="offer in offers" :class="offerStatusClass(offer)" class=" pb-4 m-1 shadow-sm border-b-2 rounded-lg">
-                <div class="grid grid-cols-6 gap-2 p-3">
+            <div v-for="offer in offers" 
+                :key="offer.id" v-show=" filterOffersKey ? offerStatusClass(offer) == filterOffersKey : true "  
+                ref="offerItems"
+                :class="offerStatusClass(offer)" 
+                class=" pb-4 m-1 shadow-sm border-b-2 rounded-lg">
+                <div class="grid grid-cols-6 gap-2 p-3" >
                     <div class="flex col-span-3 flex-col gap-2">
                         <div class="text-lg font-semibold">{{ offer.code }} </div>
                         <div class="text-lg">
@@ -41,6 +45,7 @@
                         ${{ offer.course.tution_fee }} | {{ offer.application_count }}/{{ offer.course.quota }} | {{ offer.course.hours }}h
                     </div>
                     <div class="flex flex-col leading-6 text-base">
+                        
                         網上報名<br />
                         <a :href="route('admin.offers.edit' , offer.id)">課程編輯</a>
                         課程管理<br />
@@ -63,6 +68,7 @@ import AdminLayout from '@/Layouts/AdminLayout.vue';
 import * as AntdIcons from '@ant-design/icons-vue';
 import DashboardSearchTool from '@/Components/DashboardSearchTool.vue';
 import dayjs, { Dayjs } from 'dayjs';
+import { gsap } from 'gsap';
 
 export default {
 
@@ -74,12 +80,12 @@ export default {
     props:['offers'],
     data(){
         return {
+            filterOffersKey: "",
         }
     },
     methods:{
         offerStatusClass(offer){
             var today = dayjs().format("YYYY-MM-DD")
-            console.log( today )
             if( offer['status'] == "offerCancel" ){
 
             }
@@ -96,7 +102,36 @@ export default {
                 return "finished" // 已完成
 
             return "preparing"
-        }
+        },
+        filterOffers(key){
+            this.filterOffersKey = key
+        },
+        refresh(){
+            location.reload()
+        },
+
+        animateOffers() {
+            const offerItems = this.$refs.offerItems;
+
+            offerItems.forEach((item) => {
+                if (item.style.display !== 'none') {
+                    gsap.fromTo(item, 
+                        { y: 30, opacity: 0 }, 
+                        { y: 0, opacity: 1, duration: 0.5, stagger: 0.1 }
+                    );
+                }
+            });
+        },
+    },
+    watch: {
+        filterOffersKey: {
+            immediate: true,
+            handler() {
+                this.$nextTick(() => {
+                    this.animateOffers();
+                });
+            },
+        },
     },
 };
 </script>

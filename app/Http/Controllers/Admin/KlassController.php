@@ -14,9 +14,17 @@ class KlassController extends Controller
     /**
      * Display a listing of the resource.
      */
+    public function index()
+    {
+        
+        return Inertia::render('Admin/Klass/Index',[
+            'offers' => Offer::all(),
+        ]);
+    }
+
     public function dashboard(Offer $offer)
     {
-        return Inertia::render('Admin/KlassDashboard',[
+        return Inertia::render('Admin/Klass/Dashboard',[
             'offer'=>$offer->load('students')->load('teachers')->load('lessons')
         ]);
     }

@@ -14,16 +14,25 @@ class OfferController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Course $course=null)
+    public function index(Course $course,Request $request)
     {
-        if($course){
-            $offers=Offer::whereBelongsTo($course)->paginate(5);
-        }else{
-            $offers=Offer::paginate(5);
+        if (empty($request->per_page)) {
+            $per_page = 10;
+        } else {
+            $per_page = $request->per_page;
         }
+
+        if( !empty($course->toArray()) ){
+            $offers=Offer::whereBelongsTo($course)->paginate($per_page);
+            $course->info();
+        }else{
+            $offers=Offer::paginate($per_page);
+            $course = null ;
+        }
+
         return Inertia::render('Admin/Offers',[
-            'course'=>$course?$course->info():null,
-            'offers'=>$offers
+            'course' => $course,
+            'offers' => $offers
         ]);
     }
 

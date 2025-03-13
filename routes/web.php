@@ -53,20 +53,27 @@ Route::middleware([
     'verified',
 ])->prefix('admin')->group(function () {
     Route::get('/dashboard', [App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('admin.dashboard');
+    
     Route::resource('areas', App\Http\Controllers\Admin\AreaController::class)->names('admin.areas');
+   
     Route::get('/{area}/courses', [App\Http\Controllers\Admin\CourseController::class,'index'])->name('admin.area.courses');
     Route::resource('courses', App\Http\Controllers\Admin\CourseController::class)->names('admin.courses');
+   
     Route::get('/{course}/offers', [App\Http\Controllers\Admin\OfferController::class,'index'])->name('admin.course.offers');
     Route::get('/offers/current', [App\Http\Controllers\Admin\OfferController::class,'current'])->name('admin.offers.current');
     Route::resource('offers', App\Http\Controllers\Admin\OfferController::class)->names('admin.offers');
+   
     Route::get('{offer}/applications', [App\Http\Controllers\Admin\ApplicationController::class,'index'])->name('admin.offer.applications');
     Route::get('/applications/current', [App\Http\Controllers\Admin\ApplicationController::class,'current'])->name('admin.applications.current');
     Route::resource('applications', App\Http\Controllers\Admin\ApplicationController::class)->names('admin.applications');
     Route::post('application/{application}/change_status', [App\Http\Controllers\Admin\ApplicationController::class,'changeStatus'])->name('admin.application.changeStatus');
+    
     Route::resource('payments', App\Http\Controllers\Admin\PaymentController::class)->names('admin.payments');
+    
     Route::get('{offer}/klass', [App\Http\Controllers\Admin\KlassController::class,'dashboard'])->name('admin.klass.dashboard');
     Route::get('{offer}/klass/{lesson}/attendances', [App\Http\Controllers\Admin\KlassController::class,'attendance'])->name('admin.klass.attendances');
     Route::post('klass/attendance/attend', [App\Http\Controllers\Admin\KlassController::class,'attend'])->name('admin.klass.attendance.attend');
+    Route::get('klass', [App\Http\Controllers\Admin\KlassController::class,'index'])->name('admin.klass.index');
 });
 
 Route::middleware([

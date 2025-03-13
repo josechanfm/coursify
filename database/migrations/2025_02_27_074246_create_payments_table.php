@@ -14,8 +14,6 @@ return new class extends Migration
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
             $table->foreignId('application_id');
-            $table->dateTime('datetime');
-            $table->char('payment_type',3);
             $table->boolean('payment_checked')->nullable();
             $table->integer('tution_fee')->nullable();
             $table->integer('other_fee')->nullable();

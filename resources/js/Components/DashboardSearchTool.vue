@@ -99,6 +99,8 @@
     </div>
 </template>
 
+<style>
+</style>
 
 <script>
 import * as AntdIcons from '@ant-design/icons-vue';

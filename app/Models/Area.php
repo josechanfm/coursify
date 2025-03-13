@@ -12,6 +12,7 @@ class Area extends Model
 
     public function info(){
         return (object)[
+            'id'=>$this->id,
             'abbr'=>$this->abbr,
             'name_zh'=>$this->name_zh,
             'name_en'=>$this->name_en,

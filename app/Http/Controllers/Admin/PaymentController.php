@@ -33,7 +33,12 @@ class PaymentController extends Controller
     {
         //
         $data = $request->all();
-        dd($data);
+        
+        Payment::create([
+            'application_id' => $data['application']['id'],
+            'user_id' => Auth()->user()->id,
+            'tution_payment' => $data['tution_payment']
+        ]);
     }
 
     /**

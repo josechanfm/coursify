@@ -1,16 +1,16 @@
 <template>
 <!-- Modal Start-->
 <a-modal v-model:open="payment.isOpen" style="top: 150px" :title="title" width="50%">
-    <a-form class="pt-4" ref="modalRef" :model="data" name="PaymentForm" :label-col="{ span: 6 }" autocomplete="off">
+    <a-form class="pt-4" ref="modalRef" :model="data" name="PaymentForm" :label-col="{ span: 5 }" autocomplete="off">
         <a-form-item label="課程學費" name="">
             <b>1200</b>
         </a-form-item>
         <a-form-item label="繳費方式" name="">
             <a-select v-model:value="method" mode="multiple" :options="paymentMethods" :placement="'topLeft'"/>
         </a-form-item>
-        <template v-for="d in data">
-            <a-form-item :label="d.label"  v-if="method.includes(d.name)">
-                <a-input type="input" v-model:value="d.value" />
+        <template v-for="t in tution_payment">
+            <a-form-item :label="t.label" v-if="method.includes(t.name)">
+                <a-input type="input" v-model:value="t.value" />
             </a-form-item>
         </template>
     </a-form>
@@ -61,11 +61,14 @@ export default {
             this.$inertia.post(route("admin.payments.store"), 
                 {"application": this.payment.application, tution_payment: this.tution_payment }, 
                 {
-                onSuccess: (page) => {
-                },
-                onError: (err) => {
-                },
-            });
+                    onSuccess: (page) => {
+                        this.payment.isOpen = false
+                        location.reload();
+                    },
+                    onError: (err) => {
+                    },
+                }
+            );
         }
     }
 }

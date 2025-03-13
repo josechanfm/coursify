@@ -1,27 +1,13 @@
 <template>
-    <AdminLayout title="Offer" :breadcrumb="breadcrumb">
-        <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Config
-            </h2>
-        </template>
+    <AdminLayout title="課程開設" :sub-title="offerTitle()" :breadcrumb="breadcrumb">
         <div class="container mx-auto">
-            <div class="flex justify-between px-5">
-                <div class="text-xl">
-                    <span v-if="course">{{ course.code }} - {{ course.name_zh }}</span>
-                    <span v-else-if="onlyCurrent">Current Offers</span>
-                    <span v-else>All Offers</span>
+            <div class="flex px-5 gap-2">
+                <div class="flex ">
+                    <a-button :href="route('admin.offers.create')"  type="primary">新增 +</a-button>
                 </div>
-                <div class="flex gap-2">
-                    <a-button :href="route('admin.offers.create')" type="primary">
-                        Create
-                    </a-button>
-                    <a href="javascript:history.back();" class="inline">
-                        <a-button>Back</a-button>
-                    </a>
-                </div>
+                <a-button v-if="course" type="default" :href="route('admin.offers.index')"><rollback-outlined />返回</a-button>
             </div>
-            <div class="bg-white m-5 p-2 relative shadow rounded-lg overflow-x-auto">
+            <div class="bg-white m-5 p-2 relative shadow rounded-lg overflow-hidden">
                 <!-- Header Info Boxes -->
                 <div class="flex justify-between gap-5">
                     <div v-if="course" class="flex-1 pb-5">
@@ -84,12 +70,12 @@
                 >
                     <template #bodyCell="{ column, text, record, index }">
                         <template v-if="column.dataIndex == 'operation'">
-                            <a-button :href="route('admin.offer.applications', record.id)">Applications</a-button>
-                            <a-button :href="route('admin.klass.dashboard',record.id)">Class Management</a-button>
-                            <a-button :href="route('admin.offers.edit',record.id)">Edit</a-button>
+                            <a-button :href="route('admin.offer.applications', record.id)">報名管理</a-button>
+                            <a-button :href="route('admin.klass.dashboard',record.id)">出席狀況</a-button>
+                            <a-button :href="route('admin.offers.edit',record.id)"><EditOutlined/>編輯</a-button>
                             <a-popconfirm title="Are you sure delete this record?" ok-text="Yes" cancel-text="No"
                                 @confirm="this.$inertia.delete(route('admin.offers.destroy', record.id))">
-                                <a-button>Delete</a-button>
+                                <a-button><DeleteOutlined/>刪除</a-button>
                             </a-popconfirm>
                         </template>
                         <template v-else>
@@ -105,10 +91,12 @@
 <script>
 import AdminLayout from "@/Layouts/AdminLayout.vue";
 import { defineComponent, reactive } from "vue";
+import * as AntdIcons from '@ant-design/icons-vue';
 
 export default {
     components: {
         AdminLayout,
+        ...AntdIcons,
     },
     props: ["onlyCurrent","course","offers"],
     data() {
@@ -125,16 +113,16 @@ export default {
             },
             columns: [
                 {
-                    title: "Code",
+                    title: "編號",
                     dataIndex: "code",
                 }, {
-                    title: "Name (zh)",
+                    title: "名稱 (中文)",
                     dataIndex: "name_zh",
                 }, {
-                    title: "Name (en)",
+                    title: "名稱 (英文)",
                     dataIndex: "name_en",
                 }, {
-                    title: "Operation",
+                    title: "操作",
                     dataIndex: "operation",
                 },
             ],
@@ -161,6 +149,16 @@ export default {
                 }
             );
         },
+        offerTitle(){
+            if( this.course ){
+                return this.course.code + " - " + this.course.name_zh
+            }
+            if( this.onlyCurrent ){
+
+            }
+
+            return '全部開設'
+        }
     },
 };
 </script>

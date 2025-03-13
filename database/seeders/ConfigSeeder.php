@@ -28,8 +28,8 @@ class ConfigSeeder extends Seeder
         $data = [
             'key' => 'certificate_types', 
             'value' => [
-                ['value'=>'CRT', 'label' => 'Certificate'],
-                ['value'=>'GNR', 'label' => 'Graduation'],
+                ['value'=>'CRT', 'label' => '證書課程'],
+                ['value'=>'NOR', 'label' => '一般課程'],
             ],
         ];
         Config::create($data);  
