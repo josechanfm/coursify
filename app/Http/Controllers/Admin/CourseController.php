@@ -14,16 +14,27 @@ class CourseController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Area $area=null)
+    public function index(Area $area, Request $request)
     {
-        if($area){
-            $courses=Course::whereBelongsTo($area)->paginate(5);
+        
+        // if (empty($request->per_page)) {
+        //     $per_page = 20;
+        // } else {
+        //     $per_page = $request->per_page;
+        // }
+
+        if( !empty($area->toArray()) ){
+            $courses=Course::whereBelongsTo($area)->get();
+        //     $area->info();
         }else{
-            $courses=Course::with('areaInfo')->paginate(5);
+        //     $courses=Course::with('areaInfo')->paginate($per_page);
+            $area = null ;
+            $courses=Course::all();
         }
+
         return Inertia::render('Admin/Courses',[
-            'area'=>$area?$area->info():null,
-            'courses'=>$courses
+            'area' => $area,
+            'courses' => $courses,
         ]);
     }
 

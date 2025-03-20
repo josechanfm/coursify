@@ -1,29 +1,26 @@
 <template>
-    <AdminLayout title="規劃" :breadcrumb="breadcrumb">
+    <AdminLayout title="課堂狀況" :breadcrumb="breadcrumb">
         <div class="container mx-auto">
-
-            <a-table 
-                :dataSource="offers.data" 
-                :columns="columns" 
-                :pagination="pagination"
-                @change="onPaginationChange"
-            >
-                <template #bodyCell="{ column, text, record, index }">
-                    <template v-if="column.dataIndex == 'operation'">
-                        <a-button :href="route('admin.offer.applications', record.id)">報名管理</a-button>
-                        <a-button :href="route('admin.klass.dashboard',record.id)">出席狀況</a-button>
-                        <a-button :href="route('admin.offers.edit',record.id)"><EditOutlined/>編輯</a-button>
-                        <a-popconfirm title="Are you sure delete this record?" ok-text="Yes" cancel-text="No"
-                            @confirm="this.$inertia.delete(route('admin.offers.destroy', record.id))">
-                            <a-button><DeleteOutlined/>刪除</a-button>
-                        </a-popconfirm>
+            
+            <div class=" m-5 p-1 relative overflow-hidden">
+                <a-table 
+                    class="shadow-md rounded-lg"
+                    :dataSource="offers" 
+                    :columns="columns" 
+                    :pagination="{defaultPageSize:20}"
+                >
+                    <template #bodyCell="{ column, text, record, index }">
+                        <template v-if="column.dataIndex == 'operation'">
+                            <a-button :href="route('admin.klass.dashboard',record.id)"><insert-row-below-outlined />課堂狀況</a-button>
+                            <a-button :href="route('admin.klass.lesson',record.id)"><import-outlined />課堂點名</a-button>
+                        </template>
+                        <template v-else>
+                            {{ record[column.dataIndex] }}
+                        </template>
                     </template>
-                    <template v-else>
-                        {{ record[column.dataIndex] }}
-                    </template>
-                </template>
-            </a-table>
-    </div>
+                </a-table>
+            </div>
+        </div>
     </AdminLayout>
 </template>
 

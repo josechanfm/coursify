@@ -68,9 +68,14 @@ Route::middleware([
     Route::resource('applications', App\Http\Controllers\Admin\ApplicationController::class)->names('admin.applications');
     Route::post('application/{application}/change_status', [App\Http\Controllers\Admin\ApplicationController::class,'changeStatus'])->name('admin.application.changeStatus');
     
+    Route::get('{offer}/lessons/schedule', [App\Http\Controllers\Admin\LessonController::class,'schedule'])->name('admin.lessons.schedule');
+    Route::post('lessons/schedule/availableRooms', [App\Http\Controllers\Admin\LessonController::class,'availableRooms'])->name('admin.lessons.availableRooms');
+    Route::resource('lessons', App\Http\Controllers\Admin\LessonController::class)->names('admin.lessons');
+
     Route::resource('payments', App\Http\Controllers\Admin\PaymentController::class)->names('admin.payments');
     
-    Route::get('{offer}/klass', [App\Http\Controllers\Admin\KlassController::class,'dashboard'])->name('admin.klass.dashboard');
+    Route::get('{offer}/klass/dashboard', [App\Http\Controllers\Admin\KlassController::class,'dashboard'])->name('admin.klass.dashboard');
+    Route::get('{offer}/klass/lesson', [App\Http\Controllers\Admin\KlassController::class,'lesson'])->name('admin.klass.lesson');
     Route::get('{offer}/klass/{lesson}/attendances', [App\Http\Controllers\Admin\KlassController::class,'attendance'])->name('admin.klass.attendances');
     Route::post('klass/attendance/attend', [App\Http\Controllers\Admin\KlassController::class,'attend'])->name('admin.klass.attendance.attend');
     Route::get('klass', [App\Http\Controllers\Admin\KlassController::class,'index'])->name('admin.klass.index');

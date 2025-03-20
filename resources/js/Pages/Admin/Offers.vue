@@ -5,9 +5,9 @@
                 <div class="flex ">
                     <a-button :href="route('admin.offers.create')"  type="primary">新增 +</a-button>
                 </div>
-                <a-button v-if="course" type="default" :href="route('admin.offers.index')"><rollback-outlined />返回</a-button>
+                <a-button v-if="course" type="default" :href="route('admin.courses.index')"><rollback-outlined />返回</a-button>
             </div>
-            <div class="bg-white m-5 p-2 relative shadow rounded-lg overflow-hidden">
+            <div class=" m-5 p-1 relative ">
                 <!-- Header Info Boxes -->
                 <div class="flex justify-between gap-5">
                     <div v-if="course" class="flex-1 pb-5">
@@ -63,15 +63,22 @@
                 </div>
                 <!-- End Header Info Boxes -->
                 <a-table 
+                    class="shadow-md rounded-lg "
                     :dataSource="offers.data" 
                     :columns="columns" 
                     :pagination="pagination"
                     @change="onPaginationChange"
                 >
                     <template #bodyCell="{ column, text, record, index }">
-                        <template v-if="column.dataIndex == 'operation'">
+                        <template v-if="column.dataIndex == 'name_zh'">
+                            <div class="min-w-72">
+                                {{ record[column.dataIndex] }}
+                            </div>
+                        </template>
+                        <template v-else-if="column.dataIndex == 'operation'">
                             <a-button :href="route('admin.offer.applications', record.id)">報名管理</a-button>
-                            <a-button :href="route('admin.klass.dashboard',record.id)">出席狀況</a-button>
+                            <a-button :href="route('admin.lessons.schedule', record.id)"><schedule-outlined />課堂編排</a-button>
+                            <a-button :href="route('admin.klass.dashboard',record.id)"><insert-row-below-outlined />課堂狀況</a-button>
                             <a-button :href="route('admin.offers.edit',record.id)"><EditOutlined/>編輯</a-button>
                             <a-popconfirm title="Are you sure delete this record?" ok-text="Yes" cancel-text="No"
                                 @confirm="this.$inertia.delete(route('admin.offers.destroy', record.id))">
@@ -79,7 +86,9 @@
                             </a-popconfirm>
                         </template>
                         <template v-else>
-                            {{ record[column.dataIndex] }}
+                            <div >
+                                {{ record[column.dataIndex] }}
+                            </div>
                         </template>
                     </template>
                 </a-table>
@@ -138,14 +147,13 @@ export default {
                 {
                     page: page.current,
                     per_page: page.pageSize,
-                },
-                {
-                onSuccess: (page) => {
-                    console.log(page);
-                },
-                onError: (error) => {
-                    console.log(error);
-                },
+                }, {
+                    onSuccess: (page) => {
+                        console.log(page);
+                    },
+                    onError: (error) => {
+                        console.log(error);
+                    },
                 }
             );
         },

@@ -28,6 +28,7 @@ class DatabaseSeeder extends Seeder
             AreaSeeder::class,
             CourseSeeder::class,
             OfferSeeder::class,
+            RoomSeeder::class,
             ApplicationSeeder::class,
             LessonSeeder::class,
             PaymentSeeder::class

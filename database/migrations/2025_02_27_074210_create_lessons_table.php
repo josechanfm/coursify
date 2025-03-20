@@ -15,8 +15,9 @@ return new class extends Migration
             $table->id();
             $table->foreignId('offer_id');
             $table->foreignId('staff_id')->nullable();
-            $table->string('classroom')->nullable();
+            $table->foreignId('room_id')->nullable();
             $table->date('date')->nullable();
+            $table->integer('dow')->nullable();
             $table->time('start')->nullable();
             $table->time('end')->nullable();
             $table->timestamps();

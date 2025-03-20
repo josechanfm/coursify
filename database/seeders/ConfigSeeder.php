@@ -64,5 +64,15 @@ class ConfigSeeder extends Seeder
             ],
         ];
         Config::create($data);  
+        $data = [
+            'key' => 'room_types',
+            'value' => [
+                ['value'=>'CLS', 'label' => '一般課室'],
+                ['value'=>'GRP', 'label' => '分組教室'],
+                ['value'=>'LCT', 'label' => '演講室'],
+                ['value'=>'OTH', 'label' => '其他'],
+            ],
+        ];
+        Config::create($data);  
     }
 }

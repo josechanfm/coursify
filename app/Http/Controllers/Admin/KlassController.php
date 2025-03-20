@@ -16,21 +16,30 @@ class KlassController extends Controller
      */
     public function index()
     {
-        
+        $offers=Offer::all();
+
         return Inertia::render('Admin/Klass/Index',[
-            'offers' => Offer::all(),
+            'offers' => $offers,
         ]);
     }
 
     public function dashboard(Offer $offer)
     {
+        $offer->attendanceRateStudents();
         return Inertia::render('Admin/Klass/Dashboard',[
+            'offer'=>$offer->load('teachers')->load('lessons.room')
+        ]);
+    }
+    public function lesson(Offer $offer){
+        
+        return Inertia::render('Admin/Klass/Lesson',[
             'offer'=>$offer->load('students')->load('teachers')->load('lessons')
         ]);
     }
     public function attendance(Offer $offer, Lesson $lesson)
     {
-        return Inertia::render('Admin/LessonAttendance',[
+        $offer->attendanceRateStudents();
+        return Inertia::render('Admin/Lesson/Attendance',[
             'offer'=>$offer,
             'lesson'=>$lesson->load('students'),
         ]);

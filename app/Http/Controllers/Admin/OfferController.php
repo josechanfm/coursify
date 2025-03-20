@@ -14,10 +14,10 @@ class OfferController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Course $course,Request $request)
+    public function index(Course $course, Request $request)
     {
         if (empty($request->per_page)) {
-            $per_page = 10;
+            $per_page = 20;
         } else {
             $per_page = $request->per_page;
         }

@@ -4,7 +4,6 @@
 
             <div class="flex justify-between px-5">
                 <div class="flex gap-2">
-                    
                     <a-button :href="route('admin.courses.create', {'area_id': area?.id} )" type="primary">
                         新增 +
                     </a-button>
@@ -14,13 +13,13 @@
                 </div>
             </div>
             
-            <div class=" m-5 p-2 relative overflow-hidden">
+            <div class=" m-5 p-1 relative ">
                 <!-- Header Info Boxes -->
-                <div class="flex justify-between gap-5 ">
-                    <div v-if="area" class="flex-1 shadow-md bg-white rounded-lg relative overflow-hidden">
+                <div class="flex justify-between gap-5  pb-5">
+                    <div v-if="area" class="flex-1 shadow-md bg-white rounded-lg relative overflow-hidden transition-transform transform hover:scale-105">
                         <!-- Small box with softer green color -->
                         <div
-                            class="small-box rounded-lg shadow-lg p-4 transition-transform transform hover:scale-105">
+                            class="small-box rounded-lg shadow-lg p-4 ">
                             <div class="inner">
                                 <h3 class="text-3xl font-bold text-gray-800">{{ area.abbr }} {{ area.name_zh }}</h3>
                                 <p class="text-gray-700">{{ area.course_count}} Courses</p>
@@ -83,8 +82,7 @@
                 </div>
                 <!-- End Header info Boxes-->
 
-                <a-table class="shadow-md rounded-lg mt-6" :dataSource="courses.data" :columns="columns" :pagination="pagination"
-                    @change="onPaginationChange">
+                <a-table class="shadow-md rounded-lg " :dataSource="courses" :columns="columns" :pagination="{defaultPageSize:20}">
                     <template #bodyCell="{ column, text, record, index }">
                         <template v-if="column.dataIndex == 'operation'">
                             <a-button :href="route('admin.course.offers', {course:record.id})">所屬開設</a-button>

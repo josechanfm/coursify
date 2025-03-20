@@ -12,6 +12,10 @@
     }
 }
 
+.container{
+    @apply px-2 sm:px-4 md:px-2 lg:px-2 xl:px-2 
+}
+
 .ant-btn >.anticon+span{
     margin-inline-start: 4px !important;
 }
