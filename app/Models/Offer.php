@@ -48,7 +48,7 @@ class Offer extends Model
         'form_extra'=>'json',
     ];
 
-    protected $appends = ['application_count', 'student_count', 'accept_count'];
+    protected $appends = ['application_count', 'student_count', 'accept_count','hours'];
 
     public function info(){
         return (object)[
@@ -70,6 +70,17 @@ class Offer extends Model
     public function getAcceptCountAttribute()
     {
         return $this->applications->where('status', 'Accept')->count();
+    }
+    public function getHoursAttribute()
+    {
+        return $this->course->hours;
+    }
+
+    public static function available(){
+        $availableOffers = Offer::where('apply_start', '<=', now())
+                ->where('apply_end', '>=', now())
+                ->get();
+        return $availableOffers;
     }
     
     public function course(){

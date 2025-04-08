@@ -1,20 +1,23 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Member;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\Offer;
+use App\Models\Student;
+use App\Models\Config;
 
-class OfferController extends Controller
+
+class ProfileController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        return Inertia::render('Offers', [
-            'offers' => Offer::available(),
+    //
+    public function index(){
+        
+        $user = Auth()->user();
+        return Inertia::render('Member/Profile',[
+            'student' => $user->student
         ]);
     }
 
@@ -23,7 +26,7 @@ class OfferController extends Controller
      */
     public function create()
     {
-        //
+
     }
 
     /**
@@ -31,38 +34,35 @@ class OfferController extends Controller
      */
     public function store(Request $request)
     {
-        //
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Offer $offer)
     {
-        //
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Offer $offer)
     {
-        //
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $student_id)
     {
-        //
+        // dd($request->all());
+        dd($student_id);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Offer $offer)
     {
-        //
     }
 }

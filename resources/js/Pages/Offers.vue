@@ -5,18 +5,9 @@
                 Offers
             </h2>
         </template>
-        <div class="container mx-auto pt-5">
-            <div class="bg-white relative shadow rounded-lg overflow-x-auto">
-                <a-table :dataSource="offers" :columns="columns">
-                    <template #bodyCell="{ column, text, record, index }">
-                        <template v-if="column.dataIndex == 'operation'">
-                            <a-button :href="route('application.form',record.id)" >Apply</a-button>
-                        </template>
-                        <template v-else>
-                            {{ record[column.dataIndex] }}
-                        </template>
-                    </template>
-                </a-table>
+        <div class="py-6">
+            <div class="container mx-auto pt-5">
+                <FrontendOfferList :offers="offers"/>
             </div>
         </div>
     </WebLayout>
@@ -25,10 +16,12 @@
 <script>
 import WebLayout from "@/Layouts/WebLayout.vue";
 import { defineComponent, reactive } from "vue";
+import FrontendOfferList from '@/Components/FrontendOfferList.vue';
 
 export default {
     components: {
         WebLayout,
+        FrontendOfferList
     },
     props: ["offers"],
     data() {

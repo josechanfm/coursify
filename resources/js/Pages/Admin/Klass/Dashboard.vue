@@ -75,10 +75,8 @@ export default {
     data() {
         return {
             breadcrumb: [
-                { label: "Area", url: route('admin.areas.index') },
-                { label: "Course", url: route('admin.courses.index') },
-                { label: "Offer", url: route('admin.offers.index') },
-                { label: "Edit", url: null },
+                { label: "Klass" ,url: route('admin.klass.index') },
+                { label: "Show" ,url: null },
             ],
             
             columns: [{

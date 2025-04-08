@@ -14,8 +14,7 @@
         <div class="border-slate-600 border-b-2 mx-4 my-4" ></div>
 
         <!-- Menu -->
-        <AdminMenu />
-
+        <AdminMenu :breadcrumb="breadcrumb"/>
     </a-layout-sider>
 
     <a-layout :style="{ marginLeft: collapsed?'80px': '250px' }">

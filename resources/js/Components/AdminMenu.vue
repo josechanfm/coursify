@@ -1,8 +1,7 @@
 <template>
     <a-menu v-model:openKeys="openedMenu" v-model:selectedKeys="selectedKeys" theme="dark" mode="inline">
         <!-- 循环渲染一级菜单 -->
-         <template v-for="menu in menus"> 
-
+        <template v-for="menu in menus"> 
             <a-sub-menu v-if="menu.children" :key="menu.key">
                 <template #icon>
                     <component :is="menu.icon" />
@@ -19,7 +18,17 @@
                 </template>
                 <a :href="route(menu.route)">{{ menu.label }}</a>
             </a-menu-item>
-         </template>
+        </template>
+         
+        <hr class="border-1 border-slate-400 mx-5 my-4 opacity-30" />
+        <a-menu-item>
+            <template #icon>
+                <LogoutOutlined />
+            </template>
+            <a @click.prevent='logout'>
+                登出
+            </a>
+        </a-menu-item>
     </a-menu>
 </template>
 
@@ -35,11 +44,7 @@ export default defineComponent({
     components: {
         ...AntdIcons
     },
-    props: [],
-    created(){ 
-        console.log( this.route().current() )
-        console.log( this.findRouteKey() )
-    },
+    props: ['breadcrumb'],
     data() {
         return {
             openedMenu: [],
@@ -51,48 +56,62 @@ export default defineComponent({
                     icon: 'BankOutlined',
                     label: '課程管理',
                     children: [
-                        { key: 'area', label: '課程類別', route: 'admin.areas.index' },
-                        { key: 'course', label: '課程規劃', route: 'admin.courses.index' },
+                        { key: 'Area', label: '課程類別', route: 'admin.areas.index' },
+                        { key: 'Course', label: '課程規劃', route: 'admin.courses.index' },
                         // { key: 'offer', label: '現行課程', route: 'admin.offers.current' },
-                        { key: 'offer', label: '所有課程', route: 'admin.offers.index' },
+                        { key: 'Offer', label: '所有課程', route: 'admin.offers.index' },
                     ],
                 }, {
                     key: 'applications',
                     icon: 'AuditOutlined',
                     label: '報名表',
                     children: [
-                        { key: 'applications', label: '所有報名表', route: 'admin.applications.index' },
-                        { key: 'applicationCurrent', label: '未確認報名表', route: 'admin.applications.current' },
+                        { key: 'Applications', label: '所有報名表', route: 'admin.applications.index' },
+                        { key: 'ApplicationCurrent', label: '未確認報名表', route: 'admin.applications.current' },
                     ],
                 }, 
-                { key: 'klass', icon: 'InsertRowBelowOutlined', label: '課堂狀況', route: 'admin.klass.index' },
-                { key: 'applications', icon: 'SettingOutlined', label: '所有報名表', route: 'admin.applications.index' },
-            ]
+                { key: 'Klass', icon: 'InsertRowBelowOutlined', label: '課堂狀況', route: 'admin.klass.index' },
+                { key: 'Applications', icon: 'SettingOutlined', label: '所有報名表', route: 'admin.applications.index' },
+            ],
+
+            findKey:[],
         }
+    },
+    created(){ 
+        this.findRoute(this.menus)
     },
     methods: {
         logout() {
-            router.post(route('admin.logout'));
+            this.$inertia.post(route('admin.logout'));
         },
-        findRouteKey(){
-            var currentRoute = this.route().current()
-            // 遍历一级菜单
-            for (const menu of this.menus) {
-                // 如果有子菜单，递归查找
-                if (menu.children) {
-                    for (const child of menu.children) {
-                        if (child.route === currentRoute) {
-                            this.selectedKeys.push( child.key )
-                            this.openedMenu.push( menu.key )
+        recurFindRoute(menu, menuParent){
+            // console.log(menu)
+            // 遞歸找全部children的route, 無限層children
+            if ( this.breadcrumb.find( x => x.label == menu.key ) ){
+                console.log( menuParent )
+                this.breadcrumb.slice().reverse().forEach( (bread)=>{
+                    if( menuParent ){
+                        if( menuParent?.children.find(x=>x.key == bread.label)?.key && this.selectedKeys.length <= 0){
+                            this.selectedKeys.push( bread.label )
                         }
+                    }else{
+                        this.selectedKeys.push( bread.label )
                     }
-                }
-                // 如果没有子菜单，直接匹配
-                else if (menu.route === currentRoute) {
-                    this.selectedKeys.push( menu.key  )
-                }
+                   
+                })
+                this.openedMenu.push( menuParent?.key )
+            }else if (menu.children) {
+                this.findRoute(menu.children, menu)
             }
-        }
+        },  
+        findRoute(menus, menuParent){
+            if( !this.breadcrumb ){
+                return 
+            }
+            for (const menu of menus) {
+                this.recurFindRoute(menu, menuParent)
+            }
+        },
     }
 })
 </script>

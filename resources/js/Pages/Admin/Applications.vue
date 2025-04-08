@@ -70,7 +70,31 @@
                         <a-button type="info"><sync-outlined/>刷新</a-button>
                     </div>
                 </template>
+                <a-divider />
                 <!-- End Header Info Boxes -->
+                 <div class="flex gap-3 px-2 my-2">
+                    <div class="py-1 px-3 applied rounded-full border-2">報名中
+                        <span class="rounded-full px-2 bg-slate-300">
+                            {{ applications.data.reduce((count, item) => {
+                                return item.status === null ? count + 1 : count;
+                            }, 0) }}
+                        </span>
+                    </div>
+                    <div class="py-1 px-3 accepted rounded-full border-2">已錄取
+                        <span class="rounded-full px-2 bg-green-800">
+                            {{ applications.data.reduce((count, item) => {
+                                return item.status === 'Accept' ? count + 1 : count;
+                            }, 0) }}
+                        </span>
+                    </div>
+                    <div class="py-1 px-3 paid rounded-full border-2">已繳費
+                        <span class="rounded-full px-2 bg-orange-400">
+                            {{ applications.data.reduce((count, item) => {
+                                return item.payment ? count + 1 : count;
+                            }, 0) }}
+                        </span>
+                    </div>
+                 </div>
                 <a-table 
                     :dataSource="applications.data" 
                     :columns="columns" 
@@ -102,15 +126,23 @@
                         </template>
                         <template v-else-if="column.dataIndex == 'status'">
                             <div class="flex ">
-                                <a-button class="!rounded-none !rounded-l-lg" @click="changeStatus(record, null)" type="default">報名中</a-button>
-                                <a-button class="!rounded-none" @click="changeStatus(record, 'Accept')" :type="record.status=='Accept'?'accept':'default'">已錄取</a-button>
-                                <a-button class="!rounded-none" @click="changeStatus(record, 'Expire')" :type="record.status=='Expire'?'reject':'default'">繳費過期</a-button>
-                                <a-button class="!rounded-none !rounded-r-lg" @click="changeStatus(record, 'Cancel')" :type="record.status=='Cancel'?'warning':'default'">取消報名</a-button>
+                                <a-button class="!rounded-none !rounded-l-lg" :class="record.status == null? 'applied':''" @click="changeStatus(record, null)" type="default">報名中</a-button>
+                                <a-button class="!rounded-none" :class="record.status=='Accept'?'accepted':'' " @click="changeStatus(record, 'Accept')" >已錄取</a-button>
+                                <a-button class="!rounded-none" :class="record.status=='Expire'?'expire':''"  @click="changeStatus(record, 'Expire')" >繳費過期</a-button>
+                                <a-button class="!rounded-none !rounded-r-lg" :class="record.status=='Cancel'?'cancel':''" @click="changeStatus(record, 'Cancel')" >取消報名</a-button>
                             </div>
                         </template>
                         <template v-else-if="column.dataIndex == 'payment'">
-                            <a-button v-if="record.payment" :href="route('admin.payments.show', record.payment.id)" type="info">已編費</a-button>
+                            <a-button class="paid" v-if="record.payment" :href="route('admin.payments.show', record.payment.id)">已編費</a-button>
                             <a v-else @click="startPayment(record)"><StepForwardOutlined />繳費</a>
+                        </template>
+                        <template v-else-if="column.dataIndex == 'payment_at'">
+                            <span v-if="record.payment?.created_at">
+                                {{ displayDate(record.payment?.created_at) }}<br>
+                                {{ displayTime(record.payment?.created_at) }}</span>
+                        </template>
+                        <template v-else-if="column.dataIndex == 'refund'">
+                            <a-button class="bg-red-600 text-white" >退款</a-button>
                         </template>
                         <template v-else>
                             {{ record[column.dataIndex] }}
@@ -152,28 +184,15 @@ export default {
                 pageSize: this.applications.per_page,
             },
             columns: [
-                {
-                    title: "名稱",
-                    dataIndex: "name",
-                }, {
-                    title: "出生日期",
-                    dataIndex: "dob",
-                }, {
-                    title: "證件編號",
-                    dataIndex: "id_num",
-                }, {
-                    title: "報名日期",
-                    dataIndex: "created_at",
-                }, {
-                    title: "電話",
-                    dataIndex: "phone",
-                }, {
-                    title: "狀態",
-                    dataIndex: "status",
-                }, {
-                    title: "繳費狀況",
-                    dataIndex: "payment",
-                },
+                { title: "名稱", dataIndex: "name", }, 
+                { title: "出生日期", dataIndex: "dob", }, 
+                { title: "證件編號", dataIndex: "id_num", }, 
+                { title: "報名日期", dataIndex: "created_at", }, 
+                { title: "電話", dataIndex: "phone", }, 
+                { title: "狀態", dataIndex: "status", }, 
+                { title: "繳費狀況", dataIndex: "payment", },
+                { title: "繳費時間", dataIndex: "payment_at", },
+                { title: "退款狀況", dataIndex: "refund", },
             ],
             
             notice: "",
@@ -247,6 +266,27 @@ export default {
         displayDateTime(date) {
             return dayjs(date).format('YYYY-MM-DD HH:mm:ss')
         },
+        displayTime(date) {
+            return dayjs(date).format('HH:mm:ss')
+        },
     },
 };
 </script>
+
+<style>
+.applied{
+    @apply bg-slate-200 border-slate-300 
+}
+.accepted{
+    @apply bg-green-600 text-white 
+}
+.paid{
+    @apply bg-amber-400 
+}
+.expire{
+    @apply bg-orange-950 text-white hover:!text-slate-100 
+} 
+.cancel{
+    @apply bg-blue-950 text-white hover:!text-slate-100 
+}
+</style>

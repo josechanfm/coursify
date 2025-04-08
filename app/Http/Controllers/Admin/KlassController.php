@@ -23,7 +23,7 @@ class KlassController extends Controller
         ]);
     }
 
-    public function dashboard(Offer $offer)
+    public function show(Offer $offer)
     {
         $offer->attendanceRateStudents();
         return Inertia::render('Admin/Klass/Dashboard',[
@@ -48,59 +48,11 @@ class KlassController extends Controller
         $request->validate([
             'lesson_id' => 'required|integer|exists:lessons,id',
             'student_id' => 'required|integer|exists:students,id',
-            'attend' => 'required|string|uppercase|size:3', // Adjust validation rules as necessary
+            'attend' => 'required', // Adjust validation rules as necessary
         ]);
 
         LessonStudent::where('lesson_id',$request->lesson_id)->where('student_id',$request->student_id)->update(['attend'=>$request->attend]);
-        return redirect()->back();
+        return ;
     }
 
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Offer $offer, Lesson $lesson)
-    {
-        dd($offer, $lesson);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-    }
 }

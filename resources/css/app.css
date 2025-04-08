@@ -16,6 +16,15 @@
     @apply px-2 sm:px-4 md:px-2 lg:px-2 xl:px-2 
 }
 
+.cityu-background{
+    background: rgb(255, 214, 186);
+    background: linear-gradient(135deg,
+        rgba(167, 224, 130, 0.3) 0%,
+        rgba(195, 230, 167, 0.583) 25%,
+        rgba(188, 255, 186, 0.538) 60%,
+        rgba(154, 211, 157, 0.8) 100%);
+}
+
 .ant-btn >.anticon+span{
     margin-inline-start: 4px !important;
 }

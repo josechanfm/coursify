@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('code')->nullable();
             $table->string('name_zh')->nullable();
             $table->string('name_en')->nullable();
+            $table->string('cert_name')->nullable();
             $table->date('dob')->nullable();
             $table->char('gender',1)->nullable();
             $table->string('email')->nullable();

@@ -7,6 +7,7 @@ import Dropdown from '@/Components/Dropdown.vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
 import NavLink from '@/Components/NavLink.vue';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
+import CityuLogo from '@/Components/CityuLogo.vue';
 
 defineProps({
     title: String,
@@ -33,7 +34,7 @@ const logout = () => {
 
         <Banner />
 
-        <div class="min-h-screen bg-gray-100">
+        <div class="min-h-screen bg-gray-100 ">
             <nav class="bg-white border-b border-gray-100">
                 <!-- Primary Navigation Menu -->
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -42,14 +43,32 @@ const logout = () => {
                             <!-- Logo -->
                             <div class="shrink-0 flex items-center">
                                 <Link :href="route('member.dashboard')">
-                                    <ApplicationMark class="block h-9 w-auto" />
+                                    <div class="w-64 ">
+                                        <CityuLogo />
+                                    </div>
+                                    <!-- <ApplicationMark class="block h-9 w-auto" /> -->
                                 </Link>
                             </div>
 
                             <!-- Navigation Links -->
                             <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                                 <NavLink :href="route('member.dashboard')" :active="route().current('member.dashboard')">
-                                    Dashboard
+                                    主頁
+                                </NavLink>
+                            </div>
+                            <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                                <NavLink :href="route('member.profile.index')" :active="route().current('member.profile.index')">
+                                    個人資料
+                                </NavLink>
+                            </div>
+                            <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                                <NavLink :href="route('member.offers.index')" :active="route().current('member.offers')">
+                                    報讀課程
+                                </NavLink>
+                            </div>
+                            <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                                <NavLink @click="logout">
+                                    登出
                                 </NavLink>
                             </div>
                         </div>
@@ -79,7 +98,7 @@ const logout = () => {
                                     <template #content>
                                         <!-- Account Management -->
                                         <div class="block px-4 py-2 text-xs text-gray-400">
-                                            Manage Account
+                                            帳號管理
                                         </div>
 
                                         <DropdownLink :href="route('profile.show')">
@@ -95,7 +114,7 @@ const logout = () => {
                                         <!-- Authentication -->
                                         <form @submit.prevent="logout">
                                             <DropdownLink as="button">
-                                                Log Out
+                                                登出
                                             </DropdownLink>
                                         </form>
                                     </template>
@@ -218,7 +237,7 @@ const logout = () => {
             </nav>
 
             <!-- Page Heading -->
-            <header v-if="$slots.header" class="bg-green-50 shadow">
+            <header v-if="$slots.header" class="bg-slate-200 shadow">
                 <div class="max-w-7xl mx-auto py-2 px-4 sm:px-6 lg:px-8 ">
                     <slot name="header" />
                 </div>

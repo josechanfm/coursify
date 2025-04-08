@@ -66,6 +66,9 @@ class IdValidatorController extends Controller
 			case 'MO':	// Macau ID
 				$isValid = $this->_birm_version_1_0($idNum);
 				break;
+			case 'HK':	// Macau ID
+				$isValid = $this->_hongkong_id_version_1($idNum);
+				break;
 			case 'CN':	// China ID
 				$isValid = $this->_china_id_version_1_0($idNum);
 				break;

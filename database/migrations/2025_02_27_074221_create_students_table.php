@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignId('user_id');
             $table->string('name_zh');
             $table->string('name_en')->nullable();
+            $table->string('cert_name')->nullable();
             $table->date('dob')->nullable();
             $table->char('gender',1)->nullable();
             $table->string('email')->nullable();
@@ -31,6 +32,8 @@ return new class extends Migration
             $table->string('id_copy_name')->nullable();
             $table->text('remark')->nullable();
             $table->timestamps();
+            
+            $table->unique(['id_type', 'id_num']);
         });
     }
 

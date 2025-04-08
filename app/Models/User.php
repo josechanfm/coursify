@@ -11,9 +11,10 @@ use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Jetstream\HasTeams;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
+use Illuminate\Support\Facades\Hash;
 use App\Models\Student;
 
-class User extends Authenticatable
+class User extends Authenticatable 
 {
     use HasApiTokens;
     use HasFactory;
@@ -28,7 +29,7 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'new_email', 'password',
     ];
 
     /**
@@ -60,7 +61,32 @@ class User extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
-    function student(){
+
+    
+    public function student(){
         return $this->hasOne(Student::class);
     }
+
+    public function checkAndCreate($data)
+    {
+        if ( User::where('email', $data['email'])
+                ->exists()) {
+            return null;
+        }
+
+        $user = User::create([
+            'name'     => $data['name_zh'],
+            'email'    => $data['email'],
+            'password' => Hash::make( substr( $data['id_num'] , -1 , 4) )
+        ]);
+
+        $user->ownedTeams()->save(Team::forceCreate([
+            'user_id' => $user->id,
+            'name' => explode(' ', $data['name_zh'], 2)[0]."'s Team",
+            'personal_team' => true,
+        ]));
+
+        return $user;
+    }
+
 }

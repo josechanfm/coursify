@@ -20,6 +20,16 @@
                     :dataSource="lesson.students" 
                     :columns="columns" 
                 >
+                    <template #headerCell="{title, column}">
+                        <template v-if="column.dataIndex == 'operation'">
+                            {{  }}
+                            <a-button size="small" @click="setAllAttendance('1')">全部出席</a-button>
+                            <a-button size="small" @click="setAllAttendance('0')">全部缺席</a-button>
+                        </template>
+                        <template v-else>
+                            {{ title }}
+                        </template>
+                    </template>
                     <template #bodyCell="{ column, text, record, index }">
                         <template v-if="column.dataIndex == 'current_attendance'">
 							{{ displayRate(offer.students.find( x => x.id == record.id)?.current_attendance_rate ) }}
@@ -28,8 +38,7 @@
 							{{ displayRate(offer.students.find( x => x.id == record.id)?.total_attendance_rate ) }}
                         </template>
                         <template v-else-if="column.dataIndex == 'operation'">
-							<a-switch v-model:checked="record.pivot.attend" @change="attend(record, )" checked-value="ATT" checkedChildren="出席" unCheckedValue="ABS" un-checked-children="缺席" />
-
+							<a-switch v-model:checked="record.pivot.attend" class="attend-switch" @change="attend(record, record.pivot.attend)" checked-value="1" checkedChildren="出席" unCheckedValue="0" un-checked-children="缺席" />
                         </template>
                         <template v-else>
                             <div >
@@ -43,6 +52,24 @@
     </div>
 </AdminLayout>
 </template>
+
+<style>
+.attend-switch{
+    @apply flex items-center pt-1;
+    height:30px;
+    width:70px;
+}
+.attend-switch .ant-switch-handle{
+    @apply top-[6px];
+}
+.attend-switch .ant-switch-inner-checked{
+    font-size:14px !important;
+}
+.attend-switch .ant-switch-inner-unchecked{
+    font-size:14px !important;
+}
+
+</style>
 
 <script>
 import AdminLayout from "@/Layouts/AdminLayout.vue";
@@ -96,17 +123,37 @@ export default {
             const formData = new FormData();
             formData.append('lesson_id', this.lesson.id);
             formData.append('student_id', student.id);
-            formData.append('attend', student.pivot.attend)
+            formData.append('attend', attendance)
 
-            this.$inertia.post(route("admin.klass.attendance.attend"), formData, {
-                onSuccess: (page) => {
-                    console.log(page)
-                },
-                onError: (err) => {
-                    console.log(err);
-                },
+            axios.post(route("admin.klass.attendance.attend"), formData)
+                .then(response => {
+                    console.log(response.data); // 成功回调
+                })
+                .catch(error => {
+                    console.error(error.response ? error.response.data : error.message); // 错误回调
+                });
+        },
+        setAllAttendance(attendance){
+            if( attendance == '0' ){
+                var title = '確認全部學生缺席?'
+            }else{
+                var title = '確認全部學生出席?'
+            }
+            this.$confirm({
+                closable: true,
+                maskClosable: true,
+                title: '學生出/缺席',
+                content: title,
+                onOk:()=>this.handleAllAttendance(attendance),
+                onCancel:()=>{},
             });
-
+        },
+        async handleAllAttendance(attendance){
+            
+            await this.lesson.students.forEach( async (student, index) => {
+                await this.attend( student , attendance)
+            })
+            this.$inertia.reload()
         },
         onFinish() {
             if (this.offer.id) {

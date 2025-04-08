@@ -11,7 +11,7 @@
                 >
                     <template #bodyCell="{ column, text, record, index }">
                         <template v-if="column.dataIndex == 'operation'">
-                            <a-button :href="route('admin.klass.dashboard',record.id)"><insert-row-below-outlined />課堂狀況</a-button>
+                            <a-button :href="route('admin.klass.show',record.id)"><insert-row-below-outlined />課堂狀況</a-button>
                             <a-button :href="route('admin.klass.lesson',record.id)"><import-outlined />課堂點名</a-button>
                         </template>
                         <template v-else>
@@ -41,6 +41,9 @@ export default {
         return {
 
             breadcrumb:[
+                // {label:"Area" ,url:route('admin.areas.index')},
+                // {label:"Course" ,url:route('admin.courses.index')},
+                // {label:"Offer" ,url:route('admin.offers.index')},
                 {label:"Klass" ,url: null},
             ],
             columns: [

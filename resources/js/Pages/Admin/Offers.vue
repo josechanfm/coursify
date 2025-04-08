@@ -78,7 +78,7 @@
                         <template v-else-if="column.dataIndex == 'operation'">
                             <a-button :href="route('admin.offer.applications', record.id)">報名管理</a-button>
                             <a-button :href="route('admin.lessons.schedule', record.id)"><schedule-outlined />課堂編排</a-button>
-                            <a-button :href="route('admin.klass.dashboard',record.id)"><insert-row-below-outlined />課堂狀況</a-button>
+                            <a-button :href="route('admin.klass.show',record.id)"><insert-row-below-outlined />課堂狀況</a-button>
                             <a-button :href="route('admin.offers.edit',record.id)"><EditOutlined/>編輯</a-button>
                             <a-popconfirm title="Are you sure delete this record?" ok-text="Yes" cancel-text="No"
                                 @confirm="this.$inertia.delete(route('admin.offers.destroy', record.id))">

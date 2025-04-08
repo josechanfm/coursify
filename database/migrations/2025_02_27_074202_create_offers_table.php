@@ -32,9 +32,9 @@ return new class extends Migration
             $table->integer('credit')->nullable();
             $table->string('reference')->nullable();
             $table->text('remark')->nullable();
-            $table->integer('special_member_fee')->nullable();
-            $table->integer('membership_fee')->nullable();
+            $table->integer('tuition_fee')->nullable();
             $table->integer('material_fee')->nullable();
+            $table->integer('membership_fee')->nullable();
             $table->integer('headphone_fee')->nullable();
             $table->integer('company_pay')->nullable();
             $table->integer('trainer_rate')->nullable();
