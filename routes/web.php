@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -15,20 +16,27 @@ use Illuminate\Support\Facades\Storage;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
+// Route::get('/', function () {
+//     return Inertia::render('Welcome', [
+//         'canLogin' => Route::has('login'),
+//         'canRegister' => Route::has('register'),
+//         'laravelVersion' => Application::VERSION,
+//         'phpVersion' => PHP_VERSION,
+//     ]);
+// });
+
+Route::get('/', function(){
+    return redirect()->route('dashboard');
 });
+Route::get('/dashboard', [App\Http\Controllers\DashboardController::class,'index'])->name('dashboard');
+
 
 Route::get('/download', function ( Request $request) {   
     return Storage::get( $request->query('path'));
 })->name('download');
 Route::get('offers', [App\Http\Controllers\OfferController::class,'index']);
-Route::get('application/{offer}', [App\Http\Controllers\ApplicationController::class,'form'])->name('application.form');
+Route::get('offer/{offer}/application', [App\Http\Controllers\ApplicationController::class,'form'])->name('application.form');
+Route::get('application/{application}/result/{status?}', [App\Http\Controllers\ApplicationController::class,'result'])->name('application.result');
 Route::post('application/checker', [App\Http\Controllers\ApplicationController::class,'checker'])->name('application.checker');
 Route::post('application', [App\Http\Controllers\ApplicationController::class,'submit'])->name('application.submit');
 Route::get('id/checker', [App\Http\Controllers\ApplicationController::class,'checker'])->name('application.check');
@@ -56,17 +64,17 @@ Route::middleware([
     
     Route::resource('areas', App\Http\Controllers\Admin\AreaController::class)->names('admin.areas');
    
-    Route::get('/{area}/courses', [App\Http\Controllers\Admin\CourseController::class,'index'])->name('admin.area.courses');
+    Route::get('{area}/courses', [App\Http\Controllers\Admin\CourseController::class,'index'])->name('admin.area.courses');
     Route::resource('courses', App\Http\Controllers\Admin\CourseController::class)->names('admin.courses');
    
-    Route::get('/{course}/offers', [App\Http\Controllers\Admin\OfferController::class,'index'])->name('admin.course.offers');
-    Route::get('/offers/current', [App\Http\Controllers\Admin\OfferController::class,'current'])->name('admin.offers.current');
+    Route::get('{course}/offers', [App\Http\Controllers\Admin\OfferController::class,'index'])->name('admin.course.offers');
+    Route::get('offers/current', [App\Http\Controllers\Admin\OfferController::class,'current'])->name('admin.offers.current');
     Route::resource('offers', App\Http\Controllers\Admin\OfferController::class)->names('admin.offers');
    
     Route::get('{offer}/applications', [App\Http\Controllers\Admin\ApplicationController::class,'index'])->name('admin.offer.applications');
-    Route::get('/applications/current', [App\Http\Controllers\Admin\ApplicationController::class,'current'])->name('admin.applications.current');
+    Route::get('applications/current', [App\Http\Controllers\Admin\ApplicationController::class,'current'])->name('admin.applications.current');
     Route::resource('applications', App\Http\Controllers\Admin\ApplicationController::class)->names('admin.applications');
-    Route::post('application/{application}/change_status', [App\Http\Controllers\Admin\ApplicationController::class,'changeStatus'])->name('admin.application.changeStatus');
+    Route::post('{application}/change_status', [App\Http\Controllers\Admin\ApplicationController::class,'changeStatus'])->name('admin.application.changeStatus');
     
     Route::get('{offer}/lessons/schedule', [App\Http\Controllers\Admin\LessonController::class,'schedule'])->name('admin.lessons.schedule');
     Route::post('lessons/schedule/availableRooms', [App\Http\Controllers\Admin\LessonController::class,'availableRooms'])->name('admin.lessons.availableRooms');
@@ -74,7 +82,7 @@ Route::middleware([
 
     Route::resource('payments', App\Http\Controllers\Admin\PaymentController::class)->names('admin.payments');
     
-    Route::get('{offer}/klass/dashboard', [App\Http\Controllers\Admin\KlassController::class,'dashboard'])->name('admin.klass.dashboard');
+    Route::get('{offer}/klass/show', [App\Http\Controllers\Admin\KlassController::class,'show'])->name('admin.klass.show');
     Route::get('{offer}/klass/lesson', [App\Http\Controllers\Admin\KlassController::class,'lesson'])->name('admin.klass.lesson');
     Route::get('{offer}/klass/{lesson}/attendances', [App\Http\Controllers\Admin\KlassController::class,'attendance'])->name('admin.klass.attendances');
     Route::post('klass/attendance/attend', [App\Http\Controllers\Admin\KlassController::class,'attend'])->name('admin.klass.attendance.attend');
@@ -86,7 +94,17 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->prefix('member')->group(function () {
+
+
+    Route::post('/email/update', [App\Http\Controllers\Member\UserController::class, 'store'])->name('member.email.update');
+
+    Route::get('/email/verify/{id}', [App\Http\Controllers\Member\UserController::class, 'verify'])->name('member.verification.verify');
+
     Route::get('/', [App\Http\Controllers\Member\DashboardController::class,'index'])->name('member.dashboard');    
+    Route::resource('profile', App\Http\Controllers\Member\ProfileController::class)->names('member.profile');    
+
+    Route::post('/offers/uploadPaymentReceipt/{application}', [App\Http\Controllers\Member\OfferController::class,'uploadPaymentReceipt'])->name('member.offers.uploadPaymentReceipt');    
+    Route::resource('offers', App\Http\Controllers\Member\OfferController::class)->names('member.offers');    
 
 });
 

@@ -7,6 +7,9 @@ import TwoFactorAuthenticationForm from '@/Pages/Profile/Partials/TwoFactorAuthe
 import UpdatePasswordForm from '@/Pages/Profile/Partials/UpdatePasswordForm.vue';
 import UpdateProfileInformationForm from '@/Pages/Profile/Partials/UpdateProfileInformationForm.vue';
 
+import EditEmailWithVerify from '@/Pages/Auth/EditEmailWithVerify.vue';
+
+
 defineProps({
     confirmsTwoFactorAuthentication: Boolean,
     sessions: Array,
@@ -17,16 +20,20 @@ defineProps({
     <MemberLayout title="Profile">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Profile
+                電郵 / 密碼
             </h2>
         </template>
 
         <div>
             <div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
-                <div v-if="$page.props.jetstream.canUpdateProfileInformation">
+                <!-- <div v-if="$page.props.jetstream.canUpdateProfileInformation">
                     <UpdateProfileInformationForm :user="$page.props.auth.user" />
                     <SectionBorder />
+                </div> -->
+                <div>
+                    <EditEmailWithVerify />
                 </div>
+                <hr class="my-6"/>
 
                 <div v-if="$page.props.jetstream.canUpdatePassword">
                     <UpdatePasswordForm class="mt-10 sm:mt-0" />
