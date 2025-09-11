@@ -25,7 +25,7 @@
                         <a-table-column title="繳費單">
                             <template #default="{record}">
                                 <div class="flex gap-1 items-center">
-                                    <a :href=" getReceiptFile(record).original_url ">{{ getReceiptFile(record).file_name }}</a>
+                                    <!-- <a :href=" getReceiptFile(record).original_url ">{{ getReceiptFile(record).file_name }}</a> -->
                                     <div v-if="getReceiptFile(record)" >
                                         
                                     </div>

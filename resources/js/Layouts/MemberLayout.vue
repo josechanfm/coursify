@@ -67,7 +67,7 @@ const logout = () => {
                                 </NavLink>
                             </div>
                             <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                                <NavLink @click="logout">
+                                <NavLink href="logout" @click="logout">
                                     登出
                                 </NavLink>
                             </div>
