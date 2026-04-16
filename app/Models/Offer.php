@@ -50,6 +50,9 @@ class Offer extends Model
 
     protected $appends = ['application_count', 'student_count', 'accept_count','hours'];
 
+    public function fields(){
+        return $this->hasMany(OfferField::class);
+    }
     public function info(){
         return (object)[
             'code'=>$this->code,

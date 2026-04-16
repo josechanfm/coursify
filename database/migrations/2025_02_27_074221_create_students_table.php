@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('students', function (Blueprint $table) {
             $table->id();
             $table->string('code');
-            $table->foreignId('user_id');
             $table->string('name_zh');
             $table->string('name_en')->nullable();
             $table->string('cert_name')->nullable();
@@ -31,9 +30,10 @@ return new class extends Migration
             $table->string('id_copy_file')->nullable();
             $table->string('id_copy_name')->nullable();
             $table->text('remark')->nullable();
+            $table->foreignId('user_id')->nullable();
             $table->timestamps();
             
-            $table->unique(['id_type', 'id_num']);
+            // $table->unique(['id_type', 'id_num']);
         });
     }
 

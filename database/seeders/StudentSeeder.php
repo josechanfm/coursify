@@ -26,7 +26,7 @@ class StudentSeeder extends Seeder
 
             $studentsData[] = [
                 'code' => $code,
-                'name_zh' => $faker->name, // You can replace this with specific names if needed
+                'name_zh' => $faker->name, // You can replace this with et-nihil names if needed
                 'name_en' => $faker->name,
                 'dob' => $faker->date(),
                 'gender' => $faker->randomElement(['M', 'F']),
@@ -36,8 +36,8 @@ class StudentSeeder extends Seeder
                 'company' => $faker->company,
                 'position' => $faker->word,
                 'backup_phone' => $faker->phoneNumber,
-                'id_type' => $faker->word,
-                'id_num' => $faker->word,
+                'id_type' => 'BIRM',
+                'id_num' => time(),
                 'id_copy_file' => null, // Assuming you want to leave this nullable
                 'id_copy_name' => null, // Assuming you want to leave this nullable
             ];

@@ -28,6 +28,8 @@ return new class extends Migration
             $table->dateTime('refunded_timestamp')->nullable();
             $table->foreignId('refunded_user_id')->nullable();
             $table->date('refunded_confirm_date')->nullable();
+            $table->datetime('datetime')->nullable();
+            $table->string('payment_type')->nullable();
             $table->timestamps();
         });
     }

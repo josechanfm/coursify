@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\Course;
 use App\Models\Offer;
+use App\Models\OfferTemplateField;
 use App\Models\Config;
 
 class OfferController extends Controller
@@ -79,7 +80,8 @@ class OfferController extends Controller
     {
         return Inertia::render('Admin/OfferForm',[
             'formOptions'=>Config::get('form_options'),
-            'offer'=>$offer
+            'offer'=>$offer->load('fields'),
+            'templateFields'=>OfferTemplateField::all()
         ]);
     }
 

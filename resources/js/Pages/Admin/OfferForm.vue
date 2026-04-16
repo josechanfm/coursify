@@ -4,6 +4,9 @@
       <h2 class="font-semibold text-xl text-gray-800 leading-tight">Config</h2>
     </template>
     <div class="bg-white m-5 p-5 rounded-md shadow">
+      {{ templateFields }}
+      <hr>
+      {{ offer.fields }}
       <a-form
         ref="modalRef"
         :model="offer"
@@ -102,6 +105,37 @@
           <a-checkbox-group v-model:value="offer.form_options" name="checkboxgroup" :options="formOptions" />
         </a-form-item>
 
+        <a-card title="補充欄位">
+          <a-select
+            v-model:value="selectedFields"
+            mode="multiple"
+            style="width: 100%"
+            :options="templateFields.map(f => ({ value: f.code, label: f.name }))"
+          />
+          <template v-for="field in templateFields">
+            <div v-if="selectedFields.includes(field.code)" class="flex items-start gap-4 p-3 border-b border-gray-200">
+              <!-- Left column: Field name -->
+              <div class="w-1/3 text-sm font-medium text-gray-700">
+                {{ field.name }}
+              </div>
+
+              <!-- Right column: Field input -->
+              <div class="w-2/3">
+                <div v-if="field.type === 'input' || field.type === 'text'">
+                  <input
+                    type="text"
+                    :placeholder="`Enter ${field.name.toLowerCase()}`"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  />
+                </div>
+                <div v-else>
+                  <span class="text-sm text-red-500">Not defined</span>
+                </div>
+              </div>
+            </div>
+          </template>
+        </a-card>
+
         <div class="flex justify-center gap-2">
           <a-button type="primary" html-type="submit">Submit</a-button>
           <a href="javascript:history.back();" class="inline">
@@ -121,7 +155,7 @@ export default {
   components: {
     AdminLayout,
   },
-  props: ["formOptions","offer"],
+  props: ["formOptions","offer","templateFields"],
   data() {
     return {
       breadcrumb:[
@@ -130,6 +164,7 @@ export default {
           {label:"Offer", url:route('admin.offers.index')},
           {label:"Edit", url:null},
       ],
+      selectedFields:[],
       dateFormat: "YYYY-MM-DD",
       rules: {
         code: { required: true },
@@ -153,6 +188,9 @@ export default {
     };
   },
   created() {},
+  mounted(){
+    this.selectedFields=this.offer.fields.map(f=>f.code);
+  },
   computed: {
   },
   methods: {
